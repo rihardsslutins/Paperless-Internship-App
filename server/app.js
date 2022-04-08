@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import 'dotenv/config';
 import cors from 'cors';
 
+// routers
+import internshipRouter from './routes/internshipRoutes';
+
 // creates an express app
 const app = express();
 
