@@ -2,10 +2,10 @@
 import Input from '../../atoms/input/Input';
 import Label from '../../atoms/label/Label';
 
-const LabeledInput = ({ id, onChange, type, name, placeholder, text }) => {
+const LabeledInput = ({ id, onChange, type, name, placeholder, label }) => {
     return (
         <div>
-            <Label id={id} text={text} />
+            <Label id={id} label={label} />
             <Input
                 id={id}
                 type={type}

@@ -1,7 +1,7 @@
-const Label = ({ id, text }) => {
+const Label = ({ id, label }) => {
     return (
         <div>
-            <label htmlFor={id}>{text}</label>
+            <label htmlFor={id}>{label}</label>
         </div>
     );
 };

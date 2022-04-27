@@ -1,17 +1,16 @@
-import logo from './logo.svg';
-import LabeledInput from './components/molecules/labeledInput/LabeledInput';
-import Form from './components/organisms/form/Form';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Home from './pages/home/Home';
 import './App.css';
 
 function App() {
     return (
         <div className="App">
-            <Form
-                onClick={console.log('hit')}
-                name={['name', 'last-name', 'age', 'city']}
-                text={['Name', 'Last Name', 'Age', 'City']}
-                ButtonText="BUTTON"
-            />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route />
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }
