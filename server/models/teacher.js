@@ -38,3 +38,7 @@ const teacherSchema = new Schema({
     type: [studentsSchema],
   },
 });
+
+const Teacher = mongoose.model('teacher', teacherSchema);
+
+export default Teacher;
