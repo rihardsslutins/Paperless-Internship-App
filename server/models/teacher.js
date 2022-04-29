@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { isEmail } from 'validator';
 const Schema = mongoose.Schema;
 
 const teacherSchema = new Schema({
@@ -10,24 +11,28 @@ const teacherSchema = new Schema({
     type: String,
     required: [true, 'Lūdzu ievadi uzvārdu'],
   },
-  gender: {
-    type: String,
-    required: [true, 'Lūdzu izvēlies dzimumu'],
+  phone: {
+    type: Number,
+    required: [true, 'Lūdzu ievadi telefona numuru'],
   },
   school: {
     type: String,
     required: [true, 'Lūdzu ievadi skolu'],
   },
+  students: {
+    type: [String],
+  },
   email: {
     type: String,
     required: [true, 'Lūdzu ievadi e-pastu'],
+    unique: true,
+    lowercase: true,
+    validate: [isEmail, 'Lūdzu ievadi derīgu e-pastu'],
   },
-  phone: {
-    type: Number,
-    required: [true, 'Lūdzu ievadi telefona numuru'],
-  },
-  students: {
-    type: [String],
+  password: {
+    type: String,
+    required: [true, 'Lūdzu ievadi paroli'],
+    minlength: [8, 'Parole nevar būt īsāka par 8 rakstzīmēm'],
   },
 });
 
