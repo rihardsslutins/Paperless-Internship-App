@@ -64,3 +64,7 @@ const mentorSchema = new Schema({
     required: true,
   },
 });
+
+const Mentor = mongoose.model('mentor', mentorSchema);
+
+export default Mentor;
