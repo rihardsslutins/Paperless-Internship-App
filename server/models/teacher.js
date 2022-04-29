@@ -1,10 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const studentsSchema = new Schema({
-  type: String,
-});
-
 const teacherSchema = new Schema({
   name: {
     type: String,
@@ -35,7 +31,7 @@ const teacherSchema = new Schema({
     required: true,
   },
   students: {
-    type: [studentsSchema],
+    type: [String],
   },
 });
 
