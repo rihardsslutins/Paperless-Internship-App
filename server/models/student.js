@@ -5,15 +5,15 @@ const Schema = mongoose.Schema;
 const studentSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Lūdzu ievadi vārdu'],
   },
   surname: {
     type: String,
-    required: true,
+    required: [true, 'Lūdzu ievadi uzvārdu'],
   },
   gender: {
     type: String,
-    required: true,
+    required: [true, 'Lūdzu izvēlies dzimumu'],
   },
   internship: [
     [
@@ -26,14 +26,15 @@ const studentSchema = new Schema({
   ],
   email: {
     type: String,
-    required: true,
+    required: [true, 'Lūdzu ievadi e-pastu'],
   },
   phone: {
     type: Number,
-    required: true,
+    required: [true, 'Lūdzu ievadi telefona numuru'],
   },
   password: {
     type: String,
+    required: [true, 'Lūdzu ievadi paroli'],
   },
 });
 
