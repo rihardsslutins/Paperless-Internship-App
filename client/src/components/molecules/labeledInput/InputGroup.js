@@ -1,10 +1,13 @@
+//style
+import "./InputGroup.css";
+
 // atoms
 import Input from '../../atoms/input/Input';
 import Label from '../../atoms/label/Label';
 
-const LabeledInput = ({ id, onChange, type, name, placeholder, label }) => {
+const LabeledInput = ({ id, onChange, type, name, placeholder, label, customClass }) => {
     return (
-        <div>
+        <div className={`input-group${customClass}`}>
             <Label id={id} label={label} />
             <Input
                 id={id}

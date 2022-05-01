@@ -1,15 +1,15 @@
+// style
+import "./Forms.css";
 // atoms
-import Button from '../../atoms/button/Button';
-
+import PageButton from '../../atoms/button/PageButton';
 // molecules
-import LabeledInput from '../../molecules/labeledInput/LabeledInput';
+import InputGroup from '../../molecules/labeledInput/InputGroup';
 
-const Form = ({
+const LoginForm = ({
     id,
     onChange,
     type,
     name,
-    placeholder,
     label,
     onClick,
     buttonText,
@@ -17,24 +17,24 @@ const Form = ({
     let inputArray = [];
     for (let i = 0; i < name.length; i++) {
         inputArray.push(
-            <LabeledInput
+            <InputGroup
                 id={id[i]}
                 onChange={onChange[i]}
-                type={type}
+                type={type[i]}
                 name={name[i]}
-                placeholder={placeholder}
                 label={label[i]}
+                key={[i]}
             />
         );
     }
     return (
-        <div>
+        <div className="login-form">
             <form>
                 {inputArray.map((element) => element)}
-                <Button onClick={onClick} text={buttonText} />
+                <PageButton onClick={onClick} text={buttonText} />
             </form>
         </div>
     );
 };
 
-export default Form;
+export default LoginForm;

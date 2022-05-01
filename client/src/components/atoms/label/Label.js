@@ -1,8 +1,11 @@
+//style
+import "./Label.css";
+
 const Label = ({ id, label }) => {
     return (
-        <div>
-            <label htmlFor={id}>{label}</label>
-        </div>
+        <label htmlFor={id} className="input-label" >
+            {label}
+        </label>
     );
 };
 

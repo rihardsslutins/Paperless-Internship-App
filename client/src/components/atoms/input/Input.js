@@ -1,14 +1,15 @@
-const Input = ({ id, onChange, placeholder, type, name }) => {
+//style
+import "./Inputs.css";
+
+const Input = ({ id, onChange, type, name }) => {
     return (
-        <div>
-            <input
-                type={type}
-                name={name}
-                id={id}
-                placeholder={placeholder}
-                onChange={onChange}
-            />
-        </div>
+        <input
+            className="input-field"
+            type={type}
+            name={name}
+            id={id}
+            onChange={onChange}
+        />
     );
 };
 

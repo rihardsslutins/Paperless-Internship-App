@@ -1,43 +1,71 @@
-import axios from 'axios';
-import { useState } from 'react';
-import Form from '../../components/organisms/form/Form';
+import { useState } from "react";
+
+//atoms
+import PageButton from "../../components/atoms/button/PageButton";
+//organisms
+import Navbar from "../../components/organisms/navbar/Navbar";
+import Modal from "../../components/organisms/modal/Modal";
+//image
+import homePage from "../../assets/homePage.png";
+//style
+import "./Home.css";
+
 const Home = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [displayStudent, setDisplayStudent] = useState(false);
+    const [displayTeacher, setDisplayTeacher] = useState(false);
+    const [displayMentor, setDisplayMentor] = useState(false);
 
-    const changeUsername = (e) => {
-        setUsername(e.target.value);
-    };
-    const changePassword = (e) => {
-        setPassword(e.target.value);
-    };
+    const handleClose = () => {
+        setDisplayStudent(false);
+        setDisplayTeacher(false);
+        setDisplayMentor(false);
+    }
 
-    const onChangeArray = [changeUsername, changePassword];
-
-    const createUser = (e) => {
-        e.preventDefault();
-        axios
-            .post(`http://localhost:3000/users`, {
-                username,
-                password,
-            })
-            .then(console.log('hit'))
-            .catch((err) => console.log(err));
-    };
-    const formLabels = ['Username', 'Password'];
-    const formNames = ['username', 'password'];
     return (
         <div>
-            <h1>{username}</h1>
-            <h1>{password}</h1>
-            <Form
-                id={formNames}
-                name={formNames}
-                label={formLabels}
-                onClick={(e) => createUser(e)}
-                onChange={onChangeArray}
-                buttonText="click me"
-            />
+            <Navbar />
+            <div className="container guest-home">
+                <div>
+                    <h1>Kas Jūs esat?</h1>
+                    <div className="home-button-grid">
+                        <PageButton text="Students" onClick={() => {
+                                setDisplayStudent(true);
+                                setDisplayTeacher(false);
+                                setDisplayMentor(false);
+                        }} />
+                        <PageButton text="Skolotājs" onClick={() => {
+                                setDisplayStudent(false);
+                                setDisplayTeacher(true);
+                                setDisplayMentor(false);
+                        }} />
+                        <PageButton text="Prakses vadītājs" onClick={() => {
+                                setDisplayStudent(false);
+                                setDisplayTeacher(false);
+                                setDisplayMentor(true);
+                        }} />
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                </div>
+                <img src={homePage} alt="home page" className="guest-home-image" />
+                <Modal 
+                    title="Students"
+                    body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    display={displayStudent}
+                    handleClose={handleClose}
+                />
+                <Modal 
+                    title="Skolotājs"
+                    body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    display={displayTeacher}
+                    handleClose={handleClose}
+                />
+                <Modal 
+                    title="Prakses vadītājs"
+                    body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    display={displayMentor}
+                    handleClose={handleClose}
+                />
+                </div>
         </div>
     );
 };
