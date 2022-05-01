@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import { isEmail } from 'validator';
+
 const Schema = mongoose.Schema;
 
-const teacherSchema = new Schema({
+const studentSchema = new Schema({
   name: {
     type: String,
     required: [true, 'Lūdzu ievadi vārdu'],
@@ -15,13 +16,15 @@ const teacherSchema = new Schema({
     type: Number,
     required: [true, 'Lūdzu ievadi telefona numuru'],
   },
-  school: {
-    type: String,
-    required: [true, 'Lūdzu ievadi skolu'],
-  },
-  students: {
-    type: [String],
-  },
+  internship: [
+    [
+      {
+        date: Date,
+        taskDescription: String,
+        grade: Number,
+      },
+    ],
+  ],
   email: {
     type: String,
     required: [true, 'Lūdzu ievadi e-pastu'],
@@ -36,6 +39,6 @@ const teacherSchema = new Schema({
   },
 });
 
-const Teacher = mongoose.model('teacher', teacherSchema);
+const Student = mongoose.model('student', studentSchema);
 
-export default Teacher;
+export default Student;
