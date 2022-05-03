@@ -10,7 +10,7 @@ import "./NavbarStyle.css";
 const Navbar = ({ page }) => {
     return (
         <div className="navbar">
-            <h2 className="logo"><Link to={'/'}>E-prakse</Link></h2>
+            <h2 className="logo"><Link to={'/'}>Prakses uzskaites sistēma</Link></h2>
             <div className="nav-toggle">
                 <label htmlFor="toggle-menu">
                     <img src={menuOpen} alt="menu" className="menu-open" />

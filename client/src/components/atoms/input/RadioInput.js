@@ -5,12 +5,13 @@ const RadioInput = ({
     radioLabel,
     name,
     id,
-    defaultChecked,
-    text
+    text,
+    radioOnClick,
+    radioValue
 }) => {
     return (
         <label className="radio-input-item" htmlFor={radioLabel}>
-            <input className="radio-input-field" type="radio" name={name} id={id} defaultChecked={defaultChecked}/>
+            <input className="radio-input-field" type="radio" name={name} id={id} value={radioValue} onClick={radioOnClick}/>
             <span className="radio-checkmark"></span>
             {text}
         </label>
