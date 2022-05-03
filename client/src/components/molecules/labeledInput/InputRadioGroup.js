@@ -11,8 +11,9 @@ const InputRadioGroup = ({
     radioLabel, 
     name,
     id,
-    defaultChecked,
-    text
+    text,
+    radioOnClick,
+    radioValue
 }) => {
     let inputRadioArray = [];
     for (let i = 0; i < name.length; i++) {
@@ -21,8 +22,9 @@ const InputRadioGroup = ({
                 radioLabel={radioLabel[i]} 
                 name={name[i]} 
                 id={id[i]}
-                defaultChecked={defaultChecked[i]}
                 text={text[i]}
+                radioValue={radioValue[i]}
+                radioOnClick={radioOnClick}
                 key={[i]}
             />
         )

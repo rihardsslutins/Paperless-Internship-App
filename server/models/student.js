@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import { isEmail } from 'validator';
+import isEmail from 'validator/lib/isEmail.js';
+import bcrypt from 'bcrypt';
 
 const Schema = mongoose.Schema;
 
@@ -12,9 +13,17 @@ const studentSchema = new Schema({
     type: String,
     required: [true, 'Lūdzu ievadi uzvārdu'],
   },
+  school: {
+    type: String,
+    required: [true, 'Lūdzu ievadi skolu'],
+  },
   phone: {
     type: Number,
     required: [true, 'Lūdzu ievadi telefona numuru'],
+  },
+  gender: {
+    type: String,
+    required: [true, 'Lūdzu ievadi dzimumu'],
   },
   internship: [
     [
@@ -37,6 +46,12 @@ const studentSchema = new Schema({
     required: [true, 'Lūdzu ievadi paroli'],
     minlength: [8, 'Parole nevar būt īsāka par 8 rakstzīmēm'],
   },
+});
+
+studentSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 const Student = mongoose.model('student', studentSchema);

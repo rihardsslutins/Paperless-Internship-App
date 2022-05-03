@@ -5,7 +5,6 @@ import PageButton from "../../atoms/button/PageButton";
 // molecules
 import InputGroup from '../../molecules/labeledInput/InputGroup';
 import InputRadioGroup from '../../molecules/labeledInput/InputRadioGroup';
-import { useState } from "react";
 
 const RegistrationForm = ({
     id,
@@ -14,19 +13,20 @@ const RegistrationForm = ({
     name,
     label,
     onClick,
-    buttonText
+    buttonText,
+    radioOnClick,
 }) => {
 
     const radioLabel = ['male', 'female'];
-    const radioName=['gender', 'gender'];
+    const radioName = ['gender', 'gender'];
+    const radioValue = ['male', 'female']
     const radioId = ['male', 'female'];
     const radioText = ['Vīrietis', 'Sieviete'];
-    const defaultChecked = ['defaultChecked', ''];
     let inputArray = [];
     for (let i = 0; i < name.length; i++) {
-        if(i == 3) {
+        if(i === 3) {
             inputArray.push(
-                <InputRadioGroup radioGroupLabel="Dzimums:" radioLabel={radioLabel} name={radioName} id={radioId} text={radioText} defaultChecked={defaultChecked} />
+                <InputRadioGroup radioGroupLabel="Dzimums:" radioLabel={radioLabel} name={radioName} id={radioId} text={radioText} radioOnClick={radioOnClick} radioValue={radioValue} />
             );
         }
         inputArray.push(
