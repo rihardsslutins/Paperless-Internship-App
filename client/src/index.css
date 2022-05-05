@@ -8,7 +8,19 @@ body {
   color: var(--primary-text);
 }
 .container {
-  padding: 60px 15%;
+  padding: 140px 15% 60px 15%;
   margin-right: auto;
   margin-left: auto;
+}
+.dashboard-container {
+  margin-left: 80px;
+  padding-top: 60px;
+  text-align: center;
+}
+@media only screen and (max-width: 1000px), (max-height: 700px) {
+  .dashboard-container {
+    padding: 100px 15%;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }

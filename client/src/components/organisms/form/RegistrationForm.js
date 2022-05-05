@@ -26,7 +26,7 @@ const RegistrationForm = ({
     for (let i = 0; i < name.length; i++) {
         if(i === 3) {
             inputArray.push(
-                <InputRadioGroup radioGroupLabel="Dzimums:" radioLabel={radioLabel} name={radioName} id={radioId} text={radioText} radioOnClick={radioOnClick} radioValue={radioValue} />
+                <InputRadioGroup radioGroupLabel="Dzimums:" radioLabel={radioLabel} name={radioName} id={radioId} text={radioText} radioOnClick={radioOnClick} radioValue={radioValue} key={[i + 'dzimums']} />
             );
         }
         inputArray.push(

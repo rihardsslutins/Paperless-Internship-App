@@ -4,8 +4,9 @@ import './Register.css';
 import Navbar from '../../components/organisms/navbar/Navbar';
 import Roles from '../../components/organisms/roles/Roles';
 import RegistrationForm from '../../components/organisms/form/RegistrationForm';
-
-import { useState } from 'react';
+// hooks
+import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import axios from 'axios';
 
 const Register = () => {
@@ -26,6 +27,7 @@ const Register = () => {
         }
     };
 
+    const [searchParams] = useSearchParams();
     const handleTeacherRegistration = async (e) => {
         e.preventDefault();
         if (teacherPassword === teacherConfirmPassword) {
@@ -72,10 +74,11 @@ const Register = () => {
             console.log('password isnt equal to repeatpassword');
         }
     }
+    
     // ROLES
-    const [activeStudent, setActiveStudent] = useState('');
-    const [activeTeacher, setActiveTeacher] = useState('');
-    const [activeSupervisor, setActiveSupervisor] = useState('');
+    const [activeStudent, setActiveStudent] = useState(searchParams.get('role') === 'student' ? "-active" : '');
+    const [activeTeacher, setActiveTeacher] = useState(searchParams.get('role') === 'teacher' ? "-active" : '');
+    const [activeSupervisor, setActiveSupervisor] = useState(searchParams.get('role') === 'supervisor' ? "-active" : '');
 
     const handleStudent = () => {
         setActiveStudent('-active');

@@ -52,18 +52,24 @@ const Home = () => {
                     body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                     display={displayStudent}
                     handleClose={handleClose}
+                    buttonText="Reģistrēties kā students"
+                    role="student"
                 />
                 <Modal 
                     title="Skolotājs"
                     body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                     display={displayTeacher}
                     handleClose={handleClose}
+                    buttonText="Reģistrēties kā skolotājs"
+                    role="teacher"
                 />
                 <Modal 
                     title="Prakses vadītājs"
                     body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                     display={displayMentor}
                     handleClose={handleClose}
+                    buttonText="Reģistrēties kā prakses vadītājs"
+                    role="supervisor"
                 />
                 </div>
         </div>

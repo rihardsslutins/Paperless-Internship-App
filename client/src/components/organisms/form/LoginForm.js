@@ -19,6 +19,7 @@ const LoginForm = ({
         inputArray.push(
             <InputGroup
                 id={id[i]}
+                customClass={''}
                 onChange={onChange[i]}
                 type={type[i]}
                 name={name[i]}

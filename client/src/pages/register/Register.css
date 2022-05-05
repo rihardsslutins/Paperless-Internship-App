@@ -8,3 +8,9 @@
 .registration-form button {
     min-width: 100%;
 }
+.registration .roles {
+    margin-bottom: 30px;
+}
+.registration .registration-form {
+    margin-top: 20px;
+}

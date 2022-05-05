@@ -1,6 +1,6 @@
 .guest-home {
     display: grid;
-    padding-top: 100px;
+    padding-top: 180px;
     text-align: center;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
@@ -26,6 +26,7 @@
 @media only screen and (max-width: 1200px) {
     .guest-home {
         grid-template-columns: 1fr;
+        padding-top: 140px;
     }
 }
 @media only screen and (max-width: 600px) {

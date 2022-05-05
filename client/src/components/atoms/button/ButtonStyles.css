@@ -14,7 +14,7 @@
     cursor: pointer;
     background-color: transparent;
     background: linear-gradient(to left, transparent 50%, var(--secondary-color) 50%);
-    background-size: 200% 100%;
+    background-size: 200% 200%;
     background-position: right;
     transition: all .5s ease;
 }
@@ -54,7 +54,7 @@
     color: var(--primary-text);
     cursor: pointer;
     background: linear-gradient(to top, transparent 50%, var(--secondary-color) 50%);
-    background-size: 100% 200%;
+    background-size: 200% 200%;
     background-position: bottom;
     transition: all .3s ease;
 }
