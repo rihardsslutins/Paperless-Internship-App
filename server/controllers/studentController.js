@@ -2,7 +2,6 @@
 import Student from '../models/student.js';
 
 const handleErrors = (err) => {
-  console.log(err.message, err.code);
   const errors = {
     name: '',
     surname: '',
@@ -21,6 +20,8 @@ const handleErrors = (err) => {
   Object.values(err.errors).forEach(({ properties }) => {
     errors[properties.path] = properties.message;
   });
+  
+  return errors
   // console.log(Object.values(err.errors))
 };
 
