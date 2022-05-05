@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 import isEmail from 'validator/lib/isEmail.js';
+import bcrypt from 'bcrypt';
 
 const Schema = mongoose.Schema;
 
-const mentorSchema = new Schema({
+const supervisorSchema = new Schema({
   name: {
     type: String,
     required: [true, 'Lūdzu ievadi vārdu'],
@@ -11,6 +12,10 @@ const mentorSchema = new Schema({
   surname: {
     type: String,
     required: [true, 'Lūdzu ievadi uzvārdu'],
+  },
+  gender: {
+    type: String,
+    required: [true, 'Lūdzu ievadi dzimumu'],
   },
   phone: {
     type: Number,
@@ -21,6 +26,10 @@ const mentorSchema = new Schema({
     required: [true, 'Lūdzu ievadi nozari'],
   },
   company: {
+    name: {
+      type: String,
+      required: [true, 'Lūdzu ievadi uzņēmuma nosaukumu'],
+    },
     address: {
       country: {
         type: String,
@@ -50,7 +59,6 @@ const mentorSchema = new Schema({
     email: {
       type: String,
       required: [true, 'Lūdzu ievadi uzņēmuma e-pastu'],
-      unique: true,
       lowercase: true,
       validate: [isEmail, 'Lūdzu ievadi derīgu uzņēmuma e-pastu'],
     },
@@ -73,6 +81,12 @@ const mentorSchema = new Schema({
   },
 });
 
-const Mentor = mongoose.model('mentor', mentorSchema);
+supervisorSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
 
-export default Mentor;
+const Supervisor = mongoose.model('supervisor', supervisorSchema);
+
+export default Supervisor;
