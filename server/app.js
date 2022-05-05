@@ -4,10 +4,9 @@ import 'dotenv/config';
 import cors from 'cors';
 
 // routers
-import userRouter from './routes/userRoutes.js';
 import studentRouter from './routes/studentRoutes.js';
 import teacherRouter from './routes/teacherRoutes.js';
-import mentorRouter from './routes/mentorRoutes.js';
+import supervisorRouter from './routes/supervisorRoutes.js';
 
 // creates an express app
 const app = express();
@@ -43,7 +42,6 @@ mongoose
 app.get('/', (req, res) => res.send('I exist'));
 
 // user routes
-app.use(userRouter);
 app.use(studentRouter);
 app.use(teacherRouter);
-app.use(mentorRouter);
+app.use(supervisorRouter);

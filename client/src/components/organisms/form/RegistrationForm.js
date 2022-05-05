@@ -13,19 +13,20 @@ const RegistrationForm = ({
     name,
     label,
     onClick,
-    buttonText
+    buttonText,
+    radioOnClick,
 }) => {
 
     const radioLabel = ['male', 'female'];
-    const radioName=['gender', 'gender'];
+    const radioName = ['gender', 'gender'];
+    const radioValue = ['male', 'female']
     const radioId = ['male', 'female'];
     const radioText = ['Vīrietis', 'Sieviete'];
-    const defaultChecked = ['defaultChecked', ''];
     let inputArray = [];
     for (let i = 0; i < name.length; i++) {
-        if(i == 3) {
+        if(i === 3) {
             inputArray.push(
-                <InputRadioGroup radioGroupLabel="Dzimums:" radioLabel={radioLabel} name={radioName} id={radioId} text={radioText} defaultChecked={defaultChecked} key={[i + 'dzimums']} />
+                <InputRadioGroup radioGroupLabel="Dzimums:" radioLabel={radioLabel} name={radioName} id={radioId} text={radioText} radioOnClick={radioOnClick} radioValue={radioValue} key={[i + 'dzimums']} />
             );
         }
         inputArray.push(

@@ -1,5 +1,4 @@
 // models
-import User from '../models/user.js';
 
 const user_create = async (req, res) => {
   const { username, password } = req.body;
