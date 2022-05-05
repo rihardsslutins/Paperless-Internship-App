@@ -6,10 +6,10 @@
     --secondary-color: #487284;
     --button-hover: #192429;
     --white: #fff;
-    --warning: #FFB800;
-    --warning-bg: #FFF4DA;
-    --danger: #DB0101;
-    --danger-bg: #FFC9C9;
-    --success: #007E05;
-    --success-bg: #D3FFD5;
+    --warning: #e89f29;
+    --warning-bg: #ffe8c3;
+    --danger: #e9594c;
+    --danger-bg: #ffcfcb;
+    --success: #3ac279;
+    --success-bg: #c5f7dc;
 }

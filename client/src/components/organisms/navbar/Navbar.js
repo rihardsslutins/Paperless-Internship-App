@@ -1,26 +1,35 @@
-import { Link } from "react-router-dom";
+// style
+import "./NavbarStyle.css";
+// assets
 import menuOpen from "../../../assets/menuOpen.svg";
-
-//atoms
+import close from "../../../assets/close.svg";
+// atoms
 import NavButton from "../../atoms/button/NavButton";
 
-//style
-import "./NavbarStyle.css";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Navbar = ({ page }) => {
+
+    const [expanded, setExpanded] = useState('');
+
+    const handleExpand = () => {
+        setExpanded(' expanded')
+    }
+    const handleShrink = () => {
+        setExpanded('');
+    }
+
+
     return (
-        <div className="navbar">
+        <div className={`navbar${expanded}`}>
             <h2 className="logo"><Link to={'/'}>E-prakse</Link></h2>
-            <div className="nav-toggle">
-                <label htmlFor="toggle-menu">
-                    <img src={menuOpen} alt="menu" className="menu-open" />
-                </label> 
+            <img className="navbar-menu-open" src={menuOpen} alt="open navber" onClick={handleExpand} />
+            <img className="navbar-menu-close" src={close} alt="close navbar" onClick={handleShrink} />
+            <div className="nav-links">
+                <Link to={'/register'}><NavButton text="Reģistrēties" active={page === 'register' ? '-active' : ''} /></Link>
+                <Link to={'/login'}><NavButton text="Pieslēgties" active={page === 'login' ? '-active' : ''} /></Link>
             </div>
-            <input type="checkbox" id="toggle-menu" />
-            <ul className="nav-links">
-                <li><Link to={'/register'}><NavButton text="Reģistrēties" active={page === 'register' ? '-active' : ''} /></Link></li>
-                <li><Link to={'/login'}><NavButton text="Pieslēgties" active={page === 'login' ? '-active' : ''} /></Link></li>
-            </ul>
         </div>
     );
 }

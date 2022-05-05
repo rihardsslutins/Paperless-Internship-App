@@ -1,23 +1,23 @@
 // atoms
 import PageButton from "../../atoms/button/PageButton";
 // assets
-import menuCloseBlack from "../../../assets/menuCloseBlack.svg"
+import closeBlack from "../../../assets/closeBlack.svg"
 // style
 import "./Modal.css";
 import { Link } from "react-router-dom";
 
-const Modal = ({title, body, display, handleClose}) => {
+const Modal = ({title, body, display, handleClose, buttonText, role}) => {
 
     return (
         <>
         {display && <div className="modal">
             <div className="modal-content">
                 <div className="modal-head">
-                    <img src={menuCloseBlack} alt="close modal" onClick={handleClose} />
+                    <img src={closeBlack} alt="close modal" onClick={handleClose} />
                     <h2>{title}</h2>
                 </div>
                 <p>{body}</p>
-                <Link to={'/register'}><PageButton text="Reģistrēties" /></Link>
+                <Link to={`/register?role=${role}`}><PageButton text={buttonText} /></Link>
             </div>
         </div>
         }

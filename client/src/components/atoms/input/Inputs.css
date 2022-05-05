@@ -12,8 +12,7 @@
     transition: all .5s;
 }
 .input-field:focus {
-    border: 3px solid var(--primary-color);
-    pointer-events: none;
+    border: 3px solid var(--primary-color) !important;
 }
 .input-field:hover {
     border: 3px solid var(--secondary-color);
@@ -22,8 +21,10 @@
 
 /* Radio Input */
 .radio-input-item {
-    display: block;
+    display: flex;
+    align-items: center;
     position: relative;
+    gap: 10px;
     font-size: 18px;
     padding: 6px 10px;
     cursor: pointer;
@@ -40,7 +41,6 @@
 .radio-checkmark {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 10px;
     height: 13px;
     width: 13px;
     border: 3px solid var(--secondary-color);
@@ -55,7 +55,7 @@
     display: block;
 }
 .radio-input-item .radio-checkmark:after {
-    top: 14px;
+    top: 13px;
     left: 16px;
     width: 7px;
     height: 7px;

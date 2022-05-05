@@ -5,14 +5,18 @@ import Navbar from "../../components/organisms/navbar/Navbar";
 import Roles from "../../components/organisms/roles/Roles";
 import RegistrationForm from "../../components/organisms/form/RegistrationForm";
 
+// hooks
+import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 
 const Register = () => {
 
+    const [searchParams] = useSearchParams();
+
     // ROLES
-    const [activeStudent, setActiveStudent] = useState('');
-    const [activeTeacher, setActiveTeacher] = useState('');
-    const [activeSupervisor, setActiveSupervisor] = useState('');
+    const [activeStudent, setActiveStudent] = useState(searchParams.get('role') === 'student' ? "-active" : '');
+    const [activeTeacher, setActiveTeacher] = useState(searchParams.get('role') === 'teacher' ? "-active" : '');
+    const [activeSupervisor, setActiveSupervisor] = useState(searchParams.get('role') === 'supervisor' ? "-active" : '');
 
     const handleStudent = () => {
         setActiveStudent("-active");

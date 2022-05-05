@@ -1,5 +1,6 @@
 /* Login Form */
 .login-form {
+    display: grid;
     max-width: 350px;
     margin: 0 auto;
 }
