@@ -1,5 +1,7 @@
 // style
 import './Register.css';
+// atoms
+import Alert from "../../components/atoms/alerts/Alert";
 // organisms
 import Navbar from '../../components/organisms/navbar/Navbar';
 import Roles from '../../components/organisms/roles/Roles';
@@ -10,70 +12,9 @@ import { useState } from "react";
 import axios from 'axios';
 
 const Register = () => {
-    const handleStudentRegistration = async (e) => {
-        e.preventDefault();
-        if (studentPassword === studentConfirmPassword) {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/students`, {
-                name: studentName,
-                surname: studentSurname,
-                gender: studentGender,
-                school: studentSchool,
-                email: studentEmail,
-                phone: studentPhone,
-                password: studentPassword,
-            });
-        } else {
-            console.log('password isnt equal to repeatpassword');
-        }
-    };
 
     const [searchParams] = useSearchParams();
-    const handleTeacherRegistration = async (e) => {
-        e.preventDefault();
-        if (teacherPassword === teacherConfirmPassword) {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/teachers`, {
-                name: teacherName,
-                surname: teacherSurname,
-                gender: teacherGender,
-                school: teacherSchool,
-                email: teacherEmail,
-                phone: teacherPhone,
-                password: teacherPassword,
-            });
-        } else {
-            console.log('password isnt equal to repeatpassword');
-        }
-    };
-
-    const handleSupervisorRegistration = async (e) => {
-        e.preventDefault();
-        if (supervisorPassword === supervisorConfirmPassword) {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/supervisors`, {
-                name: supervisorName,
-                surname: supervisorSurname,
-                gender: supervisorGender,
-                phone: supervisorPhone,
-                field: supervisorField,
-                company: {
-                    name: supervisorCompanyName,
-                    address: {
-                        country: supervisorCompanyCountry,
-                        city: supervisorCompanyCity,
-                        zipCode: supervisorCompanyZipCode,
-                        streetName: supervisorCompanyStreetName,
-                        streetNumber: supervisorCompanyStreetNumber
-                    },
-                    registrationNumber: supervisorCompanyRegistrationNumber,
-                    email: supervisorCompanyEmail,
-                    phone: supervisorCompanyPhone
-                },
-                email: supervisorEmail,
-                password: supervisorPassword
-            });
-        } else {
-            console.log('password isnt equal to repeatpassword');
-        }
-    }
+    const [alert, setAlert] = useState('');
     
     // ROLES
     const [activeStudent, setActiveStudent] = useState(searchParams.get('role') === 'student' ? "-active" : '');
@@ -152,6 +93,31 @@ const Register = () => {
         'password',
     ];
 
+    const handleStudentRegistration = async (e) => {
+        e.preventDefault();
+        if (!studentName || !studentSurname || !studentGender || !studentSchool || !studentEmail || !studentPhone || !studentPassword || !studentConfirmPassword) {
+            setAlert('Aizpildiet visus ievades laukus!');
+        } else if (studentPassword !== studentConfirmPassword) {
+            setAlert('Paroles nesakrīt!');
+        } else {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/students`, {
+                name: studentName,
+                surname: studentSurname,
+                gender: studentGender,
+                school: studentSchool,
+                email: studentEmail,
+                phone: studentPhone,
+                password: studentPassword,
+            })
+            .catch(err => {
+                const emailExists = err.response.data.errors.email
+                if (emailExists) {
+                    setAlert('Tāds e-pasts jau pastāv!');
+                }
+            });
+        }
+    };
+
     // TEACHER REGISTRATION
     const [teacherName, setTeacherName] = useState('');
     const [teacherSurname, setTeacherSurname] = useState('');
@@ -208,10 +174,31 @@ const Register = () => {
         'password',
     ];
 
+    const handleTeacherRegistration = async (e) => {
+        e.preventDefault();
+        if (!teacherName || !teacherSurname || !teacherGender || !teacherSchool || !teacherEmail || !teacherPhone || !teacherPassword || !teacherConfirmPassword) {
+            setAlert('Aizpildiet visus ievades laukus!');
+        } else if (studentPassword !== studentConfirmPassword) {
+            setAlert('Paroles nesakrīt!');
+        } else {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/teachers`, {
+                name: teacherName,
+                surname: teacherSurname,
+                gender: teacherGender,
+                school: teacherSchool,
+                email: teacherEmail,
+                phone: teacherPhone,
+                password: teacherPassword,
+            });
+        }
+    };
+
     // SUPERVISOR REGISTRATION
     const [supervisorName, setSupervisorName] = useState('');
     const [supervisorSurname, setSupervisorSurname] = useState('');
-    const [supervisorGender, setSuperVisorGender] = useState('');
+    const [supervisorPhone, setSupervisorPhone] = useState('');
+    const [supervisorGender, setSupervisorGender] = useState('');
+    const [supervisorEmail, setSupervisorEmail] = useState('');
     const [supervisorField, setSupervisorField] = useState('');
     const [supervisorCompanyName, setSupervisorCompanyName] = useState('');
     const [supervisorCompanyCountry, setSupervisorCompanyCountry] = useState('');
@@ -222,14 +209,12 @@ const Register = () => {
     const [supervisorCompanyRegistrationNumber, setSupervisorCompanyRegistrationNumber] = useState('');
     const [supervisorCompanyEmail, setSupervisorCompanyEmail] = useState('');
     const [supervisorCompanyPhone, setSupervisorCompanyPhone] = useState('');
-    const [supervisorEmail, setSupervisorEmail] = useState('');
-    const [supervisorPhone, setSupervisorPhone] = useState('');
     const [supervisorPassword, setSupervisorPassword] = useState('');
     const [supervisorConfirmPassword, setSupervisorConfirmPassword] = useState('');
 
     const changeSupervisorName = (e) => setSupervisorName(e.target.value);
     const changeSupervisorSurname = (e) => setSupervisorSurname(e.target.value);
-    const changeSupervisorGender = (e) => setSuperVisorGender(e.target.value);
+    const changeSupervisorGender = (e) => setSupervisorGender(e.target.value);
     const changeSupervisorPhone = (e) => setSupervisorPhone(e.target.value);
     const changeSupervisorField = (e) => setSupervisorField(e.target.value);
     const changeSupervisorCompanyName = (e) => setSupervisorCompanyName(e.target.value);
@@ -249,6 +234,7 @@ const Register = () => {
         changeSupervisorName,
         changeSupervisorSurname,
         changeSupervisorPhone,
+        changeSupervisorEmail,
         changeSupervisorField,
         changeSupervisorCompanyName,
         changeSupervisorCompanyCountry,
@@ -259,7 +245,6 @@ const Register = () => {
         changeSupervisorCompanyRegistrationNumber,
         changeSupervisorCompanyEmail,
         changeSupervisorCompanyPhone,
-        changeSupervisorEmail,
         changeSupervisorPassword,
         changeSupervisorConfirmPassword
     ];
@@ -267,6 +252,7 @@ const Register = () => {
         'Vārds:',
         'Uzvārds:',
         'Tālrunis:',
+        'E-pasts:',
         'Nozare:',
         'Uzņēmuma nosaukums:',
         'Uzņēmuma valsts:',
@@ -277,7 +263,6 @@ const Register = () => {
         'Uzņēmuma reģisrācijas numurs:',
         'Uzņēmuma e-pasts:',
         'Uzņēmuma tālrunis:',
-        'E-pasts:',
         'Parole:',
         'Apstiprināt paroli:',
     ];
@@ -285,6 +270,7 @@ const Register = () => {
     	'supervisorName',
         'supervisorSurname',
         'supervisorPhone',
+        'supervisorEmail',
         'supervisorField',
         'supervisorCompanyName',
         'supervisorCompanyCountry',
@@ -295,7 +281,6 @@ const Register = () => {
         'supervisorCompanyRegistrationNumber',
         'supervisorCompanyEmail',
         'supervisorCompanyPhone',
-        'supervisorEmail',
         'supervisorPassword',
         'supervisorConfirmPassword',
     ];
@@ -303,6 +288,7 @@ const Register = () => {
         'text',
         'text',
         'number',
+        'email',
         'text',
         'text',
         'text',
@@ -313,24 +299,100 @@ const Register = () => {
         'text',
         'email',
         'number',
-        'email',
         'password',
         'password',
     ];
+
+    const handleSupervisorRegistration = async (e) => {
+        e.preventDefault();
+        if (supervisorPassword === supervisorConfirmPassword) {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/supervisors`, {
+                name: supervisorName,
+                surname: supervisorSurname,
+                gender: supervisorGender,
+                phone: supervisorPhone,
+                field: supervisorField,
+                company: {
+                    name: supervisorCompanyName,
+                    address: {
+                        country: supervisorCompanyCountry,
+                        city: supervisorCompanyCity,
+                        zipCode: supervisorCompanyZipCode,
+                        streetName: supervisorCompanyStreetName,
+                        streetNumber: supervisorCompanyStreetNumber
+                    },
+                    registrationNumber: supervisorCompanyRegistrationNumber,
+                    email: supervisorCompanyEmail,
+                    phone: supervisorCompanyPhone
+                },
+                email: supervisorEmail,
+                password: supervisorPassword
+            });
+        } else {
+            console.log('password isnt equal to repeatpassword');
+        }
+    }   
+
+    const handleInputReset = () => {
+        // Student reset
+        setStudentName('');
+        setStudentSurname('');
+        setStudentGender('');
+        setStudentSchool('');
+        setStudentEmail('');
+        setStudentPhone('');
+        setStudentPassword('');
+        setStudentConfirmPassword('');
+        // Teacher reset
+        setTeacherName('');
+        setTeacherSurname('');
+        setTeacherGender('');
+        setTeacherSchool('');
+        setTeacherEmail('');
+        setTeacherPhone('');
+        setTeacherPassword('');
+        setTeacherConfirmPassword('');
+        // Supervisor reset
+        setSupervisorName('');
+        setSupervisorSurname('');
+        setSupervisorGender('');
+        setSupervisorField('');
+        setSupervisorCompanyName('');
+        setSupervisorCompanyCountry('');
+        setSupervisorCompanyCity('');
+        setSupervisorCompanyZipCode('');
+        setSupervisorCompanyStreetName('');
+        setSupervisorCompanyStreetNumber('');
+        setSupervisorCompanyRegistrationNumber('');
+        setSupervisorCompanyEmail('');
+        setSupervisorCompanyPhone('');
+        setSupervisorEmail('');
+        setSupervisorPhone('');
+        setSupervisorPassword('');
+        setSupervisorConfirmPassword('');
+        // Reset alert
+        handleAlertClose();
+    }
+
+    const handleAlertClose = () => {
+        setAlert('');
+    }
 
     return (
         <div>
             <Navbar page="register" />
             <div className="container registration">
-                <h2>Reģistrācija{studentGender}</h2>
+                <h2>Reģistrācija</h2>
                 <Roles
                     handleStudent={handleStudent}
                     handleTeacher={handleTeacher}
                     handleSupervisor={handleSupervisor}
+                    handleInputReset={handleInputReset}
                     activeStudent={activeStudent}
                     activeTeacher={activeTeacher}
                     activeSupervisor={activeSupervisor}
                 />
+                {alert && <Alert type="warning" text={alert} handleAlertClose={handleAlertClose} />}
                 {activeStudent && (
                     <RegistrationForm
                         id={formNamesStudent}
