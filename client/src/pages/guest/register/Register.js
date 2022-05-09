@@ -1,11 +1,11 @@
 // style
 import './Register.css';
 // atoms
-import Alert from "../../components/atoms/alerts/Alert";
+import Alert from "../../../components/atoms/alerts/Alert";
 // organisms
-import Navbar from '../../components/organisms/navbar/Navbar';
-import Roles from '../../components/organisms/roles/Roles';
-import RegistrationForm from '../../components/organisms/form/RegistrationForm';
+import Navbar from '../../../components/organisms/navbar/Navbar';
+import Roles from '../../../components/organisms/roles/Roles';
+import RegistrationForm from '../../../components/organisms/form/RegistrationForm';
 // hooks
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";

@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 //atoms
-import PageButton from "../../components/atoms/button/PageButton";
+import PageButton from "../../../components/atoms/button/PageButton";
 //organisms
-import Navbar from "../../components/organisms/navbar/Navbar";
-import Modal from "../../components/organisms/modal/Modal";
+import Navbar from "../../../components/organisms/navbar/Navbar";
+import Modal from "../../../components/organisms/modal/Modal";
 //image
-import homePage from "../../assets/homePage.png";
+import homePage from "../../../assets/homePage.png";
 //style
 import "./Home.css";
 

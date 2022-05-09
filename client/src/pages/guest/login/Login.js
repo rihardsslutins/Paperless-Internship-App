@@ -5,8 +5,8 @@ import { useState } from 'react';
 import "./Login.css";
 
 //organisms
-import LoginForm from '../../components/organisms/form/LoginForm';
-import Navbar from "../../components/organisms/navbar/Navbar";
+import LoginForm from '../../../components/organisms/form/LoginForm';
+import Navbar from "../../../components/organisms/navbar/Navbar";
 
 const Login = () => {
     const [username, setUsername] = useState('');

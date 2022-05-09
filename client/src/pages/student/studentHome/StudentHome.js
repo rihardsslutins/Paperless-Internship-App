@@ -1,5 +1,5 @@
 // organism
-import Sidebar from "../../components/organisms/navbar/Sidebar";
+import Sidebar from "../../../components/organisms/navbar/Sidebar";
 
 const StudentHome = () => {
 
@@ -11,7 +11,7 @@ const StudentHome = () => {
     return (
         <>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="student-home" />
-            <div className="dashboard-container student-home">
+            <div className="dashboard-container">
                 <h1>Student Home</h1>
             </div>
         </>

@@ -14,13 +14,19 @@ body {
 }
 .dashboard-container {
   margin-left: 80px;
-  padding-top: 60px;
-  text-align: center;
+  padding: 60px 5%;
+  transition: all .3s linear;
+}
+.sidebar.expanded ~ .dashboard-container {
+  margin-left: 220px;
 }
 @media only screen and (max-width: 1000px), (max-height: 700px) {
   .dashboard-container {
-    padding: 100px 15%;
+    padding: 100px 5%;
     margin-right: auto;
+    margin-left: auto;
+  }
+  .sidebar.expanded ~ .dashboard-container {
     margin-left: auto;
   }
 }
