@@ -26,7 +26,7 @@ app.use(express.json());
 // allows cross-origin resource sharing
 app.use(
   cors({
-    origin: 'http://localhost:3001',
+    origin: process.env.CLIENT_URL,
     credentials: true,
   }),
 );
@@ -45,8 +45,6 @@ mongoose
   .catch((err) => {
     console.log(`The error when connecting to the database is: ${err}`);
   });
-
-app.get('/', (req, res) => res.send('I exist'));
 
 // user routes
 app.use(studentRouter);
