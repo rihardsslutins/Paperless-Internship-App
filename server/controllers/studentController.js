@@ -1,6 +1,5 @@
 // packages
 import jwt from 'jsonwebtoken';
-import nodemon from 'nodemon';
 
 // models
 import Student from '../models/student.js';
@@ -32,7 +31,6 @@ const handleErrors = (err) => {
 const maxAge = 3 * 24 * 60 * 60; // the amount of time is measured in seconds
 
 const createToken = (id) => {
-  console.log('create token fired');
   return jwt.sign({ id }, process.env.JWT_SECRET_STRING, {
     expiresIn: maxAge,
   });
@@ -42,9 +40,19 @@ const student_create = async (req, res) => {
   const { name, surname, gender, phone, school, email, password } = req.body;
   try {
     const student = await Student.create({ name, surname, gender, phone, school, email, password });
+
+    // creates a JWT
     const token = createToken(student._id);
-    res.cookie('jwt', token, { maxAge: maxAge, SameSite: 'None', Secure: true });
-    res.status(201).json({ token });
+    // res.cookie('jwt', token, { maxAge: maxAge, SameSite: 'None', Secure: true });
+    // res.status(201).json({ token });
+
+    // setting a cookie
+    res
+      .cookie('jwt', token, {
+        httpOnly: true,
+        maxAge: maxAge * 1000,
+      })
+      .send('cookie sent');
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });

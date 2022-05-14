@@ -119,7 +119,7 @@ const Register = () => {
                 setAlert('Lūdzu ievadi abas paroles pareizi');
                 return;
             }
-            const response = await axios.post(
+            await axios.post(
                 `${process.env.REACT_APP_SERVER_URL}/students`,
                 {
                     name: studentName,
@@ -134,8 +134,6 @@ const Register = () => {
                     withCredentials: true,
                 }
             );
-            // const token = await response.data;
-            console.log(response.headers);
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -216,15 +214,21 @@ const Register = () => {
                 setAlert('Lūdzu ievadi abas paroles pareizi');
                 return;
             }
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/teachers`, {
-                name: teacherName,
-                surname: teacherSurname,
-                gender: teacherGender,
-                school: teacherSchool,
-                email: teacherEmail,
-                phone: teacherPhone,
-                password: teacherPassword,
-            });
+            await axios.post(
+                `${process.env.REACT_APP_SERVER_URL}/teachers`,
+                {
+                    name: teacherName,
+                    surname: teacherSurname,
+                    gender: teacherGender,
+                    school: teacherSchool,
+                    email: teacherEmail,
+                    phone: teacherPhone,
+                    password: teacherPassword,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -324,6 +328,9 @@ const Register = () => {
                     company: supervisorCompany,
                     email: supervisorEmail,
                     password: supervisorPassword,
+                },
+                {
+                    withCredentials: true,
                 }
             );
         } catch (err) {
