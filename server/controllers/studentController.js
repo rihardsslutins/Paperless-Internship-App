@@ -1,3 +1,6 @@
+// packages
+import jwt from 'jsonwebtoken';
+
 // models
 import Student from '../models/student.js';
 
@@ -17,25 +20,69 @@ const handleErrors = (err) => {
     return errors;
   }
 
-  Object.values(err.errors).forEach(({ properties }) => {
-    errors[properties.path] = properties.message;
-  });
-  
-  return errors
+  if (err.message.includes('student validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message;
+    });
+  }
+
+  // incorrect email when logging in
+  if (err.message === 'Ievadītais e-pasts ir nepareizs') {
+    errors.email = 'Ievadītais e-pasts ir nepareizs';
+  }
+
+  // incorrect password when logging in
+  if (err.message === 'Ievadītā parole ir nepareiza') {
+    errors.password = 'Ievadītā parole ir nepareiza';
+  }
+
+  return errors;
   // console.log(Object.values(err.errors))
+};
+
+const maxAge = 3 * 24 * 60 * 60; // the amount of time is measured in seconds
+
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET_STRING, {
+    expiresIn: maxAge,
+  });
 };
 
 const student_create = async (req, res) => {
   const { name, surname, gender, phone, school, email, password } = req.body;
   try {
     const student = await Student.create({ name, surname, gender, phone, school, email, password });
-    res.status(201).json(student);
+
+    // creates a JWT
+    const token = createToken(student._id);
+    // res.cookie('jwt', token, { maxAge: maxAge, SameSite: 'None', Secure: true });
+    // res.status(201).json({ token });
+
+    // setting a cookie
+    res
+      .cookie('jwt', token, {
+        httpOnly: true,
+        maxAge: maxAge * 1000,
+      })
+      .send('cookie sent');
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
 };
 
-// student_index -> get all
+// handle student login
+const student_login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const student = await Student.login(email, password);
+    const token = createToken(student._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 }).send('cookie sent');
+    res.status(200).json({ student: student._id });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
+};
 
-export { student_create };
+export { student_create, student_login };

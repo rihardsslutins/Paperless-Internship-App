@@ -1,25 +1,31 @@
 // style
 import './Register.css';
 // atoms
-import Alert from "../../../components/atoms/alerts/Alert";
+import Alert from '../../../components/atoms/alerts/Alert';
 // organisms
 import Navbar from '../../../components/organisms/navbar/Navbar';
 import Roles from '../../../components/organisms/roles/Roles';
 import RegistrationForm from '../../../components/organisms/form/RegistrationForm';
 // hooks
-import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import axios from 'axios';
 
 const Register = () => {
-
     const [searchParams] = useSearchParams();
     const [alert, setAlert] = useState('');
-    
+    const navigate = useNavigate();
+
     // ROLES
-    const [activeStudent, setActiveStudent] = useState(searchParams.get('role') === 'student' ? "-active" : '');
-    const [activeTeacher, setActiveTeacher] = useState(searchParams.get('role') === 'teacher' ? "-active" : '');
-    const [activeSupervisor, setActiveSupervisor] = useState(searchParams.get('role') === 'supervisor' ? "-active" : '');
+    const [activeStudent, setActiveStudent] = useState(
+        searchParams.get('role') === 'student' ? '-active' : ''
+    );
+    const [activeTeacher, setActiveTeacher] = useState(
+        searchParams.get('role') === 'teacher' ? '-active' : ''
+    );
+    const [activeSupervisor, setActiveSupervisor] = useState(
+        searchParams.get('role') === 'supervisor' ? '-active' : ''
+    );
 
     const handleStudent = () => {
         setActiveStudent('-active');
@@ -35,6 +41,18 @@ const Register = () => {
         setActiveSupervisor('-active');
         setActiveTeacher('');
         setActiveStudent('');
+    };
+
+    // Error handling
+    const handleErrors = (errors, propertyOrder) => {
+        for (let i = 0; i < propertyOrder.length; i++) {
+            if (errors[propertyOrder[i]]) {
+                setAlert(errors[propertyOrder[i]]);
+                return;
+            } else {
+                setAlert('');
+            }
+        }
     };
 
     // STUDENT
@@ -54,7 +72,8 @@ const Register = () => {
     const changeStudentEmail = (e) => setStudentEmail(e.target.value);
     const changeStudentPhone = (e) => setStudentPhone(e.target.value);
     const changeStudentPassword = (e) => setStudentPassword(e.target.value);
-    const changeStudentConfirmPassword = (e) => setStudentConfirmPassword(e.target.value);
+    const changeStudentConfirmPassword = (e) =>
+        setStudentConfirmPassword(e.target.value);
 
     const onChangeStudentArray = [
         changeStudentName,
@@ -63,7 +82,7 @@ const Register = () => {
         changeStudentEmail,
         changeStudentPhone,
         changeStudentPassword,
-        changeStudentConfirmPassword
+        changeStudentConfirmPassword,
     ];
     const formLabelsStudent = [
         'Vārds',
@@ -72,7 +91,7 @@ const Register = () => {
         'E-pasts',
         'Tālrunis',
         'Parole',
-        'Parole atkārtoti'
+        'Parole atkārtoti',
     ];
     const formNamesStudent = [
         'name',
@@ -81,7 +100,7 @@ const Register = () => {
         'email',
         'phone',
         'password',
-        'confirmPassword'
+        'confirmPassword',
     ];
     const formTypesStudent = [
         'text',
@@ -95,26 +114,40 @@ const Register = () => {
 
     const handleStudentRegistration = async (e) => {
         e.preventDefault();
-        if (!studentName || !studentSurname || !studentGender || !studentSchool || !studentEmail || !studentPhone || !studentPassword || !studentConfirmPassword) {
-            setAlert('Aizpildiet visus ievades laukus!');
-        } else if (studentPassword !== studentConfirmPassword) {
-            setAlert('Paroles nesakrīt!');
-        } else {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/students`, {
-                name: studentName,
-                surname: studentSurname,
-                gender: studentGender,
-                school: studentSchool,
-                email: studentEmail,
-                phone: studentPhone,
-                password: studentPassword,
-            })
-            .catch(err => {
-                const emailExists = err.response.data.errors.email
-                if (emailExists) {
-                    setAlert('Tāds e-pasts jau pastāv!');
+        setAlert('');
+        try {
+            if (studentPassword !== studentConfirmPassword) {
+                setAlert('Lūdzu ievadi abas paroles pareizi');
+                return;
+            }
+            await axios.post(
+                `${process.env.REACT_APP_SERVER_URL}/students`,
+                {
+                    name: studentName,
+                    surname: studentSurname,
+                    gender: studentGender,
+                    school: studentSchool,
+                    email: studentEmail,
+                    phone: studentPhone,
+                    password: studentPassword,
+                },
+                {
+                    withCredentials: true,
                 }
-            });
+            );
+            navigate('/student-home');
+        } catch (err) {
+            const errors = err.response.data.errors;
+            const propertyOrder = [
+                'name',
+                'surname',
+                'school',
+                'gender',
+                'email',
+                'phone',
+                'password',
+            ];
+            handleErrors(errors, propertyOrder);
         }
     };
 
@@ -135,7 +168,8 @@ const Register = () => {
     const changeTeacherEmail = (e) => setTeacherEmail(e.target.value);
     const changeTeacherPhone = (e) => setTeacherPhone(e.target.value);
     const changeTeacherPassword = (e) => setTeacherPassword(e.target.value);
-    const changeTeacherConfirmPassword = (e) => setTeacherConfirmPassword(e.target.value);
+    const changeTeacherConfirmPassword = (e) =>
+        setTeacherConfirmPassword(e.target.value);
 
     const onChangeTeacherArray = [
         changeTeacherName,
@@ -144,7 +178,7 @@ const Register = () => {
         changeTeacherEmail,
         changeTeacherPhone,
         changeTeacherPassword,
-        changeTeacherConfirmPassword
+        changeTeacherConfirmPassword,
     ];
     const formLabelsTeacher = [
         'Vārds',
@@ -153,7 +187,7 @@ const Register = () => {
         'E-pasts',
         'Tālrunis',
         'Parole',
-        'Parole atkārtoti'
+        'Parole atkārtoti',
     ];
     const formNamesTeacher = [
         'teacherName',
@@ -162,7 +196,7 @@ const Register = () => {
         'teacherEmail',
         'teacherPhone',
         'teacherPassword',
-        'teacherConfirmPassword'
+        'teacherConfirmPassword',
     ];
     const formTypesTeacher = [
         'text',
@@ -176,20 +210,40 @@ const Register = () => {
 
     const handleTeacherRegistration = async (e) => {
         e.preventDefault();
-        if (!teacherName || !teacherSurname || !teacherGender || !teacherSchool || !teacherEmail || !teacherPhone || !teacherPassword || !teacherConfirmPassword) {
-            setAlert('Aizpildiet visus ievades laukus!');
-        } else if (studentPassword !== studentConfirmPassword) {
-            setAlert('Paroles nesakrīt!');
-        } else {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/teachers`, {
-                name: teacherName,
-                surname: teacherSurname,
-                gender: teacherGender,
-                school: teacherSchool,
-                email: teacherEmail,
-                phone: teacherPhone,
-                password: teacherPassword,
-            });
+        setAlert('');
+        try {
+            if (teacherPassword !== teacherConfirmPassword) {
+                setAlert('Lūdzu ievadi abas paroles pareizi');
+                return;
+            }
+            await axios.post(
+                `${process.env.REACT_APP_SERVER_URL}/teachers`,
+                {
+                    name: teacherName,
+                    surname: teacherSurname,
+                    gender: teacherGender,
+                    school: teacherSchool,
+                    email: teacherEmail,
+                    phone: teacherPhone,
+                    password: teacherPassword,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
+            navigate('/teacher-home');
+        } catch (err) {
+            const errors = err.response.data.errors;
+            const propertyOrder = [
+                'name',
+                'surname',
+                'school',
+                'gender',
+                'email',
+                'phone',
+                'password',
+            ];
+            handleErrors(errors, propertyOrder);
         }
     };
 
@@ -200,35 +254,22 @@ const Register = () => {
     const [supervisorGender, setSupervisorGender] = useState('');
     const [supervisorEmail, setSupervisorEmail] = useState('');
     const [supervisorField, setSupervisorField] = useState('');
-    const [supervisorCompanyName, setSupervisorCompanyName] = useState('');
-    const [supervisorCompanyCountry, setSupervisorCompanyCountry] = useState('');
-    const [supervisorCompanyCity, setSupervisorCompanyCity] = useState('');
-    const [supervisorCompanyZipCode, setSupervisorCompanyZipCode] = useState('');
-    const [supervisorCompanyStreetName, setSupervisorCompanyStreetName] = useState('');
-    const [supervisorCompanyStreetNumber, setSupervisorCompanyStreetNumber] = useState('');
-    const [supervisorCompanyRegistrationNumber, setSupervisorCompanyRegistrationNumber] = useState('');
-    const [supervisorCompanyEmail, setSupervisorCompanyEmail] = useState('');
-    const [supervisorCompanyPhone, setSupervisorCompanyPhone] = useState('');
+    const [supervisorCompany, setSupervisorCompany] = useState('');
     const [supervisorPassword, setSupervisorPassword] = useState('');
-    const [supervisorConfirmPassword, setSupervisorConfirmPassword] = useState('');
+    const [supervisorConfirmPassword, setSupervisorConfirmPassword] =
+        useState('');
 
     const changeSupervisorName = (e) => setSupervisorName(e.target.value);
     const changeSupervisorSurname = (e) => setSupervisorSurname(e.target.value);
     const changeSupervisorGender = (e) => setSupervisorGender(e.target.value);
     const changeSupervisorPhone = (e) => setSupervisorPhone(e.target.value);
     const changeSupervisorField = (e) => setSupervisorField(e.target.value);
-    const changeSupervisorCompanyName = (e) => setSupervisorCompanyName(e.target.value);
-    const changeSupervisorCompanyCountry = (e) => setSupervisorCompanyCountry(e.target.value);
-    const changeSupervisorCompanyCity = (e) => setSupervisorCompanyCity(e.target.value);
-    const changeSupervisorCompanyZipCode = (e) => setSupervisorCompanyZipCode(e.target.value);
-    const changeSupervisorCompanyStreetName = (e) => setSupervisorCompanyStreetName(e.target.value);
-    const changeSupervisorCompanyStreetNumber = (e) => setSupervisorCompanyStreetNumber(e.target.value);
-    const changeSupervisorCompanyRegistrationNumber = (e) => setSupervisorCompanyRegistrationNumber(e.target.value);
-    const changeSupervisorCompanyEmail = (e) => setSupervisorCompanyEmail(e.target.value);
-    const changeSupervisorCompanyPhone = (e) => setSupervisorCompanyPhone(e.target.value);
+    const changeSupervisorCompany = (e) => setSupervisorCompany(e.target.value);
     const changeSupervisorEmail = (e) => setSupervisorEmail(e.target.value);
-    const changeSupervisorPassword = (e) => setSupervisorPassword(e.target.value);
-    const changeSupervisorConfirmPassword = (e) => setSupervisorConfirmPassword(e.target.value);
+    const changeSupervisorPassword = (e) =>
+        setSupervisorPassword(e.target.value);
+    const changeSupervisorConfirmPassword = (e) =>
+        setSupervisorConfirmPassword(e.target.value);
 
     const onChangeSupervisorArray = [
         changeSupervisorName,
@@ -236,51 +277,27 @@ const Register = () => {
         changeSupervisorPhone,
         changeSupervisorEmail,
         changeSupervisorField,
-        changeSupervisorCompanyName,
-        changeSupervisorCompanyCountry,
-        changeSupervisorCompanyCity,
-        changeSupervisorCompanyZipCode,
-        changeSupervisorCompanyStreetName,
-        changeSupervisorCompanyStreetNumber,
-        changeSupervisorCompanyRegistrationNumber,
-        changeSupervisorCompanyEmail,
-        changeSupervisorCompanyPhone,
+        changeSupervisorCompany,
         changeSupervisorPassword,
-        changeSupervisorConfirmPassword
+        changeSupervisorConfirmPassword,
     ];
     const formLabelsSupervisor = [
-        'Vārds:',
-        'Uzvārds:',
-        'Tālrunis:',
-        'E-pasts:',
-        'Nozare:',
-        'Uzņēmuma nosaukums:',
-        'Uzņēmuma valsts:',
-        'Uzņēmuma pilsēta:',
-        'Uzņēmuma pasta indekss:',
-        'Uzņēmuma ielas nosaukums:',
-        'Uzņēmuma ielas numurs:',
-        'Uzņēmuma reģisrācijas numurs:',
-        'Uzņēmuma e-pasts:',
-        'Uzņēmuma tālrunis:',
-        'Parole:',
-        'Apstiprināt paroli:',
+        'Vārds',
+        'Uzvārds',
+        'Tālrunis',
+        'E-pasts',
+        'Nozare',
+        'Uzņēmuma nosaukums',
+        'Parole',
+        'Apstiprināt paroli',
     ];
     const formNamesSupervisor = [
-    	'supervisorName',
+        'supervisorName',
         'supervisorSurname',
         'supervisorPhone',
         'supervisorEmail',
         'supervisorField',
-        'supervisorCompanyName',
-        'supervisorCompanyCountry',
-        'supervisorCompanyCity',
-        'supervisorCompanyZipCode',
-        'supervisorCompanyStreetName',
-        'supervisorCompanyStreetNumber',
-        'supervisorCompanyRegistrationNumber',
-        'supervisorCompanyEmail',
-        'supervisorCompanyPhone',
+        'supervisorCompany',
         'supervisorPassword',
         'supervisorConfirmPassword',
     ];
@@ -291,47 +308,50 @@ const Register = () => {
         'email',
         'text',
         'text',
-        'text',
-        'text',
-        'text',
-        'text',
-        'number',
-        'text',
-        'email',
-        'number',
         'password',
         'password',
     ];
 
     const handleSupervisorRegistration = async (e) => {
         e.preventDefault();
-        if (supervisorPassword === supervisorConfirmPassword) {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/supervisors`, {
-                name: supervisorName,
-                surname: supervisorSurname,
-                gender: supervisorGender,
-                phone: supervisorPhone,
-                field: supervisorField,
-                company: {
-                    name: supervisorCompanyName,
-                    address: {
-                        country: supervisorCompanyCountry,
-                        city: supervisorCompanyCity,
-                        zipCode: supervisorCompanyZipCode,
-                        streetName: supervisorCompanyStreetName,
-                        streetNumber: supervisorCompanyStreetNumber
-                    },
-                    registrationNumber: supervisorCompanyRegistrationNumber,
-                    email: supervisorCompanyEmail,
-                    phone: supervisorCompanyPhone
+        setAlert('');
+        try {
+            if (supervisorPassword !== supervisorConfirmPassword) {
+                setAlert('Lūdzu ievadi abas paroles pareizi');
+                return;
+            }
+            await axios.post(
+                `${process.env.REACT_APP_SERVER_URL}/supervisors`,
+                {
+                    name: supervisorName,
+                    surname: supervisorSurname,
+                    gender: supervisorGender,
+                    phone: supervisorPhone,
+                    field: supervisorField,
+                    company: supervisorCompany,
+                    email: supervisorEmail,
+                    password: supervisorPassword,
                 },
-                email: supervisorEmail,
-                password: supervisorPassword
-            });
-        } else {
-            console.log('password isnt equal to repeatpassword');
+                {
+                    withCredentials: true,
+                }
+            );
+            navigate('/supervisor-home');
+        } catch (err) {
+            const errors = err.response.data.errors;
+            const propertyOrder = [
+                'name',
+                'surname',
+                'phone',
+                'gender',
+                'email',
+                'field',
+                'company',
+                'password',
+            ];
+            handleErrors(errors, propertyOrder);
         }
-    }   
+    };
 
     const handleInputReset = () => {
         // Student reset
@@ -357,26 +377,18 @@ const Register = () => {
         setSupervisorSurname('');
         setSupervisorGender('');
         setSupervisorField('');
-        setSupervisorCompanyName('');
-        setSupervisorCompanyCountry('');
-        setSupervisorCompanyCity('');
-        setSupervisorCompanyZipCode('');
-        setSupervisorCompanyStreetName('');
-        setSupervisorCompanyStreetNumber('');
-        setSupervisorCompanyRegistrationNumber('');
-        setSupervisorCompanyEmail('');
-        setSupervisorCompanyPhone('');
+        setSupervisorCompany('');
         setSupervisorEmail('');
         setSupervisorPhone('');
         setSupervisorPassword('');
         setSupervisorConfirmPassword('');
         // Reset alert
         handleAlertClose();
-    }
+    };
 
     const handleAlertClose = () => {
         setAlert('');
-    }
+    };
 
     return (
         <div>
@@ -392,7 +404,13 @@ const Register = () => {
                     activeTeacher={activeTeacher}
                     activeSupervisor={activeSupervisor}
                 />
-                {alert && <Alert type="warning" text={alert} handleAlertClose={handleAlertClose} />}
+                {alert && (
+                    <Alert
+                        type="warning"
+                        text={alert}
+                        handleAlertClose={handleAlertClose}
+                    />
+                )}
                 {activeStudent && (
                     <RegistrationForm
                         id={formNamesStudent}

@@ -26,46 +26,8 @@ const supervisorSchema = new Schema({
     required: [true, 'Lūdzu ievadi nozari'],
   },
   company: {
-    name: {
-      type: String,
-      required: [true, 'Lūdzu ievadi uzņēmuma nosaukumu'],
-    },
-    address: {
-      country: {
-        type: String,
-        required: [true, 'Lūdzu ievadi uzņēmuma valsti'],
-      },
-      city: {
-        type: String,
-        required: [true, 'Lūdzu ievadi uzņēmuma pilsētu'],
-      },
-      zipCode: {
-        type: String,
-        required: [true, 'Lūdzu ievadi uzņēmuma pasta indeksu'],
-      },
-      streetName: {
-        type: String,
-        required: [true, 'Lūdzu ievadi uzņēmuma ielas nosaukumu'],
-      },
-      streetNumber: {
-        type: Number,
-        required: [true, 'Lūdzu ievadi uzņēmuma ielas numuru'],
-      },
-    },
-    registrationNumber: {
-      type: String,
-      required: [true, 'Lūdzu ievadi uzņēmuma reģistrācijas numuru'],
-    },
-    email: {
-      type: String,
-      required: [true, 'Lūdzu ievadi uzņēmuma e-pastu'],
-      lowercase: true,
-      validate: [isEmail, 'Lūdzu ievadi derīgu uzņēmuma e-pastu'],
-    },
-    phone: {
-      type: Number,
-      required: [true, 'Lūdzu ievadi uzņēmuma telefona numuru'],
-    },
+    type: String,
+    required: [true, 'Lūdzu ievadi uzņēmumu'],
   },
   email: {
     type: String,

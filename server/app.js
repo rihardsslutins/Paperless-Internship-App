@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { requireAuth } from './middleware/authMiddleware.js';
 
 // routers
 import studentRouter from './routes/studentRoutes.js';
@@ -23,8 +25,14 @@ app.listen(process.env.PORT || 3000, () => {
 // parses the posted JSON data into a JavaScript object -> the request.body object
 app.use(express.json());
 // allows cross-origin resource sharing
-app.use(cors());
-
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+);
+// parses any cookie data sent to to the server
+app.use(cookieParser());
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // DATABASE CONNECTION
@@ -38,8 +46,6 @@ mongoose
   .catch((err) => {
     console.log(`The error when connecting to the database is: ${err}`);
   });
-
-app.get('/', (req, res) => res.send('I exist'));
 
 // user routes
 app.use(studentRouter);
