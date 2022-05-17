@@ -1,0 +1,29 @@
+.teacher-journal h1{
+    text-align: center;
+    margin-bottom: 40px;
+}
+.teacher-journal-table-filter {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.teacher-journal .table {
+    width: 100%;
+}
+.teacher-journal .table td {
+    text-align: center;
+}
+.teacher-journal .table tbody tr td{
+    cursor: pointer;
+}
+@media only screen and (max-width: 700px) {
+    .teacher-journal-table-filter {
+        display: grid;
+        gap: 10px;
+        justify-content: center;
+    }
+    .select-input {
+        max-width: 282px;
+    }
+}

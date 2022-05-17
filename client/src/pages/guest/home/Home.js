@@ -4,7 +4,7 @@ import { useState } from "react";
 import PageButton from "../../../components/atoms/button/PageButton";
 //organisms
 import Navbar from "../../../components/organisms/navbar/Navbar";
-import Modal from "../../../components/organisms/modal/Modal";
+import RegisterModal from "../../../components/organisms/modal/RegisterModal";
 //image
 import homePage from "../../../assets/homePage.png";
 //style
@@ -47,7 +47,7 @@ const Home = () => {
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                 </div>
                 <img src={homePage} alt="home page" className="guest-home-image" />
-                <Modal 
+                <RegisterModal
                     title="Students"
                     body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                     display={displayStudent}
@@ -55,7 +55,7 @@ const Home = () => {
                     buttonText="Reģistrēties kā students"
                     role="student"
                 />
-                <Modal 
+                <RegisterModal
                     title="Skolotājs"
                     body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                     display={displayTeacher}
@@ -63,7 +63,7 @@ const Home = () => {
                     buttonText="Reģistrēties kā skolotājs"
                     role="teacher"
                 />
-                <Modal 
+                <RegisterModal
                     title="Prakses vadītājs"
                     body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
                     display={displayMentor}

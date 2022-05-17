@@ -5,7 +5,6 @@
     position: fixed;
     left: 0;
     right: 0;
-    z-index: 2000;
     background-color: var(--primary-color);
     align-items: center;
     padding: 15px 10%;
@@ -72,7 +71,6 @@
     display: grid;
     position: fixed;
     overflow: hidden;
-    z-index: 1000;
     color: var(--white);
     font-size: 18px;
     padding: 10px;
@@ -124,6 +122,8 @@
 }
 .sidebar-footer {
     padding-bottom: 20px;
+}
+.sidebar-footer .sidebar-item {
     color: var(--danger);
 }
 @media only screen and (max-width: 1000px), (max-height: 700px) {

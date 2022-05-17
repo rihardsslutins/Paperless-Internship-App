@@ -1,0 +1,24 @@
+.invite-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    padding: 20px;
+    max-width: 700px;
+    margin: 40px auto;
+    background-color: var(--white);
+    border-radius: 5px;
+}
+.invite-button-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+.invite-button-group button {
+    width: 100%;
+}
+.invite-button-group button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+.invite-button-group button:last-child {
+    border-radius: 0 5px 5px 0;
+}

@@ -1,0 +1,23 @@
+/* Journal Card */
+.journal-card {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 5px;
+}
+.journal-card-company {
+    font-size: 20px;
+}
+.journal-card-mentor,
+.journal-card-teacher {
+    color: var(--secondary-text);
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.journal-card-date {
+    color: var(--secondary-text);
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.journal-card button {
+    width: 100%;
+}

@@ -6,7 +6,7 @@ const StudentHome = () => {
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
     const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
-    const link = ['student-home', 'student-journal', 'student-mail', 'student-settings', 'help'];
+    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
     return (
         <>

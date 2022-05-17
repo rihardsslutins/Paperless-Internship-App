@@ -1,27 +1,31 @@
 // style
-import "./StudentJournal.css";
+import "./TeacherStudentJournal.css";
 // atoms
 import PageButton2 from "../../../components/atoms/button/PageButton2";
-import DangerButton from "../../../components/atoms/button/DangerButton";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
-import JournalRecordForm from "../../../components/organisms/form/JournalRecordFrom";
-import JournalModal from "../../../components/organisms/modal/JournalModal";
 import Table from "../../../components/organisms/table/Table";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const StudentJournal = () => {
+const TeacherStudentJournal = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
     const [journalInfo, setJournalInfo] = useState([]);
     const [journal, setJournal] = useState([]);
 
+    // Sidebar properties
+    const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
+    const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
+    const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
+
+    // All users internships
     const internships = [
         {
-            id: '31928h312312ui3adww',
+            journalId: '31928h312312ui3adww',
             active: true,
             companyName: 'Accenture',
             mentor: 'Roberts Tarhanovs',
@@ -53,7 +57,7 @@ const StudentJournal = () => {
             ]
         },
         {
-            id: 'du12bi1v23v1y2v3i1v2',
+            journalId: 'du12bi1v23v1y2v3i1v2',
             active: false,
             companyName: 'Brocēnu novada dome',
             mentor: 'Jānis Bērziņš',
@@ -82,7 +86,7 @@ const StudentJournal = () => {
             ]
         },
         {
-            id: '31298b9be201xnxe9u2b',
+            journalId: '31298b9be201xnxe9u2b',
             active: false,
             companyName: 'Brocēnu novada dome',
             mentor: 'Jānis Bērziņš',
@@ -94,86 +98,42 @@ const StudentJournal = () => {
         }
     ];
 
-    // Sidebar
-    const icon = ['home', 'journal', 'mail', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
-    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
+    // Table
+    const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
 
     // Display record where journal id matches id param
     useEffect(() => {
         internships.forEach(internship => {
-            if (internship.id === id) {
+            if (internship.journalId === id) {
                 setJournalInfo(internship);
                 setJournal(internship.journal);
             }
         });
     }, [id]);
 
-    // Table
-    const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
-    
-    
-    // Journal record form
-    const [date, setDate] = useState('');
-    const [taskDesc, setTaskDesc] = useState('');
-    const [hoursSpent, setHoursSpent] = useState('')
-
-    const changeDate = (e) => setDate(e.target.value);
-    const changeTaskDesc = (e) => setTaskDesc(e.target.value);
-    const changeHoursSpent = (e) => setHoursSpent(e.target.value);
-
-    const onChangeArray = [changeDate, changeTaskDesc, changeHoursSpent];
-    const formLabels = ['Datums:', 'Izpildītā darba īss raksturojums:', 'Izpildes laiks:'];
-    const formNames = ['date', 'taskDesc', 'time'];
-    const formTypes = ['date', 'text', 'number'];
-
-    const handleAddRecord = (e) => {
-        e.preventDefault();
-        console.log(date, taskDesc, hoursSpent);
-    }
-
-    // Journal modal
-    const [displayModal, setDisplayModal] = useState(false);
-    const handleClose = () => setDisplayModal(false);
 
     return (
-        <>
-            <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="student-journals" />
+        <div>
+            <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="teacher-journal" />
             <div className="dashboard-container">
-                {journalInfo.id && <div className="student-journal">
-                    <div className="student-journal-header">
+                {journalInfo.journalId && <div className="teacher-student-journal">
+                    <div className="teacher-student-journal-header">
                         <PageButton2 text="Atpakaļ" active="" onClick={() => navigate(-1)} />
                         <h1>{journalInfo.companyName}</h1>
-                        {journalInfo.active && <DangerButton text="Noslēgt praksi" onClick={() => setDisplayModal(true)} />}
-                        <div className="student-journal-info">
+                        <div className="teacher-student-journal-info">
                             <p>Prakses vadītājs: {journalInfo.mentor}</p>
                             <p>Skolotāja: {journalInfo.overseeingTeacher}</p>
                             <p>Praktikants: {journalInfo.student}</p>
                         </div>
                     </div>
                     <Table headerCells={headerCells} data={journal} />
-                    {journalInfo.active && <JournalRecordForm 
-                        id={formNames}
-                        name={formNames}
-                        label={formLabels}
-                        type={formTypes}
-                        onClick={handleAddRecord}
-                        onChange={onChangeArray}
-                        buttonText="Pievienot"
-                    />}
-                    {journalInfo.active && <JournalModal
-                        companyName={journalInfo.companyName}
-                        display={displayModal}
-                        handleClose={handleClose}
-                    />}
                 </div>}
-                {!journalInfo.id &&
+                {!journalInfo.journalId &&
                     <h2>Šāda dienasgrāmata nepastāv</h2>
                 }
             </div>
-        </>
+        </div>
     );
 }
  
-export default StudentJournal;
+export default TeacherStudentJournal;

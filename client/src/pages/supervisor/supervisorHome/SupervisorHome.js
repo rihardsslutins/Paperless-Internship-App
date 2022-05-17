@@ -2,6 +2,8 @@
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 
 const SupervisorHome = () => {
+
+    // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
     const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];

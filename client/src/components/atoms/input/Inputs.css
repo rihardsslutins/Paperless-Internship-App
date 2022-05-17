@@ -1,5 +1,7 @@
 /* Input */
-.input-field {
+.input-field,
+.input-textarea,
+.select-input {
     box-sizing: border-box;
     max-width: 100%;
     min-width: 100%;
@@ -8,13 +10,16 @@
     border-radius: 5px;
     border: 3px solid var(--white);
     outline: none;
-    color: var(--primary-color);
+    color: var(--primary-text);
     transition: all .5s;
 }
-.input-field:focus {
+.input-field:focus,
+.input-textarea:focus {
     border: 3px solid var(--primary-color) !important;
 }
-.input-field:hover {
+.input-field:hover,
+.input-textarea:hover,
+.select-input:hover {
     border: 3px solid var(--secondary-color);
 }
 
@@ -61,4 +66,35 @@
     height: 7px;
     border-radius: 50%;
     background: var(--secondary-color);
+}
+
+/* Search Input */
+.search-input {
+    display: flex;
+}
+.search-input img {
+    background-color: var(--secondary-color);
+    border-radius: 5px 0 0 5px;
+}
+.search-input .input-field {
+    border-radius: 0 5px 5px 0;
+    min-width: fit-content;
+    border-left: 0 none;
+}
+.search-input .input-field:focus {
+    border: 3px solid var(--secondary-color) !important;
+    border-left: 0 none !important;
+}
+
+/* Select Input */
+.select-input {
+    cursor: pointer;
+    min-width: 282px;
+    appearance: none;
+    background-image: url(../../../assets/arrowDown.svg);
+    background-repeat: no-repeat;
+    background-position: right;
+}
+.select-input:focus{
+    border: 3px solid var(--secondary-color) !important;
 }
