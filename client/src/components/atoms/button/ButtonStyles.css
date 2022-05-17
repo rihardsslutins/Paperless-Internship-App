@@ -2,7 +2,7 @@
 @import "../../colors/Colors.css";
 
 
-/* NAV BUTTON */
+/* Nav button */
 .nav-button, .nav-button-active {
     color: var(--white);
     font-size: 16px;
@@ -27,7 +27,7 @@
 }
 
 
-/* PAGE BUTTON */
+/* Page button */
 .page-button {
     color: var(--white);
     background-color: var(--primary-color);
@@ -43,7 +43,7 @@
     background-color: var(--button-hover);
 }
 
-/* PAGE BUTTON 2 */
+/* Page button 2 */
 .page-button-2, .page-button-2-active {
     font-size: 16px;
     border-radius: 5px;
@@ -65,4 +65,40 @@
 .page-button-2-active {
     background-color: var(--primary-color);
     color: var(--white);
+}
+
+/* Danger button */
+.danger-button {
+    color: var(--white);
+    background-color: var(--danger);
+    width: fit-content;
+    opacity: 1;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all .5s;
+    white-space: nowrap;
+}
+.danger-button:hover {
+    opacity: .8;
+}
+
+/* Danger button 2 */
+.danger-button-2 {
+    color: var(--danger);
+    background-color: transparent;
+    width: fit-content;
+    opacity: 1;
+    border: 3px solid var(--danger);
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all .5s;
+    white-space: nowrap;
+}
+.danger-button-2:hover {
+    background-color: var(--danger-bg);
 }
