@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import 'dotenv/config';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { requireAuth } from './middleware/authMiddleware.js';
 
 // routers
 import studentRouter from './routes/studentRoutes.js';

@@ -7,13 +7,14 @@ import Navbar from '../../../components/organisms/navbar/Navbar';
 import Roles from '../../../components/organisms/roles/Roles';
 import RegistrationForm from '../../../components/organisms/form/RegistrationForm';
 // hooks
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 
 const Register = () => {
     const [searchParams] = useSearchParams();
     const [alert, setAlert] = useState('');
+    const navigate = useNavigate();
 
     // ROLES
     const [activeStudent, setActiveStudent] = useState(
@@ -134,6 +135,7 @@ const Register = () => {
                     withCredentials: true,
                 }
             );
+            navigate('/student-home');
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -229,6 +231,7 @@ const Register = () => {
                     withCredentials: true,
                 }
             );
+            navigate('/teacher-home');
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -279,14 +282,14 @@ const Register = () => {
         changeSupervisorConfirmPassword,
     ];
     const formLabelsSupervisor = [
-        'Vārds:',
-        'Uzvārds:',
-        'Tālrunis:',
-        'E-pasts:',
-        'Nozare:',
-        'Uzņēmuma nosaukums:',
-        'Parole:',
-        'Apstiprināt paroli:',
+        'Vārds',
+        'Uzvārds',
+        'Tālrunis',
+        'E-pasts',
+        'Nozare',
+        'Uzņēmuma nosaukums',
+        'Parole',
+        'Apstiprināt paroli',
     ];
     const formNamesSupervisor = [
         'supervisorName',
@@ -333,9 +336,9 @@ const Register = () => {
                     withCredentials: true,
                 }
             );
+            navigate('/supervisor-home');
         } catch (err) {
             const errors = err.response.data.errors;
-            console.log(errors);
             const propertyOrder = [
                 'name',
                 'surname',
