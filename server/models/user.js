@@ -1,0 +1,106 @@
+// packages
+import mongoose from 'mongoose';
+import isEmail from 'validator/lib/isEmail.js';
+import bcrypt from 'bcrypt';
+
+const Schema = mongoose.Schema;
+
+const options = { discriminatorKey: 'role' };
+
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Lūdzu ievadi vārdu'],
+    },
+    surname: {
+      type: String,
+      required: [true, 'Lūdzu ievadi uzvārdu'],
+    },
+    phone: {
+      type: Number,
+      required: [true, 'Lūdzu ievadi telefona numuru'],
+    },
+    gender: {
+      type: String,
+      required: [true, 'Lūdzu ievadi dzimumu'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Lūdzu ievadi e-pastu'],
+      unique: true,
+      lowercase: true,
+      validate: [isEmail, 'Lūdzu ievadi derīgu e-pastu'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Lūdzu ievadi paroli'],
+      minlength: [8, 'Parole nevar būt īsāka par 8 rakstzīmēm'],
+    },
+  },
+  options,
+);
+
+// hashes password
+userSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+const User = mongoose.model('user', userSchema);
+
+const StudentUser = User.discriminator(
+  'Student',
+  new Schema({
+    school: {
+      type: String,
+      required: [true, 'Lūdzu ievadi skolu'],
+    },
+    internship: [
+      [
+        {
+          date: Date,
+          taskDescription: String,
+          grade: Number,
+        },
+      ],
+    ],
+  }),
+  options,
+);
+
+const TeacherUser = User.discriminator(
+  'Teacher',
+  new Schema(
+    {
+      school: {
+        type: String,
+        required: [true, 'Lūdzu ievadi skolu'],
+      },
+      students: {
+        type: [String],
+      },
+    },
+    options,
+  ),
+);
+
+const SupervisorUser = User.discriminator(
+  'supervisor',
+  new Schema(
+    {
+      field: {
+        type: String,
+        required: [true, 'Lūdzu ievadi nozari'],
+      },
+      company: {
+        type: String,
+        required: [true, 'Lūdzu ievadi uzņēmumu'],
+      },
+    },
+    options,
+  ),
+);
+
+export { User, StudentUser, TeacherUser, SupervisorUser };

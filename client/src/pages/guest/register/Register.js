@@ -121,7 +121,7 @@ const Register = () => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/students`,
+                `${process.env.REACT_APP_SERVER_URL}/user`,
                 {
                     name: studentName,
                     surname: studentSurname,
@@ -132,10 +132,12 @@ const Register = () => {
                     password: studentPassword,
                 },
                 {
+                    headers: {
+                        role: 'student',
+                    },
                     withCredentials: true,
                 }
             );
-            navigate('/student-home');
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -217,7 +219,7 @@ const Register = () => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/teachers`,
+                `${process.env.REACT_APP_SERVER_URL}/user`,
                 {
                     name: teacherName,
                     surname: teacherSurname,
@@ -228,10 +230,12 @@ const Register = () => {
                     password: teacherPassword,
                 },
                 {
+                    headers: {
+                        role: 'teacher',
+                    },
                     withCredentials: true,
                 }
             );
-            navigate('/teacher-home');
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -321,7 +325,7 @@ const Register = () => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/supervisors`,
+                `${process.env.REACT_APP_SERVER_URL}/user`,
                 {
                     name: supervisorName,
                     surname: supervisorSurname,
@@ -333,10 +337,12 @@ const Register = () => {
                     password: supervisorPassword,
                 },
                 {
+                    headers: {
+                        role: 'supervisor',
+                    },
                     withCredentials: true,
                 }
             );
-            navigate('/supervisor-home');
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
