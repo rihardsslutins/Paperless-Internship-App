@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 // models
 import Student from '../models/student.js';
 
+// creates a custom handle errors object
 const handleErrors = (err) => {
   const errors = {
     name: '',
@@ -37,13 +38,13 @@ const handleErrors = (err) => {
   }
 
   return errors;
-  // console.log(Object.values(err.errors))
 };
 
 const maxAge = 3 * 24 * 60 * 60; // the amount of time is measured in seconds
 
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET_STRING, {
+// creates a jwt token
+const createToken = (student) => {
+  return jwt.sign({ student }, process.env.JWT_SECRET_STRING, {
     expiresIn: maxAge,
   });
 };
@@ -54,7 +55,7 @@ const student_create = async (req, res) => {
     const student = await Student.create({ name, surname, gender, phone, school, email, password });
 
     // creates a JWT
-    const token = createToken(student._id);
+    const token = createToken(student);
     // res.cookie('jwt', token, { maxAge: maxAge, SameSite: 'None', Secure: true });
     // res.status(201).json({ token });
 
@@ -64,7 +65,7 @@ const student_create = async (req, res) => {
         httpOnly: true,
         maxAge: maxAge * 1000,
       })
-      .send('cookie sent');
+      .send();
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
@@ -76,13 +77,25 @@ const student_login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const student = await Student.login(email, password);
-    const token = createToken(student._id);
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 }).send('cookie sent');
-    res.status(200).json({ student: student._id });
+    const token = createToken(student);
+    // const user = await Student.findById(student._id);
+    // res.status(200).json({ user: user });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 }).send();
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
 };
 
-export { student_create, student_login };
+const student_me = async (req, res) => {
+  await Student.findById(req.user.id);
+  // res.json({ message: 'User data display', user: req.user });
+  res.status(200).json({
+    user: req.user,
+    // id: id,
+    // name: name,
+    // email: email,
+  });
+};
+
+export { student_create, student_login, student_me };

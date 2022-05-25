@@ -1,9 +1,9 @@
+// packages
 import axios from 'axios';
+
+// react and hooks
 import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-
-//style
-import './Login.css';
 
 //organisms
 import LoginForm from '../../../components/organisms/form/LoginForm';
@@ -11,8 +11,10 @@ import Navbar from '../../../components/organisms/navbar/Navbar';
 import Roles from '../../../components/organisms/roles/Roles';
 import Alert from '../../../components/atoms/alerts/Alert';
 
-const Login = () => {
+//style
+import './Login.css';
 
+const Login = () => {
     const [searchParams] = useSearchParams();
     const [alert, setAlert] = useState('');
     const navigate = useNavigate();
@@ -63,25 +65,32 @@ const Login = () => {
 
     const onChangeArray = [changeStudentEmail, changeStudentPassword];
 
-    const handleStudentLogin = async (e) => {
+    // handleLogin
+    const handleLogin = async (e, endpoint, body) => {
         e.preventDefault();
         try {
-            await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/students-login`,
-                {
-                    email: studentEmail,
-                    password: studentPassword,
-                },
+            const response = await axios.post(
+                `${process.env.REACT_APP_SERVER_URL}${endpoint}`,
+                body,
                 {
                     withCredentials: true,
                 }
             );
-            navigate('/student-home');
+            const user = response.data.user;
+            console.log(user);
+
+            // navigate('/student-home');
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = ['email', 'password'];
             handleErrors(errors, propertyOrder);
         }
+    };
+    const handleStudentLogin = (e) => {
+        handleLogin(e, '/students-login', {
+            email: studentEmail,
+            password: studentPassword,
+        });
     };
 
     const handleAlertClose = () => {

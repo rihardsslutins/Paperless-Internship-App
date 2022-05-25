@@ -1,25 +1,29 @@
 import jwt from 'jsonwebtoken';
 
-// check the authentication status
-const requireAuth = (req, res, next) => {
-  const token = req.cookies.jwt;
+const authenticateJWT = async (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      // get token from authorization header
+      token = req.headers.authorization.split(' ')[1];
 
-  // check if jwt exists & is verified
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET_STRING, (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        // redirect to login page
-      } else {
-        console.log(decodedToken);
+      // verify token
+      jwt.verify(token, process.env.JWT_SECRET_STRING, (err, decoded) => {
+        // Get user from token
+        console.log('IM HERE : ' + decoded);
+        req.user = decoded;
         next();
-      }
-    });
-  } else {
-    // redirect to login page
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(401);
+      throw new Error('Not Authorized');
+    }
+  }
+  if (!token) {
+    res.status(401);
+    throw new Error('No Token');
   }
 };
 
-export { requireAuth };
-
-// IF THE DATA THAT'S SUPPOSED TO EXIST DOESN'T EXIST, THE USER SHOULD BE REDIRECTED TO THEIR LAST PAGE
+export { authenticateJWT };

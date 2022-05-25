@@ -19,9 +19,11 @@ const handleErrors = (err) => {
     errors.email = 'E-pasts jau ir reģistrēts';
     return errors;
   }
-  Object.values(err.errors).forEach(({ properties }) => {
-    errors[properties.path] = properties.message;
-  });
+  if (err.message.includes('supervisor validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message;
+    });
+  }
 
   return errors;
 };
