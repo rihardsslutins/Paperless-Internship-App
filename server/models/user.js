@@ -48,10 +48,25 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// authorizes a user (sends them user data by way of token)
+userSchema.statics.login = async function (email, password) {
+  // finds a user with the entered email
+  const user = await this.findOne({ email });
+  if (user) {
+    // compares the entered password with the existing user in the collection with the previously entered email
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    throw Error('Ievadītā parole ir nepareiza');
+  }
+  throw Error('Ievadītais e-pasts ir nepareizs');
+};
+
 const User = mongoose.model('user', userSchema);
 
 const StudentUser = User.discriminator(
-  'Student',
+  'student',
   new Schema({
     school: {
       type: String,
@@ -71,7 +86,7 @@ const StudentUser = User.discriminator(
 );
 
 const TeacherUser = User.discriminator(
-  'Teacher',
+  'teacher',
   new Schema(
     {
       school: {

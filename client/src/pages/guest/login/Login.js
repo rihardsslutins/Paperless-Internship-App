@@ -1,36 +1,24 @@
+//style
+import './Login.css';
+
 // packages
 import axios from 'axios';
 
 // react and hooks
 import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 //organisms
 import LoginForm from '../../../components/organisms/form/LoginForm';
 import Navbar from '../../../components/organisms/navbar/Navbar';
-import Roles from '../../../components/organisms/roles/Roles';
 import Alert from '../../../components/atoms/alerts/Alert';
 
-//style
-import './Login.css';
-
 const Login = () => {
-    const [searchParams] = useSearchParams();
     const [alert, setAlert] = useState('');
     const navigate = useNavigate();
 
-    const [studentEmail, setStudentEmail] = useState('');
-    const [studentPassword, setStudentPassword] = useState('');
-
-    const [activeStudent, setActiveStudent] = useState(
-        searchParams.get('role') === 'student' ? '-active' : ''
-    );
-    const [activeTeacher, setActiveTeacher] = useState(
-        searchParams.get('role') === 'teacher' ? '-active' : ''
-    );
-    const [activeSupervisor, setActiveSupervisor] = useState(
-        searchParams.get('role') === 'supervisor' ? '-active' : ''
-    );
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     // Error handling
     const handleErrors = (errors, propertyOrder) => {
@@ -44,65 +32,37 @@ const Login = () => {
         }
     };
 
-    const handleStudent = () => {
-        setActiveStudent('-active');
-        setActiveTeacher('');
-        setActiveSupervisor('');
-    };
-    const handleTeacher = () => {
-        setActiveTeacher('-active');
-        setActiveStudent('');
-        setActiveSupervisor('');
-    };
-    const handleSupervisor = () => {
-        setActiveSupervisor('-active');
-        setActiveTeacher('');
-        setActiveStudent('');
-    };
+    const changeEmail = (e) => setEmail(e.target.value);
+    const changePassword = (e) => setPassword(e.target.value);
 
-    const changeStudentEmail = (e) => setStudentEmail(e.target.value);
-    const changeStudentPassword = (e) => setStudentPassword(e.target.value);
+    const onChangeArray = [changeEmail, changePassword];
 
-    const onChangeArray = [changeStudentEmail, changeStudentPassword];
-
-    // handleLogin
-    const handleLogin = async (e, endpoint, body) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}${endpoint}`,
-                body,
-                {
-                    withCredentials: true,
-                }
-            );
-            const user = response.data.user;
-            console.log(user);
+        if (!email) {
+            setAlert('Lūdzu ievadi e-pastu');
+        } else if (!password) {
+            setAlert('Lūdzu ievadi paroli');
+        } else {
+            try {
+                const response = await axios.post(
+                    `${process.env.REACT_APP_SERVER_URL}/login`,
+                    { email, password },
+                    { withCredentials: true }
+                );
+                const user = await response.data.user;
 
-            // navigate('/student-home');
-        } catch (err) {
-            const errors = err.response.data.errors;
-            const propertyOrder = ['email', 'password'];
-            handleErrors(errors, propertyOrder);
+                console.log(user);
+            } catch (err) {
+                const errors = err.response.data.errors;
+                const propertyOrder = ['email', 'password'];
+                handleErrors(errors, propertyOrder);
+            }
         }
-    };
-    const handleStudentLogin = (e) => {
-        handleLogin(e, '/students-login', {
-            email: studentEmail,
-            password: studentPassword,
-        });
     };
 
     const handleAlertClose = () => {
         setAlert('');
-    };
-
-    const handleInputReset = () => {
-        // Student reset
-        setStudentEmail('');
-        setStudentPassword('');
-        // Reset alert
-        handleAlertClose();
     };
 
     const formLabels = ['E-pasts:', 'Parole:'];
@@ -113,15 +73,6 @@ const Login = () => {
             <Navbar page="login" />
             <div className="container registration">
                 <h2 className="login-title">Pieslēgties</h2>
-                <Roles
-                    handleStudent={handleStudent}
-                    handleTeacher={handleTeacher}
-                    handleSupervisor={handleSupervisor}
-                    handleInputReset={handleInputReset} // IMPORTANT !!!
-                    activeStudent={activeStudent}
-                    activeTeacher={activeTeacher}
-                    activeSupervisor={activeSupervisor}
-                />
                 {alert && (
                     <Alert
                         type="warning"
@@ -129,17 +80,15 @@ const Login = () => {
                         handleAlertClose={handleAlertClose}
                     />
                 )}
-                {activeStudent && (
-                    <LoginForm
-                        id={formNames}
-                        name={formNames}
-                        label={formLabels}
-                        type={formTypes}
-                        onClick={handleStudentLogin}
-                        onChange={onChangeArray}
-                        buttonText="Pieslēgties"
-                    />
-                )}
+                <LoginForm
+                    id={formNames}
+                    name={formNames}
+                    label={formLabels}
+                    type={formTypes}
+                    onClick={handleLogin}
+                    onChange={onChangeArray}
+                    buttonText="Pieslēgties"
+                />
             </div>
         </div>
     );

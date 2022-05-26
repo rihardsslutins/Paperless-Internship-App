@@ -1,17 +1,23 @@
 import express from 'express';
 
 // controllers
-import { user_create } from '../controllers/userController.js';
+import { user_create, user_login } from '../controllers/userController.js';
 
 // // middleware
 // import { authenticateJWT } from '../middleware/authMiddleware.js';
 
-const studentRouter = express.Router();
+const userRouter = express.Router();
 
-studentRouter.post('/user', user_create);
+// @ route "/user"
+// POST request
+// Register
+userRouter.post('/user', user_create);
 
-// studentRouter.post('/students-login', student_login);
+// @ route "login"
+// POST request
+// Login
+userRouter.post('/login', user_login);
 
 // studentRouter.get('/students-me', authenticateJWT, student_me);
 
-export default studentRouter;
+export default userRouter;

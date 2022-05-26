@@ -65,22 +65,29 @@ const user_create = async (req, res) => {
 };
 
 // handle student login
-const student_login = async (req, res) => {
+const user_login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const student = await Student.login(email, password);
-    const token = createToken(student);
+    const user = await User.login(email, password);
+    const token = createToken(user._id);
     // const user = await Student.findById(student._id);
     // res.status(200).json({ user: user });
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 }).send();
+    res
+      .status(200)
+      .cookie('auth', token, { httpOnly: true, maxAge: maxAge * 1000 })
+      .send();
   } catch (err) {
-    const errors = handleErrors(err);
+    let emptyErrors = {
+      email: '',
+      password: '',
+    };
+    const errors = handleErrors(emptyErrors, err);
     res.status(400).json({ errors });
   }
 };
 
-const student_me = async (req, res) => {
-  await Student.findById(req.user.id);
+const user_me = async (req, res) => {
+  await User.findById(req.user.id);
   // res.json({ message: 'User data display', user: req.user });
   res.status(200).json({
     user: req.user,
@@ -90,4 +97,4 @@ const student_me = async (req, res) => {
   });
 };
 
-export { user_create };
+export { user_create, user_login, user_me };
