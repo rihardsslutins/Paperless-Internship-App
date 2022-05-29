@@ -1,7 +1,23 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+// redux
+import { connect } from "react-redux";
+
 // organism
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 
-const SupervisorHome = () => {
+const SupervisorHome = (props) => {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!props.user.role) {
+            navigate(`../login`)
+        }
+        if (!props.user.role === 'supervisor') {
+            navigate(`../${props.user.role}-home`)
+        }
+    })
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
@@ -19,4 +35,8 @@ const SupervisorHome = () => {
     );
 }
  
-export default SupervisorHome;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(SupervisorHome);

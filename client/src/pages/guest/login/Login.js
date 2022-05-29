@@ -1,11 +1,14 @@
 //style
 import './Login.css';
 
+// redux
+import { connect } from 'react-redux';
+
 // packages
 import axios from 'axios';
 
 // react and hooks
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 //organisms
@@ -13,7 +16,11 @@ import LoginForm from '../../../components/organisms/form/LoginForm';
 import Navbar from '../../../components/organisms/navbar/Navbar';
 import Alert from '../../../components/atoms/alerts/Alert';
 
-const Login = () => {
+const Login = (props) => {
+    // forces a refresh in order to redirect
+    const refreshPage = () => {
+        window.location.reload();
+    }
     const [alert, setAlert] = useState('');
     const navigate = useNavigate();
 
@@ -45,14 +52,15 @@ const Login = () => {
             setAlert('Lūdzu ievadi paroli');
         } else {
             try {
-                const response = await axios.post(
-                    `${process.env.REACT_APP_SERVER_URL}/login`,
-                    { email, password },
-                    { withCredentials: true }
-                );
-                const user = await response.data.user;
-
-                console.log(user);
+                await axios
+                    .post(
+                        `${process.env.REACT_APP_SERVER_URL}/login`,
+                        { email, password },
+                        { withCredentials: true }
+                    )
+                    .then(() => {
+                        refreshPage()
+                    });
             } catch (err) {
                 const errors = err.response.data.errors;
                 const propertyOrder = ['email', 'password'];
@@ -68,6 +76,12 @@ const Login = () => {
     const formLabels = ['E-pasts:', 'Parole:'];
     const formNames = ['email', 'password'];
     const formTypes = ['email', 'password'];
+    useEffect(() => {
+        if (props.user.role) {
+            navigate(`../${props.user.role}-home`);
+        }
+    }, [navigate, props.user.role]);
+
     return (
         <div>
             <Navbar page="login" />
@@ -94,4 +108,8 @@ const Login = () => {
     );
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(Login);

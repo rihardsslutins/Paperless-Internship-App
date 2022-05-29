@@ -4,7 +4,23 @@ import "./TeacherInvites.css";
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import Invite from "../../../components/organisms/invite/Invite";
 
-const TeacherInvites = () => {
+// redux
+import { connect } from "react-redux";
+
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+const TeacherInvites = (props) => {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!props.user.role) {
+            navigate(`../login`)
+        }
+        if (!props.user.role === 'teacher') {
+            navigate(`../${props.user.role}-home`)
+        }
+    })
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
@@ -46,4 +62,8 @@ const TeacherInvites = () => {
     );
 }
  
-export default TeacherInvites;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(TeacherInvites);

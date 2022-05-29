@@ -1,12 +1,28 @@
 // style
 import "./StudentJournalCreate.css";
+
+// redux
+import { connect } from "react-redux";
+
 // organism
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import JournalForm from "../../../components/organisms/form/JournalForm";
 // hooks
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const StudentJournalCreate = () => {
+const StudentJournalCreate = (props) => {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!props.user.role) {
+            navigate(`../login`)
+        }
+        if (!props.user.role === 'student') {
+            navigate(`../${props.user.role}-home`)
+        }
+    })
+    
     
     // SIDEBAR
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
@@ -55,4 +71,8 @@ const StudentJournalCreate = () => {
     );
 }
  
-export default StudentJournalCreate;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(StudentJournalCreate);

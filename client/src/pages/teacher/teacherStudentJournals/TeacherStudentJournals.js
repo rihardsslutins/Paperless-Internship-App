@@ -4,9 +4,23 @@ import "./TeacherStudentJournals.css";
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import CardGrid from "../../../components/organisms/cardGrid/CardGrid";
 
-import { useParams } from "react-router-dom";
+// redux
+import { connect } from "react-redux";
 
-const TeacherStudentJournals = () => {
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+const TeacherStudentJournals = (props) => {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!props.user.role) {
+            navigate(`../login`)
+        }
+        if (!props.user.role === 'teacher') {
+            navigate(`../${props.user.role}-home`)
+        }
+    })
 
     const { id } = useParams();
 
@@ -57,4 +71,8 @@ const TeacherStudentJournals = () => {
     );
 }
  
-export default TeacherStudentJournals;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(TeacherStudentJournals);

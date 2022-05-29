@@ -6,6 +6,9 @@ import { handleErrors, createToken } from './user.services.js';
 
 const maxAge = 3 * 24 * 60 * 60; // the amount of time is measured in seconds
 
+// @desc handle user registration
+// @route POST /user
+// @access Public
 const user_create = async (req, res) => {
   // grabs the role with which the user is registering with from the role request header
   const role = req.headers.role;
@@ -38,7 +41,7 @@ const user_create = async (req, res) => {
     // server sends a response -> status code of "CREATED" and a cookie that contains the JWT under the 'auth' name
     res
       .status(201)
-      .cookie('auth', token, { httpOnly: true, maxAge: maxAge * 1000 })
+      .cookie('auth', token, { httpOnly: false, maxAge: maxAge * 1000 })
       .send();
   } catch (err) {
     let emptyErrors = '';
@@ -59,12 +62,13 @@ const user_create = async (req, res) => {
         })
       : '';
     const errors = handleErrors(emptyErrors, err, role);
-    console.log(err);
     res.status(400).json({ errors });
   }
 };
 
-// handle student login
+// @desc handle user login
+// @route POST /login
+// @access Public
 const user_login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -74,7 +78,7 @@ const user_login = async (req, res) => {
     // res.status(200).json({ user: user });
     res
       .status(200)
-      .cookie('auth', token, { httpOnly: true, maxAge: maxAge * 1000 })
+      .cookie('auth', token, { httpOnly: false, maxAge: maxAge * 1000 })
       .send();
   } catch (err) {
     let emptyErrors = {
@@ -86,15 +90,16 @@ const user_login = async (req, res) => {
   }
 };
 
-const user_me = async (req, res) => {
-  await User.findById(req.user.id);
+// @desc Get user data
+// @route GET /me
+// @access Private
+const get_me = async (req, res) => {
+  const { _id, name, surname, gender, phone, school, field, company, internships, email, password, role } =
+    await User.findById(req.user.id);
+  res
+    .status(200)
+    .json({ _id, name, surname, gender, phone, school, field, company, internships, email, password, role });
   // res.json({ message: 'User data display', user: req.user });
-  res.status(200).json({
-    user: req.user,
-    // id: id,
-    // name: name,
-    // email: email,
-  });
 };
 
-export { user_create, user_login, user_me };
+export { user_create, user_login, get_me };

@@ -1,16 +1,30 @@
-// packages
-
 // style
 import './StudentJournals.css';
+
+// redux
+import { connect } from 'react-redux';
+
 // atoms
 import PageButton2 from '../../../components/atoms/button/PageButton2';
 // organisms
 import Sidebar from '../../../components/organisms/navbar/Sidebar';
 import CardGrid from '../../../components/organisms/cardGrid/CardGrid';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const StudentJournals = () => {
+const StudentJournals = (props) => {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!props.user.role) {
+            navigate(`../login`)
+        }
+        if (!props.user.role === 'student') {
+            navigate(`../${props.user.role}-home`)
+        }
+    })
+
     // Sidebar
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
     const imgAlt = [
@@ -84,4 +98,8 @@ const StudentJournals = () => {
     );
 };
 
-export default StudentJournals;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(StudentJournals);

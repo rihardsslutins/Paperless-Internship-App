@@ -72,15 +72,7 @@ const StudentUser = User.discriminator(
       type: String,
       required: [true, 'Lūdzu ievadi skolu'],
     },
-    internship: [
-      [
-        {
-          date: Date,
-          taskDescription: String,
-          grade: Number,
-        },
-      ],
-    ],
+    internships: [{ type: String }],
   }),
   options,
 );
