@@ -8,13 +8,28 @@ import Roles from '../../../components/organisms/roles/Roles';
 import RegistrationForm from '../../../components/organisms/form/RegistrationForm';
 // hooks
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+// packages
 import axios from 'axios';
+// redux
+import { connect } from 'react-redux';
 
-const Register = () => {
+const Register = (props) => {
     const [searchParams] = useSearchParams();
     const [alert, setAlert] = useState('');
-    const navigate = useNavigate();
+    
+    // forces a refresh in order to redirect
+    const refreshPage = () => {
+        window.location.reload();
+    }
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (props.user.role) {
+            navigate(`../${props.user.role}-home`);
+        }
+    }, [navigate, props.user.role]);
 
     // ROLES
     const [activeStudent, setActiveStudent] = useState(
@@ -121,7 +136,7 @@ const Register = () => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/students`,
+                `${process.env.REACT_APP_SERVER_URL}/user`,
                 {
                     name: studentName,
                     surname: studentSurname,
@@ -132,10 +147,14 @@ const Register = () => {
                     password: studentPassword,
                 },
                 {
+                    headers: {
+                        role: 'student',
+                    },
                     withCredentials: true,
                 }
-            );
-            navigate('/student-home');
+            ).then(() => {
+                refreshPage()
+            });
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -217,7 +236,7 @@ const Register = () => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/teachers`,
+                `${process.env.REACT_APP_SERVER_URL}/user`,
                 {
                     name: teacherName,
                     surname: teacherSurname,
@@ -228,10 +247,14 @@ const Register = () => {
                     password: teacherPassword,
                 },
                 {
+                    headers: {
+                        role: 'teacher',
+                    },
                     withCredentials: true,
                 }
-            );
-            navigate('/teacher-home');
+            ).then(() => {
+                refreshPage()
+            });
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -321,7 +344,7 @@ const Register = () => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/supervisors`,
+                `${process.env.REACT_APP_SERVER_URL}/user`,
                 {
                     name: supervisorName,
                     surname: supervisorSurname,
@@ -333,10 +356,14 @@ const Register = () => {
                     password: supervisorPassword,
                 },
                 {
+                    headers: {
+                        role: 'supervisor',
+                    },
                     withCredentials: true,
                 }
-            );
-            navigate('/supervisor-home');
+            ).then(() => {
+                refreshPage()
+            });
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = [
@@ -452,4 +479,8 @@ const Register = () => {
     );
 };
 
-export default Register;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(Register);

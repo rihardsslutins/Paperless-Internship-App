@@ -1,25 +1,27 @@
+// packages
 import jwt from 'jsonwebtoken';
 
-// check the authentication status
-const requireAuth = (req, res, next) => {
-  const token = req.cookies.jwt;
+const protect = async (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    // get token from authorization header
+    token = req.headers.authorization.split(' ')[1];
 
-  // check if jwt exists & is verified
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET_STRING, (err, decodedToken) => {
+    // verify token
+    jwt.verify(token, process.env.JWT_SECRET_STRING, (err, decoded) => {
+      // checks if token is absolute
       if (err) {
-        console.log(err.message);
-        // redirect to login page
-      } else {
-        console.log(decodedToken);
-        next();
+        res.status(401).json({ error: 'JWT nav oriģināls' });
       }
+      // Get user from token
+      req.user = decoded;
+      next();
     });
-  } else {
-    // redirect to login page
+  }
+  // checks if token exists (can only exist if the user has registered or logged in)
+  if (!token) {
+    res.status(401).json({ error: 'Lūdzu pieslēdzies vai reģistrējies' });
   }
 };
 
-export { requireAuth };
-
-// IF THE DATA THAT'S SUPPOSED TO EXIST DOESN'T EXIST, THE USER SHOULD BE REDIRECTED TO THEIR LAST PAGE
+export { protect };

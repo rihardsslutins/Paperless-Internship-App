@@ -3,12 +3,9 @@ import mongoose from 'mongoose';
 import 'dotenv/config';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { requireAuth } from './middleware/authMiddleware.js';
 
 // routers
-import studentRouter from './routes/studentRoutes.js';
-import teacherRouter from './routes/teacherRoutes.js';
-import supervisorRouter from './routes/supervisorRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // creates an express app
 const app = express();
@@ -48,6 +45,4 @@ mongoose
   });
 
 // user routes
-app.use(studentRouter);
-app.use(teacherRouter);
-app.use(supervisorRouter);
+app.use(userRoutes);
