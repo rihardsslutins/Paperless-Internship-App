@@ -36,3 +36,24 @@
 .supervisor-student-journal .table td:not(:nth-child(3)){
     text-align: center;
 }
+.supervisor-student-journal .table tbody tr td {
+    cursor: pointer;
+}
+
+/* Form */
+.supervisor-journal-form {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+.supervisor-journal-form-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.supervisor-journal-form-buttons button {
+    width: 100%;
+}
+.supervisor-student-journal .alert-box {
+    margin-bottom: 20px;
+}

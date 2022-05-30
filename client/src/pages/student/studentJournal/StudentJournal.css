@@ -3,6 +3,9 @@
     grid-template-columns: auto 1fr auto;
     margin-bottom: 40px;
 }
+.student-journal-header button{
+    width: fit-content;
+}
 .student-journal-info {
     display: flex;
     flex-direction: column;

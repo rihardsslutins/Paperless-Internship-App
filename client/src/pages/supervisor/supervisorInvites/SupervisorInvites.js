@@ -1,16 +1,16 @@
 // style
-import "./TeacherInvites.css";
+import "./SupervisorInvites.css";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import Invite from "../../../components/organisms/invite/Invite";
 
-const TeacherInvites = () => {
+const SupervisorInvites = () => {
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
     const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
-    const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
+    const link = ['supervisor-home', 'supervisor-journal', 'supervisor-mail', 'supervisor-invites', 'supervisor-settings', 'help'];
 
     const handleAccept = () => {
         console.log('accept invite');
@@ -32,21 +32,21 @@ const TeacherInvites = () => {
             id: "rgt56e4fvbhijklmnouy78",
             title: "Prakses dienasgrāmata",
             from: "Kārlis Krūmiņš",
-            school: "Saldus tehnikums",
-            companyName: "AirBaltic"
+            school: "Ventspils tehnikums",
+            companyName: "Accenture"
         }
     ]
 
     return (
         <>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="teacher-invites" />
-            <div className="dashboard-container teacher-invites">
+            <div className="dashboard-container supervisor-invites">
                 <h1>Uzaicinājumi</h1>
                 <Invite invites={invites} handleAccept={handleAccept} handleReject={handleReject} />
-                {!invites.length && <h2 className="teacher-invites-0">Nav neviena uzaicinājuma</h2> }
+                {!invites.length && <h2 className="supervisor-invites-0">Nav neviena uzaicinājuma</h2> }
             </div>
         </>
     );
 }
  
-export default TeacherInvites;
+export default SupervisorInvites;

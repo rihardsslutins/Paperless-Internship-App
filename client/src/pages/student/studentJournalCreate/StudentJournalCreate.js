@@ -1,9 +1,11 @@
 // style
 import "./StudentJournalCreate.css";
+// atoms
+import Alert from "../../../components/atoms/alerts/Alert";
 // organism
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import JournalForm from "../../../components/organisms/form/JournalForm";
-// hooks
+
 import { useState } from "react";
 
 const StudentJournalCreate = () => {
@@ -18,21 +20,35 @@ const StudentJournalCreate = () => {
     const [companyName, setCompnayName] = useState('');
     const [overseeingTeacher, setOverseeingTeacher] = useState('');
     const [mentor, setMentor] = useState('');
+    const [startDate, setStartDate] = useState('');
 
-    const changeCompanyName = (e) => setCompnayName(e.target.value);
-    const changeOverseeingTeacher = (e) => setOverseeingTeacher(e.target.value);
-    const changeMentor = (e) => setMentor(e.target.value);
+    const changeCompanyName = e => setCompnayName(e.target.value);
+    const changeOverseeingTeacher = e => setOverseeingTeacher(e.target.value);
+    const changeMentor = e => setMentor(e.target.value);
+    const changeStartDate = e => setStartDate(e.target.value);
 
-    const onChangeArray = [changeCompanyName, changeOverseeingTeacher, changeMentor];
+    const onChangeArray = [changeCompanyName, changeOverseeingTeacher, changeMentor, changeStartDate];
 
-    const formLabels = ['Uzņēmuma nosaukums:', 'Prakses vadītājs (skola):', 'Prakses vadītājs (uzņēmums):'];
-    const formNames = ['companyName', 'overseeingTeacher', 'mentor'];
-    const formTypes = ['text', 'email', 'email'];
+    const formLabels = ['Uzņēmuma nosaukums:', 'Prakses vadītājs (skola):', 'Prakses vadītājs (uzņēmums):', 'Prakses sākums:'];
+    const formNames = ['companyName', 'overseeingTeacher', 'mentor', 'startDate'];
+    const formTypes = ['text', 'email', 'email', 'date'];
+    const formPlaceholders = ['', 'E-pasts', 'E-pasts', ''];
 
     const handleCreateJournal = (e) => {
         e.preventDefault();
-        console.log(companyName, overseeingTeacher, mentor);
+        if (companyName.length && overseeingTeacher.length && mentor.length && startDate.length) {
+            console.log(companyName, overseeingTeacher, mentor, startDate);
+            setAlert('');
+        } else {
+            setAlert('Aizpildiet visus laukus!');
+        }
     }
+
+    // Alert
+    const [alert, setAlert] = useState('');
+    const handleAlertClose = () => {
+        setAlert('');
+    };
 
     return (
         <>
@@ -40,11 +56,19 @@ const StudentJournalCreate = () => {
             <div className="dashboard-container">
                 <div className="student-journal-create">
                     <h1>Dienasgrāmatas izveide</h1>
+                    {alert && 
+                        <Alert 
+                            type='warning'
+                            text={alert}
+                            handleAlertClose={handleAlertClose}
+                        />
+                    }
                     <JournalForm
                         id={formNames}
                         name={formNames}
                         label={formLabels}
                         type={formTypes}
+                        placeholder={formPlaceholders}
                         onClick={handleCreateJournal}
                         onChange={onChangeArray}
                         buttonText="Izveidot"
