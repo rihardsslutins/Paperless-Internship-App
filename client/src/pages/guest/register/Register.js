@@ -100,13 +100,13 @@ const Register = (props) => {
         changeStudentConfirmPassword,
     ];
     const formLabelsStudent = [
-        'Vārds',
-        'Uzvārds',
-        'Skola',
-        'E-pasts',
-        'Tālrunis',
-        'Parole',
-        'Parole atkārtoti',
+        'Vārds:',
+        'Uzvārds:',
+        'Skola:',
+        'E-pasts:',
+        'Tālrunis:',
+        'Parole:',
+        'Parole atkārtoti:',
     ];
     const formNamesStudent = [
         'name',
@@ -187,8 +187,7 @@ const Register = (props) => {
     const changeTeacherEmail = (e) => setTeacherEmail(e.target.value);
     const changeTeacherPhone = (e) => setTeacherPhone(e.target.value);
     const changeTeacherPassword = (e) => setTeacherPassword(e.target.value);
-    const changeTeacherConfirmPassword = (e) =>
-        setTeacherConfirmPassword(e.target.value);
+    const changeTeacherConfirmPassword = (e) => setTeacherConfirmPassword(e.target.value);
 
     const onChangeTeacherArray = [
         changeTeacherName,
@@ -200,13 +199,13 @@ const Register = (props) => {
         changeTeacherConfirmPassword,
     ];
     const formLabelsTeacher = [
-        'Vārds',
-        'Uzvārds',
-        'Skola',
-        'E-pasts',
-        'Tālrunis',
-        'Parole',
-        'Parole atkārtoti',
+        'Vārds:',
+        'Uzvārds:',
+        'Skola:',
+        'E-pasts:',
+        'Tālrunis:',
+        'Parole:',
+        'Parole atkārtoti:',
     ];
     const formNamesTeacher = [
         'teacherName',
@@ -274,53 +273,50 @@ const Register = (props) => {
     const [supervisorName, setSupervisorName] = useState('');
     const [supervisorSurname, setSupervisorSurname] = useState('');
     const [supervisorPhone, setSupervisorPhone] = useState('');
-    const [supervisorGender, setSupervisorGender] = useState('');
     const [supervisorEmail, setSupervisorEmail] = useState('');
-    const [supervisorField, setSupervisorField] = useState('');
+    const [supervisorGender, setSupervisorGender] = useState('');
     const [supervisorCompany, setSupervisorCompany] = useState('');
+    const [supervisorField, setSupervisorField] = useState('');
     const [supervisorPassword, setSupervisorPassword] = useState('');
-    const [supervisorConfirmPassword, setSupervisorConfirmPassword] =
-        useState('');
+    const [supervisorConfirmPassword, setSupervisorConfirmPassword] = useState('');
 
     const changeSupervisorName = (e) => setSupervisorName(e.target.value);
     const changeSupervisorSurname = (e) => setSupervisorSurname(e.target.value);
-    const changeSupervisorGender = (e) => setSupervisorGender(e.target.value);
     const changeSupervisorPhone = (e) => setSupervisorPhone(e.target.value);
-    const changeSupervisorField = (e) => setSupervisorField(e.target.value);
-    const changeSupervisorCompany = (e) => setSupervisorCompany(e.target.value);
     const changeSupervisorEmail = (e) => setSupervisorEmail(e.target.value);
-    const changeSupervisorPassword = (e) =>
-        setSupervisorPassword(e.target.value);
-    const changeSupervisorConfirmPassword = (e) =>
-        setSupervisorConfirmPassword(e.target.value);
+    const changeSupervisorGender = (e) => setSupervisorGender(e.target.value);
+    const changeSupervisorCompany = (e) => setSupervisorCompany(e.target.value);
+    const changeSupervisorField = (e) => setSupervisorField(e.target.value);
+    const changeSupervisorPassword = (e) => setSupervisorPassword(e.target.value);
+    const changeSupervisorConfirmPassword = (e) => setSupervisorConfirmPassword(e.target.value);
 
     const onChangeSupervisorArray = [
         changeSupervisorName,
         changeSupervisorSurname,
         changeSupervisorPhone,
         changeSupervisorEmail,
-        changeSupervisorField,
         changeSupervisorCompany,
+        changeSupervisorField,
         changeSupervisorPassword,
         changeSupervisorConfirmPassword,
     ];
     const formLabelsSupervisor = [
-        'Vārds',
-        'Uzvārds',
-        'Tālrunis',
-        'E-pasts',
-        'Nozare',
-        'Uzņēmuma nosaukums',
-        'Parole',
-        'Apstiprināt paroli',
+        'Vārds:',
+        'Uzvārds:',
+        'Tālrunis:',
+        'E-pasts:',
+        'Uzņēmuma nosaukums:',
+        'Nozare:',
+        'Parole:',
+        'Apstiprināt paroli:',
     ];
     const formNamesSupervisor = [
         'supervisorName',
         'supervisorSurname',
         'supervisorPhone',
         'supervisorEmail',
-        'supervisorField',
         'supervisorCompany',
+        'supervisorField',
         'supervisorPassword',
         'supervisorConfirmPassword',
     ];
@@ -472,6 +468,7 @@ const Register = (props) => {
                         radioOnClick={changeSupervisorGender}
                         onClick={handleSupervisorRegistration}
                         buttonText="Reģistrēties kā prakses vadītājs"
+                        supervisor=' supervisor'
                     />
                 )}
             </div>

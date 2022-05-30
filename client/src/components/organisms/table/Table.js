@@ -1,15 +1,17 @@
 //style
-import { useNavigate } from "react-router-dom";
 import "./Table.css";
+
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Table = ({
     headerCells,
     data,
     link,
-    handleEdit
+    setEditRecord
 }) => {
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     return (
         <div className="table-container">
@@ -42,7 +44,12 @@ const Table = ({
                         }
                         {/* Table to display journal records */}
                         {records.recordId &&
-                            <tr onClick={handleEdit}>
+                            <tr onClick={(
+                                location.pathname.split("/")[1] === 'supervisor-student-journal' ?
+                                    () => setEditRecord([records.recordId, records.recordDate, records.grade])
+                                :
+                                    undefined
+                                )}>
                                 {Object.values(records).map(record => 
                                     <td>{record}</td>
                                 )}

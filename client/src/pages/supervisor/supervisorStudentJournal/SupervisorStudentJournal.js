@@ -6,6 +6,11 @@ import { connect } from "react-redux";
 
 // atoms
 import PageButton2 from "../../../components/atoms/button/PageButton2";
+import PageButton from "../../../components/atoms/button/PageButton";
+import DangerButton2 from "../../../components/atoms/button/DangerButton2";
+import Alert from "../../../components/atoms/alerts/Alert";
+// molecules
+import InputGroup from "../../../components/molecules/labeledInput/InputGroup";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import Table from "../../../components/organisms/table/Table";
@@ -83,6 +88,30 @@ const SupervisorStudentJournal = (props) => {
         });
     }, [id]);
 
+    // Add grade
+    const [editRcord, setEditRecord] = useState();
+    const [grade, setGrade] = useState('');
+    const [alert, setAlert] = useState('');
+    
+    const handleAddGrade = () => {
+        if (grade.length) {
+            console.log(`Ieraksta id: ${editRcord[0]}, datums: ${editRcord[1]}, atzīme: ${grade}`);
+            setEditRecord();
+            setGrade('');
+            setAlert('');
+        } else {
+            setAlert('Atzīmes lauks nav aizpildīts');
+        }
+    }
+    const handleReset = () => {
+        setEditRecord();
+        setGrade('');
+        handleAlertClose();
+    }
+    const handleAlertClose = () => {
+        setAlert('');
+    };
+
     return (
         <div>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="supervisor-journal" />
@@ -97,7 +126,27 @@ const SupervisorStudentJournal = (props) => {
                             <p>Praktikants: {journalInfo.student}</p>
                         </div>
                     </div>
-                    <Table headerCells={headerCells} data={journal} />
+                    <Table headerCells={headerCells} data={journal} setEditRecord={setEditRecord} />
+                    {editRcord && <div className="supervisor-journal-form">
+                        {alert && <Alert text={alert} type='warning' handleAlertClose={handleAlertClose} />}
+                        <InputGroup 
+                            onChange={e => setGrade(e.target.value)}
+                            type='number'
+                            name='grade'
+                            label={`Atzīme ${editRcord[1]} ierakstam:`}
+                            placeholder={editRcord[2] ? `Pašreizējā atzīme ${editRcord[2]}` : ''}
+                        />
+                        <div className="supervisor-journal-form-buttons">
+                            <DangerButton2 
+                                text='Atcelt' 
+                                onClick={handleReset} 
+                            />
+                            <PageButton 
+                                onClick={handleAddGrade}
+                                text='Ielikt atzīmi'
+                            />
+                        </div>
+                    </div>}
                 </div>}
                 {!journalInfo.journalId &&
                     <h2>Šāda dienasgrāmata nepastāv</h2>

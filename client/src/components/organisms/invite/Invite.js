@@ -12,7 +12,7 @@ const Invite = ({
         invites.map(invite => 
             <div className="invite-box" key={invite.id}>         
                     <h2>{invite.title}</h2>
-                    <p>{invite.from} uzaicināja Jūs pievienoties savai deinasgrāmatai, uzņēmumā {invite.companyName}.</p>
+                    <p>{invite.from} no {invite.school} uzaicināja Jūs pievienoties savai deinasgrāmatai, uzņēmumā {invite.companyName}.</p>
                     <div className="invite-button-group">
                         <PageButton text="Apstiprināt" onClick={handleAccept} />
                         <DangerButton2 text="Noraidīt" onClick={handleReject} />

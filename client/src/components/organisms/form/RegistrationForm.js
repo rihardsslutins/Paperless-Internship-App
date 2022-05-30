@@ -15,6 +15,7 @@ const RegistrationForm = ({
     onClick,
     buttonText,
     radioOnClick,
+    supervisor
 }) => {
 
     const radioLabel = ['male', 'female'];
@@ -24,7 +25,7 @@ const RegistrationForm = ({
     const radioText = ['Vīrietis', 'Sieviete'];
     let inputArray = [];
     for (let i = 0; i < name.length; i++) {
-        if(i === 3) {
+        if(i === 4) {
             inputArray.push(
                 <InputRadioGroup radioGroupLabel="Dzimums:" radioLabel={radioLabel} name={radioName} id={radioId} text={radioText} radioOnClick={radioOnClick} radioValue={radioValue} key={[i + 'dzimums']} />
             );
@@ -32,7 +33,6 @@ const RegistrationForm = ({
         inputArray.push(
             <InputGroup
                 id={id[i]}
-                customClass={label[i] === 'Amats:' ? '-wide' : ''}
                 onChange={onChange[i]}
                 type={type[i]}
                 name={name[i]}
@@ -45,7 +45,7 @@ const RegistrationForm = ({
     return (
         <div className="registration-form">
             <form>
-                <div className="registration-form-grid">
+                <div className={`registration-form-grid${supervisor ? supervisor : ''}`}>
                     {inputArray.map((element) => element)}
                 </div>
                 <PageButton onClick={onClick} text={buttonText} />

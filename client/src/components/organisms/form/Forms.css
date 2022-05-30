@@ -14,15 +14,12 @@
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 50px;
 }
-.input-group-wide {
+.registration-form-grid.supervisor div:nth-child(7) {
     grid-column: 1 / 3;
 }
 @media only screen and (max-width: 800px) {
     .registration-form-grid {
         grid-template-columns: 1fr;
-    }
-    .input-group-wide {
-        grid-column: 1;
     }
 }
 
@@ -31,7 +28,7 @@
     display: grid;
     grid-column-gap: 50px;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 20px auto 0 auto;
 }
 .journal-form button {
     min-width: 100%;
@@ -76,20 +73,36 @@
     .journal-record-form .input-group:nth-child(3) {
         grid-column: 1 / span 2;
     }
-    /* .journal-record-form {
-        grid-template-columns: 1fr;
-    } */
-    /* .journal-record-form .textarea-group {
-        grid-column: 1;
-        grid-row: 3;
+}
+
+/* Update profile form */
+.edit-profile-form {
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}
+.update-profile-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 50px;
+}
+.change-password-form-grid {
+    display: flex;
+    flex-direction: column;
+}
+.edit-profile-buttons {
+    grid-column: 1 / span 2;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+@media only screen and (max-width: 700px) {
+    .update-profile-form-grid {
+        display: flex;
+        flex-direction: column;
     }
-    .journal-record-form .input-group:nth-child(1) {
-        grid-row: 1;
+    .edit-profile-buttons {
+        gap: 10px;
     }
-    .journal-record-form .input-group:nth-child(2) {
-        grid-row: 3;
-    }
-    .journal-record-form .textarea-group {
-        grid-row: 2;
-    } */
 }

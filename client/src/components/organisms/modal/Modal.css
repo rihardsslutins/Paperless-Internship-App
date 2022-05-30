@@ -1,6 +1,7 @@
 /* All modals */
 .modal,
-.journal-modal {
+.journal-modal,
+.delete-profile-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -42,25 +43,30 @@
     }
 }
 
-/* Journal modal */
-.journal-modal .modal-body h3 {
+/* Journal modal and Delete profile modal */
+.journal-modal .modal-body h3,
+.delete-profile-modal .modal-body h3{
     color: var(--danger);
     text-align: center;
     margin-bottom: 20px;
 }
-.journal-modal .input-group {
+.journal-modal .input-group,
+.delete-profile-modal .input-group{
     max-width: fit-content;
     margin: 20px auto 0 auto;
 }
-.journal-modal .input-field {
+.journal-modal .input-field,
+.delete-profile-modal .input-field {
     border-color: var(--secondary-color);
 }
-.journal-modal .modal-footer {
+.journal-modal .modal-footer,
+.delete-profile-modal .modal-footer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 50px;
 }
-.journal-modal .modal-footer button {
+.journal-modal .modal-footer button,
+.delete-profile-modal .modal-footer button{
     display: block;
     width: 100%;
 }

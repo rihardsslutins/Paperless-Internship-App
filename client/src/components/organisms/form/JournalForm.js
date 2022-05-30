@@ -11,30 +11,29 @@ const JournalForm = ({
     type,
     name,
     label,
+    placeholder,
     onClick,
-    buttonText,
+    buttonText
 }) => {
     let inputArray = [];
     for (let i = 0; i < name.length; i++) {
         inputArray.push(
             <InputGroup
                 id={id[i]}
-                customClass={''}
                 onChange={onChange[i]}
                 type={type[i]}
                 name={name[i]}
                 label={label[i]}
+                placeholder={placeholder[i]}
                 key={[i]}
             />
         );
     }
     return (
-        <div className="journal-form">
-            <form>
-                {inputArray.map((element) => element)}
-                <PageButton onClick={onClick} text={buttonText} />
-            </form>
-        </div>
+        <form className="journal-form">
+            {inputArray.map((element) => element)}
+            <PageButton onClick={onClick} text={buttonText} />
+        </form>
     );
 };
 

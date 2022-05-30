@@ -19,7 +19,6 @@ const JournalModal = ({
 
     const [alert, setAlert] = useState('');
     const [companyNameCheck, setCompanyNameCheck] = useState('');
-    const changeCompanyNameCheck = (e) => setCompanyNameCheck(e.target.value);
 
     const handleEndJournal = () => {
         if (companyName === companyNameCheck) {
@@ -47,15 +46,14 @@ const JournalModal = ({
                             <img src={closeBlack} alt="close modal" onClick={handleModel} />
                         </div>
                         <div className="modal-body">
-                            <h3>Ja noslēgsiet dienasgrāmatu, tad šajā dienasgrāmatā vairs nēbūs iespējams pievienot jaunus ierakstus, kā arī prakses vadītājs nevarēs Jums ielikt atzīmes!!!</h3>
+                            <h3>Ja noslēgsiet dienasgrāmatu, tad šajā dienasgrāmatā vairs nēbūs iespējams pievienot jaunus ierakstus, kā arī prakses vadītājs nevarēs Jums ielikt atzīmes!</h3>
                             {alert && <Alert type="warning" text={alert} handleAlertClose={handleAlertClose} />}
                             <LabeledInput
-                                id="companyName"
-                                name="companyName"
-                                label="Ievadiet uzņēmuma nosaukumu, lai noslēgtu praksi:"
-                                type="text"
-                                customClass=""
-                                onChange={changeCompanyNameCheck}
+                                id='companyName'
+                                name='companyName'
+                                label='Ievadiet uzņēmuma nosaukumu, lai noslēgtu praksi:'
+                                type='text'
+                                onChange={e => setCompanyNameCheck(e.target.value)}
                             />
                         </div>
                         <div className="modal-footer">

@@ -5,12 +5,12 @@ import "./InputGroup.css";
 import Input from '../../atoms/input/Input';
 import Label from '../../atoms/label/Label';
 
-const LabeledInput = ({ 
+const InputGroupValue = ({ 
     id, 
     onChange, 
     type, 
     name,
-    placeholder, 
+    value,
     label
 }) => {
     return (
@@ -20,11 +20,11 @@ const LabeledInput = ({
                 id={id}
                 type={type}
                 name={name}
-                placeholder={placeholder}
+                value={value}
                 onChange={onChange}
             />
         </div>
     );
 };
 
-export default LabeledInput;
+export default InputGroupValue;
