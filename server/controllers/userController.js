@@ -94,12 +94,15 @@ const user_login = async (req, res) => {
 // @route GET /me
 // @access Private
 const get_me = async (req, res) => {
-  const { _id, name, surname, gender, phone, school, field, company, internships, email, password, role } =
+  try {
+    const { id, name, surname, gender, phone, school, field, company, internships, email, password, role } =
     await User.findById(req.user.id);
   res
     .status(200)
-    .json({ _id, name, surname, gender, phone, school, field, company, internships, email, password, role });
-  // res.json({ message: 'User data display', user: req.user });
+    .json({ id, name, surname, gender, phone, school, field, company, internships, email, password, role });
+  } catch (err) {
+    console.log(err.message)
+  }
 };
 
 export { user_create, user_login, get_me };

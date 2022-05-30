@@ -7,23 +7,9 @@ import Sidebar from "../../../components/organisms/navbar/Sidebar";
 // import SelectInput from "../../../components/atoms/input/SelectInput";
 import Table from "../../../components/organisms/table/Table";
 
-// redux
-import { connect } from "react-redux";
+import { useState } from "react";
 
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-const TeacherJournal = (props) => {
-    const navigate = useNavigate()
-    
-    useEffect(() => {
-        if (!props.user.role) {
-            navigate(`../login`)
-        }
-        if (!props.user.role === 'teacher') {
-            navigate(`../${props.user.role}-home`)
-        }
-    })
+const TeacherJournal = () => {
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
@@ -96,8 +82,4 @@ const TeacherJournal = (props) => {
     );
 }
 
-const mapStateToProps = state => ({
-    user: state.user
-});
-
-export default connect(mapStateToProps)(TeacherJournal);
+export default TeacherJournal;

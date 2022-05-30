@@ -8,6 +8,7 @@ import close from "../../../assets/close.svg";
 import SidebarItems from "../../molecules/sidebarItems/SidebarItems";
 
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 const Sidebar = ({
     icon,
@@ -40,6 +41,11 @@ const Sidebar = ({
         );
     }
 
+    const handleLogout = () => {
+        Cookies.remove("auth");
+        window.location.reload();
+    }
+
     return (
         <div className={`sidebar${expanded}`}>
             <div className="sidebar-header">
@@ -54,7 +60,7 @@ const Sidebar = ({
                 {sidebarItemArray.map(e => e)}
             </div>
             <div className="sidebar-footer">
-                <SidebarItems icon="logout" imgAlt="logout" title="Iziet" active="" />
+                <SidebarItems icon="logout" imgAlt="logout" title="Iziet" active="" link="login" onClick={handleLogout} />
             </div>
         </div>
     );

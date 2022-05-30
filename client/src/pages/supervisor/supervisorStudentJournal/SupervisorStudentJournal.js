@@ -1,9 +1,5 @@
 // style
 import "./SupervisorStudentJournal.css";
-
-// redux
-import { connect } from "react-redux";
-
 // atoms
 import PageButton2 from "../../../components/atoms/button/PageButton2";
 import PageButton from "../../../components/atoms/button/PageButton";
@@ -18,16 +14,8 @@ import Table from "../../../components/organisms/table/Table";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const SupervisorStudentJournal = (props) => {
+const SupervisorStudentJournal = () => {
     const navigate = useNavigate();
-    useEffect(() => {
-        if (!props.user.role) {
-            navigate(`../login`)
-        }
-        if (!props.user.role === 'supervisor') {
-            navigate(`../${props.user.role}-home`)
-        }
-    })
 
     const { id } = useParams();
     const [journalInfo, setJournalInfo] = useState([]);
@@ -155,9 +143,5 @@ const SupervisorStudentJournal = (props) => {
         </div>
     );
 }
- 
-const mapStateToProps = state => ({
-    user: state.user
-});
 
-export default connect(mapStateToProps)(SupervisorStudentJournal);
+export default SupervisorStudentJournal;

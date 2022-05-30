@@ -6,23 +6,11 @@ import PageButton2 from "../../../components/atoms/button/PageButton2";
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import Table from "../../../components/organisms/table/Table";
 
-// redux
-import { connect } from "react-redux";
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const TeacherStudentJournal = (props) => {
     const navigate = useNavigate()
-    
-    useEffect(() => {
-        if (!props.user.role) {
-            navigate(`../login`)
-        }
-        if (!props.user.role === 'teacher') {
-            navigate(`../${props.user.role}-home`)
-        }
-    })
 
     const { id } = useParams();
     const [journalInfo, setJournalInfo] = useState([]);
@@ -148,8 +136,4 @@ const TeacherStudentJournal = (props) => {
     );
 }
 
-const mapStateToProps = state => ({
-    user: state.user
-});
-
-export default connect(mapStateToProps)(TeacherStudentJournal);
+export default TeacherStudentJournal;

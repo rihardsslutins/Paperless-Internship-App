@@ -6,24 +6,10 @@ import Alert from "../../../components/atoms/alerts/Alert";
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import JournalForm from "../../../components/organisms/form/JournalForm";
 // hooks
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-// redux
-import { connect } from "react-redux";
+import { useState } from "react";
 
-const StudentJournalCreate = (props) => {
-    const navigate = useNavigate()
-    
-    useEffect(() => {
-        if (!props.user.role) {
-            navigate(`../login`)
-        }
-        if (!props.user.role === 'student') {
-            navigate(`../${props.user.role}-home`)
-        }
-    })
-    
-    
+const StudentJournalCreate = () => {
+
     // SIDEBAR
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
     const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
@@ -92,9 +78,5 @@ const StudentJournalCreate = (props) => {
         </>
     );
 }
- 
-const mapStateToProps = state => ({
-    user: state.user
-});
 
-export default connect(mapStateToProps)(StudentJournalCreate);
+export default StudentJournalCreate;

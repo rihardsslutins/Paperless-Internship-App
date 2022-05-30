@@ -1,9 +1,5 @@
 // style
 import './StudentJournal.css';
-
-// redux
-import { connect } from 'react-redux';
-
 // atoms
 import PageButton2 from '../../../components/atoms/button/PageButton2';
 import DangerButton from '../../../components/atoms/button/DangerButton';
@@ -16,17 +12,9 @@ import Table from '../../../components/organisms/table/Table';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const StudentJournal = (props) => {
+const StudentJournal = () => {
     const navigate = useNavigate()
     
-    useEffect(() => {
-        if (!props.user.role) {
-            navigate(`../login`)
-        }
-        if (!props.user.role === 'student') {
-            navigate(`../${props.user.role}-home`)
-        }
-    })
     const { id } = useParams();
     const [journalInfo, setJournalInfo] = useState([]);
     const [journal, setJournal] = useState([]);
@@ -234,8 +222,4 @@ const StudentJournal = (props) => {
     );
 };
 
-const mapStateToProps = state => ({
-    user: state.user
-});
-
-export default connect(mapStateToProps)(StudentJournal);
+export default StudentJournal;

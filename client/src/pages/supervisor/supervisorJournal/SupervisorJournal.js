@@ -1,9 +1,5 @@
 // style
 import "./SupervisorJournal.css";
-
-// redux
-import { connect } from "react-redux";
-
 // atoms
 import SearchInput from "../../../components/atoms/input/SearchInput";
 // organisms
@@ -11,20 +7,9 @@ import Sidebar from "../../../components/organisms/navbar/Sidebar";
 // import SelectInput from "../../../components/atoms/input/SelectInput";
 import Table from "../../../components/organisms/table/Table";
 
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const SupervisorJournal = (props) => {
-    const navigate = useNavigate()
-    
-    useEffect(() => {
-        if (!props.user.role) {
-            navigate(`../login`)
-        }
-        if (!props.user.role === 'supervisor') {
-            navigate(`../${props.user.role}-home`)
-        }
-    })
+const SupervisorJournal = () => {
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
@@ -66,9 +51,5 @@ const SupervisorJournal = (props) => {
         </div>
     );
 }
- 
-const mapStateToProps = state => ({
-    user: state.user
-});
 
-export default connect(mapStateToProps)(SupervisorJournal);
+export default SupervisorJournal;

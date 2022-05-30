@@ -7,10 +7,11 @@ const SidebarItems = ({
     imgAlt,
     title,
     link,
-    active
+    active,
+    onClick
 }) => {
     return (
-        <Link to={`../${link}`} className={`sidebar-item${active}`}>
+        <Link to={`../${link}`} className={`sidebar-item${active}`} onClick={onClick}>
             <img src={require(`../../../assets/${icon}.svg`)} alt={imgAlt} />
             <p>{title}</p>
         </Link>
