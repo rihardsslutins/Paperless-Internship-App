@@ -1,7 +1,23 @@
 // organism
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 
-const TeacherHome = () => {
+// redux
+import { connect } from "react-redux";
+
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+const TeacherHome = (props) => {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!props.user.role) {
+            navigate(`../login`)
+        }
+        if (!props.user.role === 'teacher') {
+            navigate(`../${props.user.role}-home`)
+        }
+    })
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
@@ -19,4 +35,8 @@ const TeacherHome = () => {
     );
 }
  
-export default TeacherHome;
+const mapStateToProps = state => ({
+    user: state.user
+});
+
+export default connect(mapStateToProps)(TeacherHome);

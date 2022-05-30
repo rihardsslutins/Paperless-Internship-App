@@ -1,34 +1,31 @@
-import axios from 'axios';
-import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-
 //style
 import './Login.css';
+
+// redux
+import { connect } from 'react-redux';
+
+// packages
+import axios from 'axios';
+
+// react and hooks
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 //organisms
 import LoginForm from '../../../components/organisms/form/LoginForm';
 import Navbar from '../../../components/organisms/navbar/Navbar';
-import Roles from '../../../components/organisms/roles/Roles';
 import Alert from '../../../components/atoms/alerts/Alert';
 
-const Login = () => {
-
-    const [searchParams] = useSearchParams();
+const Login = (props) => {
+    // forces a refresh in order to redirect
+    const refreshPage = () => {
+        window.location.reload();
+    }
     const [alert, setAlert] = useState('');
     const navigate = useNavigate();
 
-    const [studentEmail, setStudentEmail] = useState('');
-    const [studentPassword, setStudentPassword] = useState('');
-
-    const [activeStudent, setActiveStudent] = useState(
-        searchParams.get('role') === 'student' ? '-active' : ''
-    );
-    const [activeTeacher, setActiveTeacher] = useState(
-        searchParams.get('role') === 'teacher' ? '-active' : ''
-    );
-    const [activeSupervisor, setActiveSupervisor] = useState(
-        searchParams.get('role') === 'supervisor' ? '-active' : ''
-    );
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     // Error handling
     const handleErrors = (errors, propertyOrder) => {
@@ -42,45 +39,33 @@ const Login = () => {
         }
     };
 
-    const handleStudent = () => {
-        setActiveStudent('-active');
-        setActiveTeacher('');
-        setActiveSupervisor('');
-    };
-    const handleTeacher = () => {
-        setActiveTeacher('-active');
-        setActiveStudent('');
-        setActiveSupervisor('');
-    };
-    const handleSupervisor = () => {
-        setActiveSupervisor('-active');
-        setActiveTeacher('');
-        setActiveStudent('');
-    };
+    const changeEmail = (e) => setEmail(e.target.value);
+    const changePassword = (e) => setPassword(e.target.value);
 
-    const changeStudentEmail = (e) => setStudentEmail(e.target.value);
-    const changeStudentPassword = (e) => setStudentPassword(e.target.value);
+    const onChangeArray = [changeEmail, changePassword];
 
-    const onChangeArray = [changeStudentEmail, changeStudentPassword];
-
-    const handleStudentLogin = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        try {
-            await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/students-login`,
-                {
-                    email: studentEmail,
-                    password: studentPassword,
-                },
-                {
-                    withCredentials: true,
-                }
-            );
-            navigate('/student-home');
-        } catch (err) {
-            const errors = err.response.data.errors;
-            const propertyOrder = ['email', 'password'];
-            handleErrors(errors, propertyOrder);
+        if (!email) {
+            setAlert('Lūdzu ievadi e-pastu');
+        } else if (!password) {
+            setAlert('Lūdzu ievadi paroli');
+        } else {
+            try {
+                await axios
+                    .post(
+                        `${process.env.REACT_APP_SERVER_URL}/login`,
+                        { email, password },
+                        { withCredentials: true }
+                    )
+                    .then(() => {
+                        refreshPage()
+                    });
+            } catch (err) {
+                const errors = err.response.data.errors;
+                const propertyOrder = ['email', 'password'];
+                handleErrors(errors, propertyOrder);
+            }
         }
     };
 
@@ -88,31 +73,20 @@ const Login = () => {
         setAlert('');
     };
 
-    const handleInputReset = () => {
-        // Student reset
-        setStudentEmail('');
-        setStudentPassword('');
-        // Reset alert
-        handleAlertClose();
-    };
-
     const formLabels = ['E-pasts:', 'Parole:'];
     const formNames = ['email', 'password'];
     const formTypes = ['email', 'password'];
+    useEffect(() => {
+        if (props.user.role) {
+            navigate(`../${props.user.role}-home`);
+        }
+    }, [navigate, props.user.role]);
+
     return (
         <div>
             <Navbar page="login" />
             <div className="container registration">
                 <h2 className="login-title">Pieslēgties</h2>
-                <Roles
-                    handleStudent={handleStudent}
-                    handleTeacher={handleTeacher}
-                    handleSupervisor={handleSupervisor}
-                    handleInputReset={handleInputReset} // IMPORTANT !!!
-                    activeStudent={activeStudent}
-                    activeTeacher={activeTeacher}
-                    activeSupervisor={activeSupervisor}
-                />
                 {alert && (
                     <Alert
                         type="warning"
@@ -120,20 +94,22 @@ const Login = () => {
                         handleAlertClose={handleAlertClose}
                     />
                 )}
-                {activeStudent && (
-                    <LoginForm
-                        id={formNames}
-                        name={formNames}
-                        label={formLabels}
-                        type={formTypes}
-                        onClick={handleStudentLogin}
-                        onChange={onChangeArray}
-                        buttonText="Pieslēgties"
-                    />
-                )}
+                <LoginForm
+                    id={formNames}
+                    name={formNames}
+                    label={formLabels}
+                    type={formTypes}
+                    onClick={handleLogin}
+                    onChange={onChangeArray}
+                    buttonText="Pieslēgties"
+                />
             </div>
         </div>
     );
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(Login);

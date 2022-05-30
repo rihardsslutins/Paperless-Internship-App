@@ -1,5 +1,14 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
+
+// redux
+import { useDispatch, connect } from 'react-redux';
+import { setUser } from './reduxSlices/userSlice';
+
+// packages
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 //pages
 import Home from './pages/guest/home/Home';
@@ -25,14 +34,47 @@ import SupervisorInvites from './pages/supervisor/supervisorInvites/SupervisorIn
 import SupervisorSettings from './pages/supervisor/supervisorSettings/SupervisorSettings';
 import SupervisorProfileEdit from './pages/supervisor/supervisorProfileEdit/SupervisorProfileEdit';
 
-function App() {
+function App(props) {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const getUser = async () => {
+            if (props.user._id === '') {
+                await axios
+                    .get(`${process.env.REACT_APP_SERVER_URL}/me`, {
+                        headers: {
+                            Authorization: `Bearer ${Cookies.get('auth')}`,
+                        },
+                    })
+                    .then((res) => res.data)
+                    .then((res) =>
+                        dispatch(
+                            setUser({
+                                _id: res._id,
+                                name: res.name,
+                                surname: res.surname,
+                                school: res.school,
+                                gender: res.gender,
+                                field: res.field,
+                                company: res.company,
+                                phone: res.phone,
+                                email: res.email,
+                                password: res.password,
+                                internships: res.internships,
+                                role: res.role,
+                            })
+                        )
+                    );
+            }
+        };
+        getUser();
+    }, [dispatch, props.user._id]);
     return (
         <div className="App">
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />}/>
-                    <Route path="/register" element={<Register />}/>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
                     <Route path="/student-home" element={<StudentHome />} />
                     <Route path="/student-journals" element={<StudentJournals />} />
                     <Route path="/student-journal/:id" element={<StudentJournal />} />
@@ -58,4 +100,8 @@ function App() {
     );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(App);
