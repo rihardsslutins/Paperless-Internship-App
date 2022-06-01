@@ -59,6 +59,10 @@
     background-position: bottom;
     transition: all .3s ease;
 }
+.page-button-2.dark {
+    color: var(--white);
+    border: 3px solid var(--secondary-color);
+}
 .page-button-2:hover {
     background-position: top;
     color: var(--white);

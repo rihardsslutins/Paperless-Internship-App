@@ -7,12 +7,16 @@ import reportWebVitals from './reportWebVitals';
 // redux
 import { Provider } from 'react-redux';
 import store from './store';
+// context
+import ThemeContextProvider from './contexts/ThemeContext';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <App />
-        </Provider>
+        <ThemeContextProvider>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </ThemeContextProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

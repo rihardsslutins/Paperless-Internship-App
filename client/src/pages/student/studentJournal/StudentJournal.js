@@ -62,18 +62,21 @@ const StudentJournal = () => {
             date: '07.11.2021.',
             journal: [
                 {
+                    recordId: '679cg58idfjmruvbhnk',
                     recordDate: '14.02.2020',
                     taskDesc: 'Izveidoju reģistrācijas formu',
                     hoursSpent: 8,
                     grade: 10,
                 },
                 {
+                    recordId: '95678icjmnudefghrv4',
                     recordDate: '15.02.2020',
                     taskDesc: 'Izveidoju pieslēgšanos funkcionalitāti',
                     hoursSpent: 8,
                     grade: 8,
                 },
                 {
+                    recordId: 'o968iec5dfhjmnruv47bg',
                     recordDate: '16.02.2020',
                     taskDesc: 'Izveidoju studentu lapu',
                     hoursSpent: 8,
@@ -189,9 +192,7 @@ const StudentJournal = () => {
                             )}
                             <div className="student-journal-info">
                                 <p>Prakses vadītājs: {journalInfo.mentor}</p>
-                                <p>
-                                    Skolotāja: {journalInfo.overseeingTeacher}
-                                </p>
+                                <p>Skolotāja: {journalInfo.overseeingTeacher}</p>
                                 <p>Praktikants: {journalInfo.student}</p>
                             </div>
                         </div>

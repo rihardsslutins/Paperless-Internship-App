@@ -59,17 +59,15 @@ const UpdateProfileForm = ({
     }
 
     return (
-        <div className="edit-profile-form">
-            <form>
-                <div className={`${formClass}-form-grid`}>
-                    {inputArray.map((element) => element)}
-                    <div className="edit-profile-buttons">
-                        <PageButton onClick={onClick} text={buttonText} />
-                        <PageButton2 text='Atcelt' active='' onClick={handleCancel}/>
-                    </div>
+        <form className="edit-profile-form">
+            <div className={`${formClass}-form-grid`}>
+                {inputArray.map((element) => element)}
+                <div className="edit-profile-buttons">
+                    <PageButton onClick={onClick} text={buttonText} />
+                    <PageButton2 text='Atcelt' active='' onClick={handleCancel}/>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     );
 };
 

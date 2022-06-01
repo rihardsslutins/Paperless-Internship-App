@@ -12,7 +12,7 @@ const Table = ({
 
     const navigate = useNavigate();
     const location = useLocation();
-
+    console.log(!data.length);
     return (
         <div className="table-container">
             <table className="table">
@@ -59,9 +59,7 @@ const Table = ({
                     ))}
                     {!data.length &&
                         <tr>
-                            <td colSpan={4}>
-                                Nav nevina ieraksta
-                            </td>
+                            <td colSpan={4} className="no-record"> Nav nevina ieraksta </td>
                         </tr>
                     }
                 </tbody>

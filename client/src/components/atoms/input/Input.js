@@ -1,5 +1,7 @@
 //style
 import "./Inputs.css";
+// hooks
+import useTheme from "../../../hooks/useTheme";
 
 const Input = ({ 
     id, 
@@ -9,9 +11,10 @@ const Input = ({
     value,
     placeholder 
 }) => {
+    const theme = useTheme();
     return (
         <input
-            className="input-field"
+            className={`input-field ${theme}`}
             type={type}
             name={name}
             id={id}

@@ -35,19 +35,6 @@
     align-items: center;
     gap: 10px;
 }
-.student-theme span {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: all .3s;
-}
-.student-theme span:hover {
-    background-color: var(--secondary-color);
-    color: var(--white);
-}
 .student-settings button {
     margin-left: auto;
     height: fit-content;

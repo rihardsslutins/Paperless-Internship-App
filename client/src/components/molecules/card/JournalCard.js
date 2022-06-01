@@ -4,13 +4,16 @@ import "./Cards.css";
 import PageButton from "../../atoms/button/PageButton";
 
 import { Link } from "react-router-dom";
+// hooks
+import useTheme from "../../../hooks/useTheme";
 
 const JournalCard = ({
     journalCard,
     role
 }) => {
+    const theme = useTheme();
     return (
-        <div className="journal-card">
+        <div className={`journal-card ${theme}`}>
                 <h4 className="journal-card-company">{journalCard.companyName}</h4>
                 <p className="journal-card-mentor">{journalCard.mentor}</p>
                 <div className="journal-card-teacher">

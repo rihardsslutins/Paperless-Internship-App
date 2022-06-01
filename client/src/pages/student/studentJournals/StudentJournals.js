@@ -12,27 +12,9 @@ const StudentJournals = () => {
 
     // Sidebar
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
-    const imgAlt = [
-        'home page',
-        'journal page',
-        'mail page',
-        'settings page',
-        'help page',
-    ];
-    const title = [
-        'Sākums',
-        'Dienasgrāmata',
-        'Vēstules',
-        'Iestatījumi',
-        'Palīdzība',
-    ];
-    const link = [
-        'student-home',
-        'student-journals',
-        'student-mail',
-        'student-settings',
-        'help',
-    ];
+    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
+    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
     // Journal Card
     const internships = [

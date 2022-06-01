@@ -8,15 +8,16 @@ import DangerButton from "../../atoms/button/DangerButton";
 import Alert from "../../atoms/alerts/Alert";
 // molecules
 import LabeledInput from "../../molecules/labeledInput/InputGroup";
-
+// hooks
 import { useState } from "react";
+import useTheme from "../../../hooks/useTheme";
 
 const DeleteProfileModal = ({
     role,
     display,
     handleClose
 }) => {
-
+    const theme = useTheme();
     const [passwordCheck, setPasswordCheck] = useState('');
     const [alert, setAlert] = useState('');
 
@@ -44,6 +45,8 @@ const DeleteProfileModal = ({
         case "supervisor":
             modalText = 'praktikantu';
             break;
+        default:
+            modalText = '';
     }
 
     const handleModel = () => {
@@ -58,7 +61,7 @@ const DeleteProfileModal = ({
         <>
             {display &&
                 <div className="delete-profile-modal">
-                    <div className="modal-content">
+                    <div className={`modal-content ${theme}`}>
                         <div className="modal-header">
                             <h2>Profila dzēšana</h2>
                             <img src={closeBlack} alt="close modal" onClick={handleModel} />

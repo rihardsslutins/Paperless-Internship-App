@@ -85,7 +85,7 @@ const Login = (props) => {
     return (
         <div>
             <Navbar page="login" />
-            <div className="container registration">
+            <div className="container login">
                 <h2 className="login-title">Pieslēgties</h2>
                 {alert && (
                     <Alert

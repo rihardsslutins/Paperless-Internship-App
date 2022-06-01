@@ -28,12 +28,10 @@ const LoginForm = ({
         );
     }
     return (
-        <div className="login-form">
-            <form>
-                {inputArray.map((element) => element)}
-                <PageButton onClick={onClick} text={buttonText} />
-            </form>
-        </div>
+        <form className="login-form">
+            {inputArray.map((element) => element)}
+            <PageButton onClick={onClick} text={buttonText} />
+        </form>
     );
 };
 

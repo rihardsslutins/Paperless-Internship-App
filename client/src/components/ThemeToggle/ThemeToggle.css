@@ -1,0 +1,14 @@
+.toggle-theme {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all .3s;
+    user-select: none;
+}
+.toggle-theme:hover {
+    background-color: var(--secondary-color);
+    color: var(--white);
+}

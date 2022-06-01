@@ -8,15 +8,16 @@ import DangerButton from "../../atoms/button/DangerButton";
 import Alert from "../../atoms/alerts/Alert";
 // molecules
 import LabeledInput from "../../molecules/labeledInput/InputGroup";
-
+// hooks
 import { useState } from "react";
+import useTheme from "../../../hooks/useTheme";
 
 const JournalModal = ({
     display,
     handleClose,
     companyName
 }) => {
-
+    const theme = useTheme();
     const [alert, setAlert] = useState('');
     const [companyNameCheck, setCompanyNameCheck] = useState('');
 
@@ -40,7 +41,7 @@ const JournalModal = ({
         <>
             {display && 
                 <div className="journal-modal">
-                    <div className="modal-content">
+                    <div className={`modal-content ${theme}`}>
                         <div className="modal-header">
                             <h2>Dienasgrāmatas noslēgšana</h2>
                             <img src={closeBlack} alt="close modal" onClick={handleModel} />
