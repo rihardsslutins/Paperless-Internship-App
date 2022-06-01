@@ -5,6 +5,8 @@ import './App.css';
 // redux
 import { useDispatch, connect } from 'react-redux';
 import { setUser } from './reduxSlices/userSlice';
+// hooks
+import useTheme from './hooks/useTheme';
 
 // packages
 import axios from 'axios';
@@ -35,6 +37,7 @@ import SupervisorSettings from './pages/supervisor/supervisorSettings/Supervisor
 import SupervisorProfileEdit from './pages/supervisor/supervisorProfileEdit/SupervisorProfileEdit';
 
 function App(props) {
+    const theme = useTheme();
     const dispatch = useDispatch();
     useEffect(() => {
         const getUser = async () => {
@@ -69,7 +72,7 @@ function App(props) {
         getUser();
     }, [dispatch, props.user._id]);
     return (
-        <div className="App">
+        <div className={`App ${theme}`}>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />

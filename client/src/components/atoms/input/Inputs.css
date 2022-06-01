@@ -13,6 +13,13 @@
     color: var(--primary-text);
     transition: all .5s;
 }
+.input-field.dark,
+.input-textarea.dark,
+.select-input.dark {
+    background-color: var(--dark-secondary-color);
+    border: 3px solid var(--dark-secondary-color);
+    color: var(--white);
+}
 .input-field:focus,
 .input-textarea:focus {
     border: 3px solid var(--primary-color) !important;
@@ -37,6 +44,10 @@
     background-color: var(--white);
     border: 3px solid var(--white);
     border-radius: 5px;
+}
+.radio-input-item.dark {
+    background-color: var(--dark-secondary-color);
+    border: 3px solid var(--dark-secondary-color);
 }
 .radio-input-field {
     position: absolute;

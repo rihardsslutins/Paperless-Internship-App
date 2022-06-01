@@ -23,9 +23,6 @@
     border-collapse: collapse;
     margin-bottom: 10px;
 }
-.empty-table {
-    column-span: all;
-}
 .table td, 
 .table th {
     border: 2px solid var(--primary-color);
@@ -46,7 +43,7 @@
     color: var(--white);
     white-space: nowrap;
 }
-.table tbody tr td:first-child {
+.table tbody tr td:first-child:not(.no-record) {
     display: none;
 }
 @media only screen and (max-width: 800px) {

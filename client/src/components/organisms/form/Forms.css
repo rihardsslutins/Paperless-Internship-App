@@ -2,7 +2,7 @@
 .login-form {
     display: grid;
     max-width: 350px;
-    margin: 0 auto;
+    margin: 20px auto 0 auto;
 }
 .login-form button {
     min-width: 100%;
@@ -105,4 +105,11 @@
     .edit-profile-buttons {
         gap: 10px;
     }
+}
+/* Hide arrows on input field */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; 
 }

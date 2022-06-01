@@ -3,9 +3,16 @@
   margin: 0;
   padding: 0;
 }
-body {
+.App {
+  min-height: 100vh;
+}
+.App.light {
   background-color: var(--page-background);
   color: var(--primary-text);
+}
+.App.dark {
+  background-color: var(--page-dark-background);
+  color: var(--white);
 }
 .container {
   padding: 140px 15% 60px 15%;
