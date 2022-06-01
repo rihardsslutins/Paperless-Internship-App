@@ -32,14 +32,14 @@ const StudentJournalCreate = (props) => {
 
     // INPUTS
     const [companyName, setCompnayName] = useState('');
-    const [overseeingTeacher, setOverseeingTeacher] = useState('');
+    const [teacher, setTeacher] = useState('');
     const [mentor, setMentor] = useState('');
 
     const changeCompanyName = (e) => setCompnayName(e.target.value);
-    const changeOverseeingTeacher = (e) => setOverseeingTeacher(e.target.value);
+    const changeTeacher = (e) => setTeacher(e.target.value);
     const changeMentor = (e) => setMentor(e.target.value);
 
-    const onChangeArray = [changeCompanyName, changeOverseeingTeacher, changeMentor];
+    const onChangeArray = [changeCompanyName, changeTeacher, changeMentor];
 
     const formLabels = ['Uzņēmuma nosaukums:', 'Prakses vadītājs (skola):', 'Prakses vadītājs (uzņēmums):'];
     const formNames = ['companyName', 'overseeingTeacher', 'mentor'];
@@ -47,7 +47,7 @@ const StudentJournalCreate = (props) => {
 
     const handleCreateJournal = (e) => {
         e.preventDefault();
-        console.log(companyName, overseeingTeacher, mentor);
+        console.log(companyName, teacher, mentor);
     }
 
     return (
