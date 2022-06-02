@@ -5,7 +5,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 // routers
-import userRoutes from './routes/userRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import internshipRouter from './routes/internshipRoutes.js';
 
 // creates an express app
 const app = express();
@@ -45,4 +46,7 @@ mongoose
   });
 
 // user routes
-app.use(userRoutes);
+app.use(userRouter);
+
+// internship routes
+app.use(internshipRouter)
