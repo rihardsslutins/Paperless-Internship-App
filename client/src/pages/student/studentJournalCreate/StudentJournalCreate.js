@@ -53,7 +53,7 @@ const StudentJournalCreate = (props) => {
 
     // Alert
     const [alert, setAlert] = useState('');
-    const [alertType, setAlertType] = useState('')
+    const [alertType, setAlertType] = useState('warning')
     const handleAlertClose = () => {
         setAlert('');
     };
@@ -61,36 +61,38 @@ const StudentJournalCreate = (props) => {
     const handleCreateJournal = async (e) => {
         e.preventDefault()
         try {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/internship`,
-            {
-                company,
-                studentEmail: props.user.email,
-                teacherEmail,
-                supervisorEmail,
-                startingDate
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('auth')}`,
+            if (!company) {
+                setAlert('Lūdzu ievadi uzņēmuma nosaukumu')
+            } else if (!teacherEmail) {
+                setAlert('Lūdzu ievadi prakses vadītāja (no skolas) epastu')
+            } else if (!supervisorEmail) {
+                setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu')
+            } else if (!startingDate) {
+                setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu')
+            } else {
+                await axios.post(`${process.env.REACT_APP_SERVER_URL}/internship`,
+                {
+                    company,
+                    studentEmail: props.user.email,
+                    teacherEmail,
+                    supervisorEmail,
+                    startingDate
                 },
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`,
+                    },
+                }
+                )
+                setAlertType('success')
+                setAlert('Dienasgrāmata ir izveidota!')
             }
-            )
-            setAlertType('success')
-            setAlert('Dienasgrāmata ir izveidota!')
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = ['company', 'studentEmail', 'teacherEmail', 'supervisorEmail', 'startingDate']
             handleErrors(errors, propertyOrder)
             setAlertType('warning')
-            console.log(errors)
         }
-        // e.preventDefault();
-        // if (companyName.length && overseeingTeacher.length && mentor.length && startDate.length) {
-        //     console.log(companyName, overseeingTeacher, mentor, startDate);
-        //     setAlert('');
-        // } else {
-        //     setAlert('Aizpildiet visus laukus!');
-        // }
     }
 
     return (

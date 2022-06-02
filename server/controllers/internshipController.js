@@ -44,12 +44,8 @@ const internship_create = async (req, res) => {
             throw Error('Ievadītais prakses vadītāju (no uzņēmuma) epasts neeksistē');
         }
 
-        console.log(teacher)
-
-        const internship = await Internship.create({ isActive: true, company, studentEmail, teacherEmail, supervisorEmail, startingDate });
-        console.log(internship)
+        await Internship.create({ isActive: true, company, studentEmail, teacherEmail, supervisorEmail, startingDate });
         res.status(201).json({message: 'Dienasgrāmata ir izveidota!'})
-
         
     } catch (err) {
         console.log(err)
