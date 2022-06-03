@@ -8,6 +8,9 @@ import Sidebar from '../../../components/organisms/navbar/Sidebar';
 import JournalRecordForm from '../../../components/organisms/form/JournalRecordFrom';
 import JournalModal from '../../../components/organisms/modal/JournalModal';
 import Table from '../../../components/organisms/table/Table';
+// packages
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -15,86 +18,86 @@ import { useParams, useNavigate } from 'react-router-dom';
 const StudentJournal = () => {
     const navigate = useNavigate()
     
-    const { id } = useParams();
-    const [journalInfo, setJournalInfo] = useState([]);
+    const { id: _id } = useParams();
+    const [internship, setInternship] = useState('');
     const [journal, setJournal] = useState([]);
 
-    const internships = [
-        {
-            id: '31928h312312ui3adww',
-            active: true,
-            companyName: 'Accenture',
-            mentor: 'Roberts Tarhanovs',
-            overseeingTeacher: 'Elīna Dēvita',
-            student: 'Ulvis Čakstiņs',
-            date: '01.03.2022.',
-            journal: [
-                {
-                    recordId: '8567ui9bcdefghjnrvmsx',
-                    recordDate: '07.05.2022',
-                    taskDesc: 'Izveidoju navbar',
-                    hoursSpent: 8,
-                    grade: 10,
-                },
-                {
-                    recordId: '98icjmnu67v5dfkbghre',
-                    recordDate: '08.05.2022',
-                    taskDesc: 'Izveidoju sidebar',
-                    hoursSpent: 8,
-                    grade: 8,
-                },
-                {
-                    recordId: '9bdefghjmnrv56c8i7u',
-                    recordDate: '09.05.2022',
-                    taskDesc: 'Stila uzlabojumi',
-                    hoursSpent: 8,
-                    grade: '',
-                },
-            ],
-        },
-        {
-            id: 'du12bi1v23v1y2v3i1v2',
-            active: false,
-            companyName: 'Brocēnu novada dome',
-            mentor: 'Jānis Bērziņš',
-            overseeingTeacher: 'Elīna Dēvita',
-            student: 'Ulvis Čakstiņs',
-            date: '07.11.2021.',
-            journal: [
-                {
-                    recordId: '679cg58idfjmruvbhnk',
-                    recordDate: '14.02.2020',
-                    taskDesc: 'Izveidoju reģistrācijas formu',
-                    hoursSpent: 8,
-                    grade: 10,
-                },
-                {
-                    recordId: '95678icjmnudefghrv4',
-                    recordDate: '15.02.2020',
-                    taskDesc: 'Izveidoju pieslēgšanos funkcionalitāti',
-                    hoursSpent: 8,
-                    grade: 8,
-                },
-                {
-                    recordId: 'o968iec5dfhjmnruv47bg',
-                    recordDate: '16.02.2020',
-                    taskDesc: 'Izveidoju studentu lapu',
-                    hoursSpent: 8,
-                    grade: 9,
-                },
-            ],
-        },
-        {
-            id: '31298b9be201xnxe9u2b',
-            active: false,
-            companyName: 'Brocēnu novada dome',
-            mentor: 'Jānis Bērziņš',
-            overseeingTeacher: 'Elīna Dēvita',
-            student: 'Ulvis Čakstiņs',
-            date: '03.02.2021.',
-            journal: [],
-        },
-    ];
+    // const internships = [
+    //     {
+    //         id: '31928h312312ui3adww',
+    //         active: true,
+    //         companyName: 'Accenture',
+    //         mentor: 'Roberts Tarhanovs',
+    //         overseeingTeacher: 'Elīna Dēvita',
+    //         student: 'Ulvis Čakstiņs',
+    //         date: '01.03.2022.',
+    //         journal: [
+    //             {
+    //                 recordId: '8567ui9bcdefghjnrvmsx',
+    //                 recordDate: '07.05.2022',
+    //                 taskDesc: 'Izveidoju navbar',
+    //                 hoursSpent: 8,
+    //                 grade: 10,
+    //             },
+    //             {
+    //                 recordId: '98icjmnu67v5dfkbghre',
+    //                 recordDate: '08.05.2022',
+    //                 taskDesc: 'Izveidoju sidebar',
+    //                 hoursSpent: 8,
+    //                 grade: 8,
+    //             },
+    //             {
+    //                 recordId: '9bdefghjmnrv56c8i7u',
+    //                 recordDate: '09.05.2022',
+    //                 taskDesc: 'Stila uzlabojumi',
+    //                 hoursSpent: 8,
+    //                 grade: '',
+    //             },
+    //         ],
+    //     },
+    //     {
+    //         id: 'du12bi1v23v1y2v3i1v2',
+    //         active: false,
+    //         companyName: 'Brocēnu novada dome',
+    //         mentor: 'Jānis Bērziņš',
+    //         overseeingTeacher: 'Elīna Dēvita',
+    //         student: 'Ulvis Čakstiņs',
+    //         date: '07.11.2021.',
+    //         journal: [
+    //             {
+    //                 recordId: '679cg58idfjmruvbhnk',
+    //                 recordDate: '14.02.2020',
+    //                 taskDesc: 'Izveidoju reģistrācijas formu',
+    //                 hoursSpent: 8,
+    //                 grade: 10,
+    //             },
+    //             {
+    //                 recordId: '95678icjmnudefghrv4',
+    //                 recordDate: '15.02.2020',
+    //                 taskDesc: 'Izveidoju pieslēgšanos funkcionalitāti',
+    //                 hoursSpent: 8,
+    //                 grade: 8,
+    //             },
+    //             {
+    //                 recordId: 'o968iec5dfhjmnruv47bg',
+    //                 recordDate: '16.02.2020',
+    //                 taskDesc: 'Izveidoju studentu lapu',
+    //                 hoursSpent: 8,
+    //                 grade: 9,
+    //             },
+    //         ],
+    //     },
+    //     {
+    //         id: '31298b9be201xnxe9u2b',
+    //         active: false,
+    //         companyName: 'Brocēnu novada dome',
+    //         mentor: 'Jānis Bērziņš',
+    //         overseeingTeacher: 'Elīna Dēvita',
+    //         student: 'Ulvis Čakstiņs',
+    //         date: '03.02.2021.',
+    //         journal: [],
+    //     },
+    // ];
 
     // Sidebar
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
@@ -120,15 +123,21 @@ const StudentJournal = () => {
         'help',
     ];
 
-    // Display record where journal id matches id param
+    // Display record where journal id matches id psaram
     useEffect(() => {
-        internships.forEach((internship) => {
-            if (internship.id === id) {
-                setJournalInfo(internship);
-                setJournal(internship.journal);
+        const getInternship = async () => {
+            try {
+                const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/get-internship`, { _id });
+                console.log(response)
+                setInternship(response.data)
+            } catch (err) {
+                console.log(err)
             }
-        });
-    }, [id]);
+            console.log(internship)
+        }
+
+        getInternship()
+    }, [_id])
 
     // Table
     const headerCells = [
@@ -175,7 +184,7 @@ const StudentJournal = () => {
                 page="student-journals"
             />
             <div className="dashboard-container">
-                {journalInfo.id && (
+                {internship._id && (
                     <div className="student-journal">
                         <div className="student-journal-header">
                             <PageButton2
@@ -183,21 +192,21 @@ const StudentJournal = () => {
                                 active=""
                                 onClick={() => navigate(-1)}
                             />
-                            <h1>{journalInfo.companyName}</h1>
-                            {journalInfo.active && (
+                            <h1>{internship.company}</h1>
+                            {internship.isActive && (
                                 <DangerButton
                                     text="Noslēgt praksi"
                                     onClick={() => setDisplayModal(true)}
                                 />
                             )}
                             <div className="student-journal-info">
-                                <p>Prakses vadītājs: {journalInfo.mentor}</p>
-                                <p>Skolotāja: {journalInfo.overseeingTeacher}</p>
-                                <p>Praktikants: {journalInfo.student}</p>
+                                <p>Prakses vadītājs: {internship.supervisor}</p>
+                                <p>Skolotāja: {internship.teacher}</p>
+                                <p>Praktikants: {internship.student}</p>
                             </div>
                         </div>
                         <Table headerCells={headerCells} data={journal} />
-                        {journalInfo.active && (
+                        {internship.isActive && (
                             <JournalRecordForm
                                 id={formNames}
                                 name={formNames}
@@ -208,16 +217,16 @@ const StudentJournal = () => {
                                 buttonText="Pievienot"
                             />
                         )}
-                        {journalInfo.active && (
+                        {internship.isActive && (
                             <JournalModal
-                                companyName={journalInfo.companyName}
+                                companyName={internship.company}
                                 display={displayModal}
                                 handleClose={handleClose}
                             />
                         )}
                     </div>
                 )}
-                {!journalInfo.id && <h2>Šāda dienasgrāmata nepastāv</h2>}
+                {!internship._id && <h2>Šāda dienasgrāmata nepastāv</h2>}
             </div>
         </>
     );

@@ -13,19 +13,19 @@ const internshipSchema = new Schema({
         type: String,
         required: [true, 'Lūdzu ievadi uzņēmuma nosaukumu']
     },
-    supervisorEmail: {
+    supervisor: {
         type: String,
         required: [true, 'Lūdzu ievadi prakses vadītāja (no uzņēmuma) e-pastu'],
         lowercase: true,
         validate: [isEmail, 'Lūdzu ievadi prakses vadītāja (no uzņēmuma) e-pastu pareizi']
     },
-    teacherEmail: {
+    teacher: {
         type: String,
         required: [true, 'Lūdzu ievadi prakses vadītāja (no skolas) e-pastu'],
         lowercase: true,
         validate: [isEmail, 'Lūdzu ievadi prakses vadītāja (no skolas) e-pastu pareizi']
     },
-    studentEmail: {
+    student: {
         type: String,
         required: [true, 'Studenta e-pasts nav sasniedzams'],
         lowercase: true,

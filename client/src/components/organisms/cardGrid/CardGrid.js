@@ -12,16 +12,16 @@ const CardGrid = ({
             <div className="journals-active">
                 <h2>Aktīvs</h2>
                 <div className="journals-grid">
-                    {internships.map((internship) => (
-                        internship.active && <JournalCard journalCard={internship} key={internship.id} role={role}  />
+                    {internships && internships.map((internship) => (
+                        internship.isActive && <JournalCard journalCard={internship} key={internship._id} role={role}  />
                     ))}
                 </div>
             </div>
             <div className="journals-finished">
                 <h2>Pabeigts</h2>
                 <div className="journals-grid">
-                    {internships.map((internship) => (
-                        !internship.active && <JournalCard journalCard={internship} key={internship.id} role={role} />
+                    {internships && internships.map((internship) => (
+                        !internship.isActive && <JournalCard journalCard={internship} key={internship._id} role={role} />
                     ))}
                 </div>
             </div>

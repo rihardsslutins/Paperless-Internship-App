@@ -68,14 +68,14 @@ const StudentJournalCreate = (props) => {
             } else if (!supervisorEmail) {
                 setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu')
             } else if (!startingDate) {
-                setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu')
-            } else {
+                setAlert('Lūdzu ievadi prakses sākuma datumu')
+            }  else {
                 await axios.post(`${process.env.REACT_APP_SERVER_URL}/internship`,
                 {
                     company,
-                    studentEmail: props.user.email,
-                    teacherEmail,
-                    supervisorEmail,
+                    student: props.user.email,
+                    teacher: teacherEmail,
+                    supervisor: supervisorEmail,
                     startingDate
                 },
                 {
@@ -89,7 +89,7 @@ const StudentJournalCreate = (props) => {
             }
         } catch (err) {
             const errors = err.response.data.errors;
-            const propertyOrder = ['company', 'studentEmail', 'teacherEmail', 'supervisorEmail', 'startingDate']
+            const propertyOrder = ['company', 'student', 'teacher', 'supervisor', 'startingDate']
             handleErrors(errors, propertyOrder)
             setAlertType('warning')
         }
