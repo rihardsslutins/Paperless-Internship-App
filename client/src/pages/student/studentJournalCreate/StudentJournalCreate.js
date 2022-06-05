@@ -5,10 +5,27 @@ import Alert from "../../../components/atoms/alerts/Alert";
 // organism
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import JournalForm from "../../../components/organisms/form/JournalForm";
+// packages
+import Cookies from "js-cookie";
+import axios from "axios";
+// redux
+import { connect } from "react-redux";
 // hooks
 import { useState } from "react";
 
-const StudentJournalCreate = () => {
+
+const StudentJournalCreate = (props) => {
+
+    const handleErrors = (errors, propertyOrder) => {
+        for (let i = 0; i < propertyOrder.length; i++) {
+            if (errors[propertyOrder[i]]) {
+                setAlert(errors[propertyOrder[i]]);
+                return;
+            } else {
+                setAlert('');
+            }
+        }
+    };
 
     // SIDEBAR
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
@@ -17,38 +34,66 @@ const StudentJournalCreate = () => {
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
     // INPUTS
-    const [companyName, setCompnayName] = useState('');
-    const [overseeingTeacher, setOverseeingTeacher] = useState('');
-    const [mentor, setMentor] = useState('');
-    const [startDate, setStartDate] = useState('');
+    const [company, setCompany] = useState('');
+    const [teacherEmail, setTeacherEmail] = useState('');
+    const [supervisorEmail, setSupervisorEmail] = useState('');
+    const [startingDate, setStartingDate] = useState('');
 
-    const changeCompanyName = e => setCompnayName(e.target.value);
-    const changeOverseeingTeacher = e => setOverseeingTeacher(e.target.value);
-    const changeMentor = e => setMentor(e.target.value);
-    const changeStartDate = e => setStartDate(e.target.value);
+    const changeCompany = e => setCompany(e.target.value);
+    const changeTeacherEmail = e => setTeacherEmail(e.target.value);
+    const changeSupervisorEmail = e => setSupervisorEmail(e.target.value);
+    const changeStartingDate = e => setStartingDate(e.target.value);
 
-    const onChangeArray = [changeCompanyName, changeOverseeingTeacher, changeMentor, changeStartDate];
+    const onChangeArray = [changeCompany, changeTeacherEmail, changeSupervisorEmail, changeStartingDate];
 
     const formLabels = ['Uzņēmuma nosaukums:', 'Prakses vadītājs (skola):', 'Prakses vadītājs (uzņēmums):', 'Prakses sākums:'];
-    const formNames = ['companyName', 'overseeingTeacher', 'mentor', 'startDate'];
+    const formNames = ['company', 'teacher', 'supervisor', 'startingDate'];
     const formTypes = ['text', 'email', 'email', 'date'];
     const formPlaceholders = ['', 'E-pasts', 'E-pasts', ''];
 
-    const handleCreateJournal = (e) => {
-        e.preventDefault();
-        if (companyName.length && overseeingTeacher.length && mentor.length && startDate.length) {
-            console.log(companyName, overseeingTeacher, mentor, startDate);
-            setAlert('');
-        } else {
-            setAlert('Aizpildiet visus laukus!');
-        }
-    }
-
     // Alert
     const [alert, setAlert] = useState('');
+    const [alertType, setAlertType] = useState('warning')
     const handleAlertClose = () => {
         setAlert('');
     };
+
+    const handleCreateJournal = async (e) => {
+        e.preventDefault()
+        try {
+            if (!company) {
+                setAlert('Lūdzu ievadi uzņēmuma nosaukumu')
+            } else if (!teacherEmail) {
+                setAlert('Lūdzu ievadi prakses vadītāja (no skolas) epastu')
+            } else if (!supervisorEmail) {
+                setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu')
+            } else if (!startingDate) {
+                setAlert('Lūdzu ievadi prakses sākuma datumu')
+            }  else {
+                await axios.post(`${process.env.REACT_APP_SERVER_URL}/internship`,
+                {
+                    company,
+                    student: props.user.email,
+                    teacher: teacherEmail,
+                    supervisor: supervisorEmail,
+                    startingDate
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`,
+                    },
+                }
+                )
+                setAlertType('success')
+                setAlert('Dienasgrāmata ir izveidota!')
+            }
+        } catch (err) {
+            const errors = err.response.data.errors;
+            const propertyOrder = ['company', 'student', 'teacher', 'supervisor', 'startingDate']
+            handleErrors(errors, propertyOrder)
+            setAlertType('warning')
+        }
+    }
 
     return (
         <>
@@ -58,7 +103,7 @@ const StudentJournalCreate = () => {
                     <h1>Dienasgrāmatas izveide</h1>
                     {alert && 
                         <Alert 
-                            type='warning'
+                            type={alertType}
                             text={alert}
                             handleAlertClose={handleAlertClose}
                         />
@@ -78,5 +123,8 @@ const StudentJournalCreate = () => {
         </>
     );
 }
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
 
-export default StudentJournalCreate;
+export default connect(mapStateToProps)(StudentJournalCreate);
