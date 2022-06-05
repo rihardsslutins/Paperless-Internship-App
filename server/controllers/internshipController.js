@@ -74,16 +74,29 @@ const get_internships = async (req, res) => {
 const get_internship = async (req, res) => {
     try {
         const internship = await Internship.findOne({_id: req.body._id});
-        let { _id, isActive, company, teacher, supervisor, startingDate, journal } = internship;
+        let { _id, isActive, company, student, teacher, supervisor, startingDate, journal } = internship;
+        const Student = await User.findOne({email: internship.student})
         const Teacher = await User.findOne({email: internship.teacher})
         const Supervisor = await User.findOne({email: internship.supervisor})
-        teacher = `${Teacher.name} ${Teacher.surname}`
-        supervisor = `${Supervisor.name} ${Supervisor.surname}`
-        res.status(200).json({ _id, isActive, company, teacher, supervisor, startingDate, journal });
+        student = `${Student.name.charAt(0).toUpperCase() + Student.name.slice(1)} ${Student.surname.charAt(0).toUpperCase() + Student.surname.slice(1)}`
+        teacher = `${Teacher.name.charAt(0).toUpperCase() + Teacher.name.slice(1)} ${Teacher.surname.charAt(0).toUpperCase() + Teacher.surname.slice(1)}`
+        supervisor = `${Supervisor.name.charAt(0).toUpperCase() + Supervisor.name.slice(1)} ${Supervisor.surname.charAt(0).toUpperCase() + Supervisor.surname.slice(1)}`
+        res.status(200).json({ _id, isActive, company, student, teacher, supervisor, startingDate, journal });
     } catch (err) {
         console.log(err)
         res.status(400).json({ message: err.message })
     }
 }
 
-export { internship_create, get_internships, get_internship }
+const journal_record_create = async (req, res) => {
+    const { _id, date, taskDescription, hoursSpent } = req.body
+    console.log(req.body)
+    try {
+        const alteredInternship = await Internship.findByIdAndUpdate({ _id }, { $push: { journal: { date, taskDescription, hoursSpent } } }); 
+        res.status(201).json({ alteredInternship })
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
+export { internship_create, get_internships, get_internship, journal_record_create }

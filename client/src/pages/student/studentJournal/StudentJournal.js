@@ -5,7 +5,7 @@ import PageButton2 from '../../../components/atoms/button/PageButton2';
 import DangerButton from '../../../components/atoms/button/DangerButton';
 // organisms
 import Sidebar from '../../../components/organisms/navbar/Sidebar';
-import JournalRecordForm from '../../../components/organisms/form/JournalRecordFrom';
+import JournalRecordForm from '../../../components/organisms/form/JournalRecordForm';
 import JournalModal from '../../../components/organisms/modal/JournalModal';
 import Table from '../../../components/organisms/table/Table';
 // packages
@@ -130,6 +130,8 @@ const StudentJournal = () => {
                 const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/get-internship`, { _id });
                 console.log(response)
                 setInternship(response.data)
+                setJournal(response.data.journal)
+                console.log(journal)
             } catch (err) {
                 console.log(err)
             }
@@ -149,14 +151,14 @@ const StudentJournal = () => {
 
     // Journal record form
     const [date, setDate] = useState('');
-    const [taskDesc, setTaskDesc] = useState('');
+    const [taskDescription, setTaskDescription] = useState('');
     const [hoursSpent, setHoursSpent] = useState('');
 
     const changeDate = (e) => setDate(e.target.value);
-    const changeTaskDesc = (e) => setTaskDesc(e.target.value);
+    const changeTaskDescription = (e) => setTaskDescription(e.target.value);
     const changeHoursSpent = (e) => setHoursSpent(e.target.value);
 
-    const onChangeArray = [changeDate, changeTaskDesc, changeHoursSpent];
+    const onChangeArray = [changeDate, changeTaskDescription, changeHoursSpent];
     const formLabels = [
         'Datums:',
         'Izpildītā darba īss raksturojums:',
@@ -165,9 +167,14 @@ const StudentJournal = () => {
     const formNames = ['date', 'taskDesc', 'time'];
     const formTypes = ['date', 'text', 'number'];
 
-    const handleAddRecord = (e) => {
+    const handleAddJournalRecord = async (e) => {
         e.preventDefault();
-        console.log(date, taskDesc, hoursSpent);
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/journal-record`, { _id, date, taskDescription, hoursSpent })
+            console.log(response)   
+        } catch (err) {
+            console.log(err)
+        }
     };
 
     // Journal modal
@@ -212,7 +219,7 @@ const StudentJournal = () => {
                                 name={formNames}
                                 label={formLabels}
                                 type={formTypes}
-                                onClick={handleAddRecord}
+                                onClick={handleAddJournalRecord}
                                 onChange={onChangeArray}
                                 buttonText="Pievienot"
                             />

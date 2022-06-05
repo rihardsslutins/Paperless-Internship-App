@@ -4,6 +4,21 @@ import isEmail from 'validator/lib/isEmail.js'
 
 const Schema = mongoose.Schema;
 
+const Journal = new Schema({
+    date: {
+        type: String
+    },
+    taskDescription: {
+        type: String
+    },
+    hoursSpent: {
+        type: Number
+    },
+    grade: {
+        type: Number
+    }
+})
+
 const internshipSchema = new Schema({
     isActive: {
         type: Boolean,
@@ -35,9 +50,7 @@ const internshipSchema = new Schema({
         type: String,
         required: [true, 'Lūdzu ievadi datumu kurā sākās prakse']
     },
-    journal: {
-        type: Array
-    }
+    journal: [Journal]
 });
 
 const Internship = mongoose.model('internship', internshipSchema);
