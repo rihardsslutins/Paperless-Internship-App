@@ -35,6 +35,7 @@ import SupervisorStudentJournal from './pages/supervisor/supervisorStudentJourna
 import SupervisorInvites from './pages/supervisor/supervisorInvites/SupervisorInvites';
 import SupervisorSettings from './pages/supervisor/supervisorSettings/SupervisorSettings';
 import SupervisorProfileEdit from './pages/supervisor/supervisorProfileEdit/SupervisorProfileEdit';
+import NotFound from './pages/404/NotFound';
 
 function App(props) {
     const theme = useTheme();
@@ -97,6 +98,7 @@ function App(props) {
                     <Route path="/supervisor-invites" element={props.user.role === "supervisor" ? <SupervisorInvites /> : <Navigate replace to="/login" />} />
                     <Route path="/supervisor-settings" element={props.user.role === "supervisor" ? <SupervisorSettings /> : <Navigate replace to="/login" />} />
                     <Route path="/supervisor-profile-edit" element={props.user.role === "supervisor" ? <SupervisorProfileEdit /> : <Navigate replace to="/login" />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
         </div>
