@@ -5,8 +5,8 @@ import SearchInput from "../../../components/atoms/input/SearchInput";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 // import SelectInput from "../../../components/atoms/input/SelectInput";
-import Table from "../../../components/organisms/table/Table";
-
+import StudentsTable from "../../../components/organisms/table/StudentsTable";
+// hooks
 import { useState } from "react";
 
 const TeacherJournal = () => {
@@ -40,21 +40,21 @@ const TeacherJournal = () => {
     // Journal list
     const studentList = [
         {
-            studentId: '567eu8rbcdfghijnsvx9',
+            _id: '567eu8rbcdfghijnsvx9',
             name: 'Juris',
             surname: 'Bērziņš',
             phone: '22123987',
             email: 'J.Berzins@gmail.com',
         },
         {
-            studentId: '897ui56bchjnvxfe23e',
+            _id: '897ui56bchjnvxfe23e',
             name: 'Anna',
             surname: 'Krūmiņs',
             phone: '21564143',
             email: 'AnnKrumm@gmail.com',
         },
         {
-            studentId: '87ui9hjn65bcmvxefgdr',
+            _id: '87ui9hjn65bcmvxefgdr',
             name: 'Kārlis',
             surname: 'Ozols',
             phone: '29587904',
@@ -75,7 +75,7 @@ const TeacherJournal = () => {
                         <SearchInput onChange={changeSearchQuery} />
                         {/* <SelectInput options={options} /> */}
                     </div>
-                    <Table headerCells={headerCells} data={studentList} link="../teacher-student-journals/"/>
+                    <StudentsTable headerCells={headerCells} data={studentList} link="../teacher-student-journals/"/>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@ import "./NavbarStyle.css";
 import menuOpen from "../../../assets/menuOpen.svg";
 import sidebarClose from "../../../assets/sidebarClose.svg"
 import close from "../../../assets/close.svg";
-//molecules
+// molecules
 import SidebarItems from "../../molecules/sidebarItems/SidebarItems";
 
 import { useState } from "react";

@@ -3,15 +3,14 @@ import "./SupervisorSettings.css";
 // assets
 import male from "../../../assets/male.svg";
 import female from "../../../assets/female.svg";
-import lightMode from "../../../assets/lightMode.svg";
-import darkMode from "../../../assets/darkMode.svg";
 // atoms
 import DangerButton from "../../../components/atoms/button/DangerButton";
 import PageButton from "../../../components/atoms/button/PageButton";
 // components
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import DeleteProfileModal from "../../../components/organisms/modal/DeleteProfileModal";
-
+import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
+// hooks
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -38,10 +37,6 @@ const SupervisorSettings = () => {
         password: "parole123"
     }
 
-    const handleChangeTheme = () => {
-        console.log('Change theme');
-    }
-
     // Delete profile modal
     const [displayModal, setDisplayModal] = useState(false);
     const handleCloseModal = () => setDisplayModal(false);
@@ -62,7 +57,7 @@ const SupervisorSettings = () => {
                         </div>
                         <PageButton text='Rediģēt profilu' onClick={() => navigate("../supervisor-profile-edit")} />
                         <div className="supervisor-theme">
-                            Mājaslapas motīvs: <span onClick={handleChangeTheme}><img src={lightMode} alt="gaišais motīvs" /> Gaišais</span>
+                            Mājaslapas motīvs: <ThemeToggle />
                         </div>
                     </div>
                     <DangerButton text='Dzēst profilu' onClick={() => setDisplayModal(true)} />

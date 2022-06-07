@@ -8,12 +8,6 @@
     justify-content: space-between;
     margin-bottom: 20px;
 }
-.supervisor-journal .table {
-    width: 100%;
-}
-.supervisor-journal .table td {
-    text-align: center;
-}
 .supervisor-journal .table tbody tr td{
     cursor: pointer;
 }

@@ -7,7 +7,7 @@ import DangerButton from '../../../components/atoms/button/DangerButton';
 import Sidebar from '../../../components/organisms/navbar/Sidebar';
 import JournalRecordForm from '../../../components/organisms/form/JournalRecordForm';
 import JournalModal from '../../../components/organisms/modal/JournalModal';
-import Table from '../../../components/organisms/table/Table';
+import JournalTable from '../../../components/organisms/table/JournalTable';
 // packages
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -101,27 +101,9 @@ const StudentJournal = () => {
 
     // Sidebar
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
-    const imgAlt = [
-        'home page',
-        'journal page',
-        'mail page',
-        'settings page',
-        'help page',
-    ];
-    const title = [
-        'Sākums',
-        'Dienasgrāmata',
-        'Vēstules',
-        'Iestatījumi',
-        'Palīdzība',
-    ];
-    const link = [
-        'student-home',
-        'student-journals',
-        'student-mail',
-        'student-settings',
-        'help',
-    ];
+    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
+    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
     // Display record where journal id matches id psaram
     useEffect(() => {
@@ -131,23 +113,16 @@ const StudentJournal = () => {
                 console.log(response)
                 setInternship(response.data)
                 setJournal(response.data.journal)
-                console.log(journal)
             } catch (err) {
                 console.log(err)
             }
-            console.log(internship)
         }
 
         getInternship()
     }, [_id])
 
     // Table
-    const headerCells = [
-        'Datums',
-        'Izpildītā darba īss raksturojums',
-        'Izpildes laiks',
-        'Vērtējums',
-    ];
+    const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
 
     // Journal record form
     const [date, setDate] = useState('');
@@ -159,11 +134,7 @@ const StudentJournal = () => {
     const changeHoursSpent = (e) => setHoursSpent(e.target.value);
 
     const onChangeArray = [changeDate, changeTaskDescription, changeHoursSpent];
-    const formLabels = [
-        'Datums:',
-        'Izpildītā darba īss raksturojums:',
-        'Izpildes laiks:',
-    ];
+    const formLabels = ['Datums:', 'Izpildītā darba īss raksturojums:', 'Izpildes laiks:'];
     const formNames = ['date', 'taskDesc', 'time'];
     const formTypes = ['date', 'text', 'number'];
 
@@ -212,7 +183,7 @@ const StudentJournal = () => {
                                 <p>Praktikants: {internship.student}</p>
                             </div>
                         </div>
-                        <Table headerCells={headerCells} data={journal} />
+                        <JournalTable headerCells={headerCells} data={journal} />
                         {internship.isActive && (
                             <JournalRecordForm
                                 id={formNames}

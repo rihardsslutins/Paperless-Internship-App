@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
@@ -40,9 +40,10 @@ import NotFound from './pages/404/NotFound';
 function App(props) {
     const theme = useTheme();
     const dispatch = useDispatch();
+    const [userIsReady, setUserIsReady] = useState(false);
     useEffect(() => {
         const getUser = async () => {
-            if (props.user._id === '') {
+            if (!props.user._id) {
                 await axios
                     .get(`${process.env.REACT_APP_SERVER_URL}/me`, {
                         headers: {
@@ -66,14 +67,19 @@ function App(props) {
                                 internships: res.internships,
                                 role: res.role,
                             })
-                        )
-                    );
+                        ),
+                    )
+                    .then(() => setUserIsReady(true))
+                    .catch(() => setUserIsReady(true))
             }
+            setUserIsReady(true);
         };
         getUser();
     }, [dispatch, props.user._id]);
+    console.log(userIsReady);
     return (
         <div className={`App ${theme}`}>
+            {userIsReady && (
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -101,6 +107,7 @@ function App(props) {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
+            )}
         </div>
     );
 }

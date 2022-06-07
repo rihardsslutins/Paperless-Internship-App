@@ -4,12 +4,12 @@ import "./TeacherStudentJournal.css";
 import PageButton2 from "../../../components/atoms/button/PageButton2";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
-import Table from "../../../components/organisms/table/Table";
+import JournalTable from "../../../components/organisms/table/JournalTable";
 
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const TeacherStudentJournal = (props) => {
+const TeacherStudentJournal = () => {
     const navigate = useNavigate()
 
     const { id } = useParams();
@@ -126,7 +126,7 @@ const TeacherStudentJournal = (props) => {
                             <p>Praktikants: {journalInfo.student}</p>
                         </div>
                     </div>
-                    <Table headerCells={headerCells} data={journal} />
+                    <JournalTable headerCells={headerCells} data={journal} />
                 </div>}
                 {!journalInfo.journalId &&
                     <h2>Šāda dienasgrāmata nepastāv</h2>
