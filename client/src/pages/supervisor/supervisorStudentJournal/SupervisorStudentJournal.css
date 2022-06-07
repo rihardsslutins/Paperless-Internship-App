@@ -29,14 +29,7 @@
 }
 
 /* Table */
-.supervisor-student-journal .table td:nth-child(3), 
-.supervisor-student-journal .table th:nth-child(3) {
-    width: 100%;
-}
-.supervisor-student-journal .table td:not(:nth-child(3)){
-    text-align: center;
-}
-.supervisor-student-journal .table tbody tr td {
+.supervisor-student-journal table tbody tr td {
     cursor: pointer;
 }
 

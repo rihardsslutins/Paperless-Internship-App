@@ -9,11 +9,10 @@ import PageButton from "../../../components/atoms/button/PageButton";
 // components
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import DeleteProfileModal from "../../../components/organisms/modal/DeleteProfileModal";
-
-
+import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
+// hooks
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
 
 const StudentSettings = () => {
 

@@ -32,12 +32,3 @@
         grid-column: 1 / span 2;
     }
 }
-
-/* Table */
-.student-journal .table td:nth-child(3), 
-.student-journal .table th:nth-child(3) {
-    width: 100%;
-}
-.student-journal .table td:not(:nth-child(3)){
-    text-align: center;
-}

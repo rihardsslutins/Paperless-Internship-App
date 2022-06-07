@@ -5,7 +5,7 @@ import SearchInput from "../../../components/atoms/input/SearchInput";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 // import SelectInput from "../../../components/atoms/input/SelectInput";
-import Table from "../../../components/organisms/table/Table";
+import StudentsJournalTable from "../../../components/organisms/table/StudentsJournalTable";
 
 import { useState } from "react";
 
@@ -24,7 +24,7 @@ const SupervisorJournal = () => {
     // Journal list
     const studentList = [
         {
-            journalId: '31928h312312ui3adww',
+            _id: '31928h312312ui3adww',
             name: 'Juris',
             surname: 'Bērziņš',
             phone: '22123987',
@@ -45,7 +45,7 @@ const SupervisorJournal = () => {
                         <SearchInput onChange={changeSearchQuery} />
                         {/* <SelectInput options={options} /> */}
                     </div>
-                    <Table headerCells={headerCells} data={studentList} link="../supervisor-student-journal/" />
+                    <StudentsJournalTable headerCells={headerCells} data={studentList} link="../supervisor-student-journal/" />
                 </div>
             </div>
         </div>

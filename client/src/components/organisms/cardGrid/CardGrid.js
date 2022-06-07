@@ -7,6 +7,7 @@ const CardGrid = ({
     internships,
     role
 }) => {
+    console.log(internships);
     return (
         <div>
             <div className="journals-active">

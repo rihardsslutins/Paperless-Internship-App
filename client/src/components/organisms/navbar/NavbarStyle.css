@@ -8,6 +8,7 @@
     background-color: var(--primary-color);
     align-items: center;
     padding: 15px 10%;
+    z-index: 1000;
 }
 .logo a {
     text-decoration: none;
@@ -79,6 +80,7 @@
     max-width: 60px;
     background-color: var(--primary-color);
     transition: all .3s linear;
+    z-index: 1000;
 }
 .sidebar.expanded {
     max-width: 200px;
