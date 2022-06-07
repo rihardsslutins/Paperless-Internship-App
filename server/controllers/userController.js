@@ -105,4 +105,28 @@ const get_me = async (req, res) => {
   }
 };
 
-export { user_create, user_login, get_me };
+const change_me = async (req, res) => {
+  try {
+    console.log(req.body)
+    let user;
+    const { role, email, name, surname, school, phone } = req.body
+    switch (role) {
+      case 'student':
+        user = await User.findOneAndUpdate({ email }, { $set: { name, surname, school, phone } });
+        break;
+      case 'teacher':
+        user = await User.findOneAndUpdate({ email }, { name, surname, gender, phone, school, email, password });
+        break;
+      case 'supervisor':
+        user = await User.findOneAndUpdate({ email }, { name, surname, gender, phone, field, company, email, password });
+        break;
+      default:
+        break;
+    }
+    res.status(201).json({ user })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export { user_create, user_login, get_me, change_me };

@@ -10,11 +10,15 @@ import PageButton from "../../../components/atoms/button/PageButton";
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import DeleteProfileModal from "../../../components/organisms/modal/DeleteProfileModal";
 import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
+// redux
+import { connect } from "react-redux";
 // hooks
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const StudentSettings = () => {
+const StudentSettings = (props) => {
+    console.log(props)
+    const student = props.user
 
     const navigate = useNavigate();
 
@@ -24,17 +28,17 @@ const StudentSettings = () => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
-    // Logged in users info
-    const student = { 
-        id: '6283abad20a71c3f8b4a2e07',
-        name: "Ulvis",
-        surname: "Čakstiņš",
-        school: "Saldus thenikums",
-        phone: 25412514,
-        gender: "male",
-        email: "ulvisc3@gmail.com",
-        password: "parole123"
-    }
+    // // Logged in users info
+    // const student = { 
+    //     id: '6283abad20a71c3f8b4a2e07',
+    //     name: "Ulvis",
+    //     surname: "Čakstiņš",
+    //     school: "Saldus thenikums",
+    //     phone: 25412514,
+    //     gender: "male",
+    //     email: "ulvisc3@gmail.com",
+    //     password: "parole123"
+    // }
 
     // Delete profile modal
     const [displayModal, setDisplayModal] = useState(false);
@@ -66,4 +70,8 @@ const StudentSettings = () => {
     );
 }
  
-export default StudentSettings;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(StudentSettings);
