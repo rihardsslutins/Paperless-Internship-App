@@ -18,7 +18,7 @@ const StudentJournals = () => {
 
     useEffect(() => {
         const getInternships = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/get-internships`, {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('auth')}`,
                 },

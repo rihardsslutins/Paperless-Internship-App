@@ -73,7 +73,7 @@ const get_internships = async (req, res) => {
 
 const get_internship = async (req, res) => {
     try {
-        const internship = await Internship.findOne({_id: req.body._id});
+        const internship = await Internship.findOne({_id: req.params.id});
         let { _id, isActive, company, student, teacher, supervisor, startingDate, journal } = internship;
         const Student = await User.findOne({email: internship.student})
         const Teacher = await User.findOne({email: internship.teacher})
@@ -95,6 +95,7 @@ const journal_record_create = async (req, res) => {
         const alteredInternship = await Internship.findByIdAndUpdate({ _id }, { $push: { journal: { date, taskDescription, hoursSpent } } }); 
         res.status(201).json({ alteredInternship })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ message: err.message })
     }
 }

@@ -109,13 +109,20 @@ const StudentJournal = () => {
     useEffect(() => {
         const getInternship = async () => {
             try {
-                const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/get-internship`, { _id });
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/${_id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`,
+                    }
+                }
+                );
                 console.log(response)
                 setInternship(response.data)
                 setJournal(response.data.journal)
             } catch (err) {
                 console.log(err)
             }
+            console.log('I hit')
         }
 
         getInternship()
@@ -141,7 +148,18 @@ const StudentJournal = () => {
     const handleAddJournalRecord = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/journal-record`, { _id, date, taskDescription, hoursSpent })
+            const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/journals`,
+            { 
+                _id, 
+                date, 
+                taskDescription, 
+                hoursSpent 
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`,
+                }
+            })
             console.log(response)   
         } catch (err) {
             console.log(err)
