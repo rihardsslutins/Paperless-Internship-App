@@ -93,7 +93,7 @@ const user_login = async (req, res) => {
 // @desc Get user data
 // @route GET /me
 // @access Private
-const get_me = async (req, res) => {
+const user_get_me = async (req, res) => {
   try {
     const { id, name, surname, gender, phone, school, field, company, internships, email, password, role } =
     await User.findById(req.user.id);
@@ -101,32 +101,72 @@ const get_me = async (req, res) => {
     .status(200)
     .json({ id, name, surname, gender, phone, school, field, company, internships, email, password, role });
   } catch (err) {
-    console.log(err.message)
+    res.status(401).json({ error: "Not authorized" })
   }
 };
 
+// @desc Update user basic data
+// @route POST /user
+// @access Public
 const change_me = async (req, res) => {
+  const { id, role, name, surname, school, phone, field, company, oldPassword, newPassword } = req.body
   try {
     console.log(req.body)
-    let user;
-    const { role, email, name, surname, school, phone } = req.body
-    switch (role) {
-      case 'student':
-        user = await User.findOneAndUpdate({ email }, { $set: { name, surname, school, phone } });
-        break;
-      case 'teacher':
-        user = await User.findOneAndUpdate({ email }, { name, surname, gender, phone, school, email, password });
-        break;
-      case 'supervisor':
-        user = await User.findOneAndUpdate({ email }, { name, surname, gender, phone, field, company, email, password });
-        break;
-      default:
-        break;
-    }
-    res.status(201).json({ user })
+    // switch (role) {
+    //   case 'student':
+    //     user = await User.findOneAndUpdate({ email }, { $set: { name, surname, school, phone } });
+    //     break;
+    //   case 'teacher':
+    //     user = await User.findOneAndUpdate({ email }, { name, surname, gender, phone, school, email, password });
+    //     break;
+    //   case 'supervisor':
+    //     user = await User.findOneAndUpdate({ email }, { name, surname, gender, phone, field, company, email, password });
+    //     break;
+    //   default:
+    //     break;
+    // }
+    const user = await User.findOne({ id }).clone()
+
+    user.name = name,
+    user.surname = surname,
+    user.school = school,
+    user.phone = phone
+    user.field = field
+    user.company = company
+
+    await user.save()
+    console.log(user)
+
+    res.status(200).json({ user })
   } catch (err) {
-    console.log(err)
+    let emptyErrors = {
+      name: '',
+      surname: '',
+      school: '',
+      phone: '',
+    }
+    const errors = handleErrors(emptyErrors, err, role);
+    res.status(400).json({ errors });
   }
 }
 
-export { user_create, user_login, get_me, change_me };
+// @desc handle user registration
+// @route POST /user
+// @access Private
+const reset_password = async (req, res) => {
+  const { id, oldPassword, newPassword } = req.body
+  try {
+    const user = await User.reset(id, oldPassword, newPassword);
+
+    await user.save()
+    res.status(200).json({ user })
+  } catch (err) {
+    let emptyErrors = {
+      password: ''
+    }
+    const errors = handleErrors(emptyErrors, err)
+    res.status(400).json({ errors })
+  }
+}
+
+export { user_create, user_login, user_get_me, change_me, reset_password };

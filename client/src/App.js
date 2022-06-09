@@ -51,10 +51,10 @@ function App(props) {
                         },
                     })
                     .then((res) => res.data)
-                    .then((res) =>
+                    .then((res) => {
                         dispatch(
                             setUser({
-                                _id: res._id,
+                                _id: res.id,
                                 name: res.name,
                                 surname: res.surname,
                                 school: res.school,
@@ -67,8 +67,11 @@ function App(props) {
                                 internships: res.internships,
                                 role: res.role,
                             })
-                        ),
+                        )
+                    console.log(res)
+                    }
                     )
+                    
                     .then(() => setUserIsReady(true))
                     .catch(() => setUserIsReady(true))
             }
