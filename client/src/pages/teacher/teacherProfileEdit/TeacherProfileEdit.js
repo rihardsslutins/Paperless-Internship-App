@@ -11,8 +11,58 @@ import UpdateProfileForm from "../../../components/organisms/form/UpdateProfileF
 
 import { useState } from "react";
 import Alert from "../../../components/atoms/alerts/Alert";
+// redux
+import { connect } from "react-redux";
+// packages
+import axios from 'axios';
+import Cookies from "js-cookie";
 
-const TeacherProfileEdit = () => {
+const TeacherProfileEdit = (props) => {
+
+    const teacher = props.user
+
+    // change basic info
+    const handleUpdateTeacher = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/change-me`,
+                {   
+                    id: teacher._id,
+                    role: teacher.role, 
+                    name, 
+                    surname, 
+                    school,
+                    phone
+                },
+                { 
+                    headers: { 
+                        Authorization: `Bearer ${Cookies.get('auth')}` 
+                    } 
+                }
+                )
+        } catch (err) {
+            console.log(err.response.data.errors)
+        }
+    }
+    const handleChangePassword = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
+            {   
+                id: teacher._id,
+                oldPassword,
+                newPassword
+            },
+            { 
+                headers: { 
+                    Authorization: `Bearer ${Cookies.get('auth')}` 
+                } 
+            }
+            )
+        } catch (err) {
+            console.log(err.response.data.errors)
+        }
+    }
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
@@ -20,17 +70,17 @@ const TeacherProfileEdit = () => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
     const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
 
-    // Logged in users info
-    const teacher = { 
-        id: 'uitycfjdghnvmkr6578rfed',
-        name: "Zane",
-        surname: "Krūmiņa",
-        school: "Saldus thenikums",
-        phone: 28490186,
-        gender: "female",
-        email: "zan.kru@gmail.com",
-        password: "parole123"
-    }
+    // // Logged in users info
+    // const teacher = { 
+    //     id: 'uitycfjdghnvmkr6578rfed',
+    //     name: "Zane",
+    //     surname: "Krūmiņa",
+    //     school: "Saldus thenikums",
+    //     phone: 28490186,
+    //     gender: "female",
+    //     email: "zan.kru@gmail.com",
+    //     password: "parole123"
+    // }
 
     const [editForm, setEditForm] = useState(true);
 
@@ -56,15 +106,15 @@ const TeacherProfileEdit = () => {
     const onChangeArray = [changeName, changeSurname, changeSchool, changePhone];
     const formValue = [name, surname, school, phone];
 
-    const handleUpdateStudent = (e) => {
-        e.preventDefault();
-        if (name.length && surname.length && school.length && phone) {
-            console.log(name, surname, school, phone);
-            setAlert('');
-        } else {
-            setAlert('Aizpildiet visus ievades laukus!');
-        }
-    }
+    // const handleUpdateTeacher = (e) => {
+    //     e.preventDefault();
+    //     if (name.length && surname.length && school.length && phone) {
+    //         console.log(name, surname, school, phone);
+    //         setAlert('');
+    //     } else {
+    //         setAlert('Aizpildiet visus ievades laukus!');
+    //     }
+    // }
 
     // Edit user password
     const [oldPassword, setOldPassword] = useState('');
@@ -80,23 +130,23 @@ const TeacherProfileEdit = () => {
     const passwordFormTypes = ['password', 'password', 'password'];
     const passwordFormOnChange = [changeOldPassword, changeNewPassword, changeConfirmNewPassword];
 
-    const handleChangePassword = (e) => {
-        e.preventDefault();
-        if (oldPassword.length && newPassword.length && confirmNewPassword.length) {
-            if (oldPassword === teacher.password) {
-                if (newPassword === confirmNewPassword) {
-                    console.log('Parole tika nomainīta!');
-                    setAlert('');
-                } else {
-                    setAlert('Jaunā parole nesakrīt!');
-                }
-            } else {
-                setAlert('Parole nav pareiza!');
-            }
-        } else {
-            setAlert('Aizpildiet visus ievades laukus!');
-        }
-    }
+    // const handleChangePassword = (e) => {
+    //     e.preventDefault();
+    //     if (oldPassword.length && newPassword.length && confirmNewPassword.length) {
+    //         if (oldPassword === teacher.password) {
+    //             if (newPassword === confirmNewPassword) {
+    //                 console.log('Parole tika nomainīta!');
+    //                 setAlert('');
+    //             } else {
+    //                 setAlert('Jaunā parole nesakrīt!');
+    //             }
+    //         } else {
+    //             setAlert('Parole nav pareiza!');
+    //         }
+    //     } else {
+    //         setAlert('Aizpildiet visus ievades laukus!');
+    //     }
+    // }
 
     // Alert
     const [alert, setAlert] = useState('');
@@ -131,7 +181,7 @@ const TeacherProfileEdit = () => {
                             type={editForm ? formTypes : passwordFormTypes}
                             onChange={editForm ? onChangeArray : passwordFormOnChange}
                             value={editForm ? formValue : ''}
-                            onClick={editForm ? handleUpdateStudent : handleChangePassword}
+                            onClick={editForm ? handleUpdateTeacher : handleChangePassword}
                             buttonText={editForm ? 'Saglabāt izmaiņas' : 'Mainīt paroli'}
                         />
                 </div>
@@ -140,4 +190,8 @@ const TeacherProfileEdit = () => {
     );
 }
  
-export default TeacherProfileEdit;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(TeacherProfileEdit);
