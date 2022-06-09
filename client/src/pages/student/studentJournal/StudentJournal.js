@@ -148,7 +148,7 @@ const StudentJournal = () => {
     const handleAddJournalRecord = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/journals`,
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/journals`,
             { 
                 _id, 
                 date, 

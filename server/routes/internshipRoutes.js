@@ -18,6 +18,6 @@ internshipRouter.get('/internships', protect, get_internships)
 internshipRouter.get('/internships/:id', protect, get_internship)
 
 // create a journal record
-internshipRouter.put('/journals', protect, journal_record_create)
+internshipRouter.post('/journals', protect, journal_record_create)
 
 export default internshipRouter;

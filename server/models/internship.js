@@ -24,7 +24,6 @@ const journalSchema = new Schema({
     },
     grade: {
         type: Number,
-        required: [true, 'Lūdzu ievadi ieraksta datumu']
     }
 })
 
@@ -61,9 +60,9 @@ const internshipSchema = new Schema({
     },
     journal: {
         type: [journalSchema],
-        validate: (element) => {
-            throw Error(`sdfdsfsd ${element[0]}`)
-        }
+        // validate: (element) => {
+        //     throw Error(`sdfdsfsd ${element[0]}`)
+        // }
     }
 });
 
