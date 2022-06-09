@@ -3,7 +3,7 @@ import "./Forms.css";
 // atoms
 import PageButton from '../../atoms/button/PageButton';
 // molecules
-import InputGroup from '../../molecules/labeledInput/InputGroup';
+import InputGroupValue from "../../molecules/labeledInput/InputGroupValue";
 
 const JournalForm = ({
     id,
@@ -11,6 +11,7 @@ const JournalForm = ({
     type,
     name,
     label,
+    value,
     placeholder,
     onClick,
     buttonText
@@ -18,11 +19,12 @@ const JournalForm = ({
     let inputArray = [];
     for (let i = 0; i < name.length; i++) {
         inputArray.push(
-            <InputGroup
+            <InputGroupValue
                 id={id[i]}
                 onChange={onChange[i]}
                 type={type[i]}
                 name={name[i]}
+                value={value[i]}
                 label={label[i]}
                 placeholder={placeholder[i]}
                 key={[i]}

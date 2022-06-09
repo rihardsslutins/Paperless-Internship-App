@@ -15,8 +15,10 @@ import { Link } from 'react-router-dom';
 const StudentJournals = () => {
 
     const [internships, setInternships] = useState('')
+    const [isPending, setIsPending] = useState(false);
 
     useEffect(() => {
+        setIsPending(true);
         const getInternships = async () => {
             const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/get-internships`, {
                 headers: {
@@ -24,9 +26,8 @@ const StudentJournals = () => {
                 },
             });
             setInternships(response.data.internships)
-            console.log(internships)
+            setIsPending(false);
         }
-
         getInternships()
     }, [])
 
@@ -79,7 +80,10 @@ const StudentJournals = () => {
                         <PageButton2 text="Izveidot jaunu" active="" />
                     </Link>
                 </div>
-                <CardGrid internships={internships} role="student" />
+                {isPending && <div className="loading"></div>}
+                {!isPending && 
+                    <CardGrid internships={internships} role="student" />
+                }
             </div>
         </>
     );

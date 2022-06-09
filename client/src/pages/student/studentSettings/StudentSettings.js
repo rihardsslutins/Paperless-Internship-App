@@ -33,7 +33,19 @@ const StudentSettings = () => {
         phone: 25412514,
         gender: "male",
         email: "ulvisc3@gmail.com",
-        password: "parole123"
+        password: "parole123",
+        teachers: [
+            {
+                teacherName: "Elīna",
+                teacherSurname: "Dēvita",
+                email: "elina@gmail.com"
+            },
+            {
+                teacherName: "Mārtiņs",
+                teacherSurname: "Zīlīte",
+                email: "martins@gmail.com"
+            }
+        ]
     }
 
     // Delete profile modal
@@ -56,6 +68,18 @@ const StudentSettings = () => {
                         <PageButton text='Rediģēt profilu' onClick={() => navigate("../student-profile-edit")} />
                         <div className="student-theme">
                             Mājaslapas motīvs: <ThemeToggle />
+                        </div>
+                        <div className="student-teachers">
+                            <h3>Skolotāji</h3>
+                            <div className="student-teachers-grid">
+                                {student.teachers.length ?
+                                        student.teachers.map((teacher) => (
+                                            <p>{teacher.teacherName} {teacher.teacherSurname}</p>
+                                        ))
+                                    :
+                                        <p>Nav pievienots neviens skolotājs</p>
+                                }
+                            </div>
                         </div>
                     </div>
                     <DangerButton text='Dzēst profilu' onClick={() => setDisplayModal(true)} />

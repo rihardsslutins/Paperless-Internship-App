@@ -10,6 +10,13 @@
 .alert-text {
     margin: 0 15px;
 }
+.alert-link {
+    color: var(--primary-text);
+    transition: all .4s;
+}
+.alert-link:hover {
+    color: var(--secondary-text);
+}
 .close-alert {
     cursor: pointer;
     transition: all .3s linear;

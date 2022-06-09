@@ -14,6 +14,7 @@ import Cookies from 'js-cookie';
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Alert from '../../../components/atoms/alerts/Alert';
 
 const StudentJournal = () => {
     const navigate = useNavigate()
@@ -21,6 +22,7 @@ const StudentJournal = () => {
     const { id: _id } = useParams();
     const [internship, setInternship] = useState('');
     const [journal, setJournal] = useState([]);
+    const [isPending, setIsPending] = useState(false);
 
     // const internships = [
     //     {
@@ -105,22 +107,22 @@ const StudentJournal = () => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
-    // Display record where journal id matches id psaram
     useEffect(() => {
         const getInternship = async () => {
+            setIsPending(true);
             try {
                 const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/get-internship`, { _id });
-                console.log(response)
-                setInternship(response.data)
-                setJournal(response.data.journal)
+                setInternship(response.data);
+                setJournal(response.data.journal);
+                setIsPending(false);
             } catch (err) {
-                console.log(err)
+                console.log(err);
+                setIsPending(false);
             }
         }
-
         getInternship()
     }, [_id])
-
+    
     // Table
     const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
 
@@ -137,12 +139,36 @@ const StudentJournal = () => {
     const formLabels = ['Datums:', 'Izpildītā darba īss raksturojums:', 'Izpildes laiks:'];
     const formNames = ['date', 'taskDesc', 'time'];
     const formTypes = ['date', 'text', 'number'];
+    const formValues = [date, taskDescription, hoursSpent];
+
+    // Alert
+    const [alert, setAlert] = useState('');
+    const [alertType, setAlertType] = useState('');
+    const handleAlertClose = () => {
+        setAlert('');
+        setAlertType('');
+    };
 
     const handleAddJournalRecord = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/journal-record`, { _id, date, taskDescription, hoursSpent })
-            console.log(response)   
+            if (!date) {
+                setAlert('Lūdzu ievadiet datumu!')
+                setAlertType('warning')
+            } else if (!taskDescription) {
+                setAlert('Lūdzu ievadiet izpildītā darba raksturojumu!')
+                setAlertType('warning')
+            } else if (!hoursSpent) {
+                setAlert('Lūdzu ievadiet izpildes laiku!')
+                setAlertType('warning')
+            } else {
+                    await axios.post(`${process.env.REACT_APP_SERVER_URL}/journal-record`, { _id, date, taskDescription, hoursSpent })
+                    setAlertType('success')
+                    setAlert('Ieraksts tika pievienots dienasgrāmatai!')
+                    setDate('');
+                    setTaskDescription('');
+                    setHoursSpent('');
+            }
         } catch (err) {
             console.log(err)
         }
@@ -162,49 +188,62 @@ const StudentJournal = () => {
                 page="student-journals"
             />
             <div className="dashboard-container">
-                {internship._id && (
-                    <div className="student-journal">
-                        <div className="student-journal-header">
-                            <PageButton2
-                                text="Atpakaļ"
-                                active=""
-                                onClick={() => navigate(-1)}
-                            />
-                            <h1>{internship.company}</h1>
-                            {internship.isActive && (
-                                <DangerButton
-                                    text="Noslēgt praksi"
-                                    onClick={() => setDisplayModal(true)}
-                                />
-                            )}
-                            <div className="student-journal-info">
-                                <p>Prakses vadītājs: {internship.supervisor}</p>
-                                <p>Skolotāja: {internship.teacher}</p>
-                                <p>Praktikants: {internship.student}</p>
+                {isPending && <div className="loading"></div>}
+                {!isPending &&
+                    <>
+                        {internship._id && (
+                            <div className="student-journal">
+                                <div className="student-journal-header">
+                                    <PageButton2
+                                        text="Atpakaļ"
+                                        active=""
+                                        onClick={() => navigate("../student-journals")}
+                                    />
+                                    <h1>{internship.company}</h1>
+                                    {internship.isActive && (
+                                        <DangerButton
+                                            text="Noslēgt praksi"
+                                            onClick={() => setDisplayModal(true)}
+                                        />
+                                    )}
+                                    <div className="student-journal-info">
+                                        <p>Prakses vadītājs: {internship.supervisor}</p>
+                                        <p>Skolotāja: {internship.teacher}</p>
+                                        <p>Praktikants: {internship.student}</p>
+                                    </div>
+                                </div>
+                                <JournalTable headerCells={headerCells} data={journal} />
+                                {alert &&
+                                    <Alert
+                                        type={alertType}
+                                        text={alert}
+                                        handleAlertClose={handleAlertClose}
+                                    />
+                                }
+                                {internship.isActive && (
+                                    <JournalRecordForm
+                                        id={formNames}
+                                        name={formNames}
+                                        label={formLabels}
+                                        type={formTypes}
+                                        value={formValues}
+                                        onClick={handleAddJournalRecord}
+                                        onChange={onChangeArray}
+                                        buttonText="Pievienot"
+                                    />
+                                )}
+                                {internship.isActive && (
+                                    <JournalModal
+                                        companyName={internship.company}
+                                        display={displayModal}
+                                        handleClose={handleClose}
+                                    />
+                                )}
                             </div>
-                        </div>
-                        <JournalTable headerCells={headerCells} data={journal} />
-                        {internship.isActive && (
-                            <JournalRecordForm
-                                id={formNames}
-                                name={formNames}
-                                label={formLabels}
-                                type={formTypes}
-                                onClick={handleAddJournalRecord}
-                                onChange={onChangeArray}
-                                buttonText="Pievienot"
-                            />
                         )}
-                        {internship.isActive && (
-                            <JournalModal
-                                companyName={internship.company}
-                                display={displayModal}
-                                handleClose={handleClose}
-                            />
-                        )}
-                    </div>
-                )}
-                {!internship._id && <h2>Šāda dienasgrāmata nepastāv</h2>}
+                        {!internship._id && <h2>Šāda dienasgrāmata nepastāv</h2>}
+                    </>
+                }
             </div>
         </>
     );

@@ -35,6 +35,19 @@
     align-items: center;
     gap: 10px;
 }
+.student-teachers h3{
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+.student-teachers {
+    font-size: 20px;
+}
+.student-teachers-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 .student-settings button {
     margin-left: auto;
     height: fit-content;

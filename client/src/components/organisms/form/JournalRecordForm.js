@@ -3,14 +3,15 @@ import "./Forms.css";
 // atoms
 import PageButton from "../../atoms/button/PageButton";
 // molecules
-import InputGroup from "../../molecules/labeledInput/InputGroup";
 import TextareaGroup from "../../molecules/labeledInput/TextareaGroup";
+import InputGroupValue from "../../molecules/labeledInput/InputGroupValue";
 
 const JournalRecordForm = ({
     id,
     name,
     label,
     type,
+    value,
     onClick,
     onChange,
     buttonText
@@ -24,16 +25,18 @@ const JournalRecordForm = ({
                     onChange={onChange[i]}
                     type={type[i]}
                     name={name[i]}
+                    value={value[i]}
                     label={label[i]}
                     key={[i]} 
                 />
             );
         } else {
             inputArray.push(
-                <InputGroup
+                <InputGroupValue
                     id={id[i]}
                     onChange={onChange[i]}
                     type={type[i]}
+                    value={value[i]}
                     name={name[i]}
                     label={label[i]}
                     key={[i]}

@@ -1,9 +1,13 @@
 .journals-active {
     padding-bottom: 80px;
 }
+.no-journals {
+    text-align: center;
+}
 .journals-active h2,
 .journals-finished h2 {
     padding-bottom: 30px;
+    text-align: left;
 }
 
 /* Journal Card Grid */
