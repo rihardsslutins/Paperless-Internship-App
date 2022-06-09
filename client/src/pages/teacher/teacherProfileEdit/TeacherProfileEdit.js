@@ -47,6 +47,7 @@ const TeacherProfileEdit = (props) => {
     const handleChangePassword = async (e) => {
         e.preventDefault()
         try {
+            console.log(teacher._id)
             await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
             {   
                 id: teacher._id,

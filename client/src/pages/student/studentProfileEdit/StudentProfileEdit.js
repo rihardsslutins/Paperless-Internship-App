@@ -131,8 +131,6 @@ const StudentProfileEdit = (props) => {
                 }
                 )
         } catch (err) {
-            console.log("I hit")
-
             console.log(err.response.data.errors)
         }
     }
