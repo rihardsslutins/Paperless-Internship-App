@@ -106,26 +106,63 @@ const user_get_me = async (req, res) => {
 };
 
 // @desc Update user basic data
-// @route POST /user
+// @route POST /tbd
 // @access Public
 const change_me = async (req, res) => {
-  const { id, role, name, surname, school, phone, field, company, oldPassword, newPassword } = req.body
+  const { id, role, name, surname, school, phone, field, company } = req.body
+  console.log(role)
   try {
-    console.log(req.body)
-    // switch (role) {
-    //   case 'student':
-    //     user = await User.findOneAndUpdate({ email }, { $set: { name, surname, school, phone } });
-    //     break;
-    //   case 'teacher':
-    //     user = await User.findOneAndUpdate({ email }, { name, surname, gender, phone, school, email, password });
-    //     break;
-    //   case 'supervisor':
-    //     user = await User.findOneAndUpdate({ email }, { name, surname, gender, phone, field, company, email, password });
-    //     break;
-    //   default:
-    //     break;
+  //   switch (role) {
+  //     case 'student':
+  //       let student = await User.findOne({ _id: id });
+  //       console.log(student)
+  //       student.name = name
+  //       student.surname = surname
+  //       student.school = school
+  //       student.phone = phone
+        
+  //       student.save()
+  //       res.status(200).json({ student })
+  //       break;
+  //     case 'teacher':
+  //       let teacher = await User.findOne({ _id: id });
+  //       console.log(teacher)
+  //       teacher.name = name
+  //       teacher.surname = surname
+  //       teacher.school = school
+  //       teacher.phone = phone
+        
+  //       teacher.save()
+  //       res.status(200).json({ teacher })
+  //       break;
+  //     case 'supervisor':
+  //       let supervisor = await User.findOne({ _id: id });
+  //       supervisor.name = name
+  //       supervisor.surname = surname
+  //       supervisor.field = field
+  //       supervisor.company = company
+  //       supervisor.phone = phone
+
+  //       supervisor.save()
+  //       res.status(200).json({ supervisor })
+  //       break;
+  //     default:
+  //       break;
+  //   }
+
+    // let user;
+    // if (role === 'student') {
+    //     let student = await User.findOne({ _id: id });
+    //     console.log(student)
+    //     student.name = name
+    //     student.surname = surname
+    //     student.school = school
+    //     student.phone = phone
     // }
-    const user = await User.findOne({ id }).clone()
+
+    const user = await User.findOne({ _id: id })
+
+    console.log(user)
 
     user.name = name,
     user.surname = surname,
@@ -139,19 +176,23 @@ const change_me = async (req, res) => {
 
     res.status(200).json({ user })
   } catch (err) {
+    console.log("YAYAYAYAYAAY")
     let emptyErrors = {
       name: '',
       surname: '',
       school: '',
+      field: '',
+      company: '',
       phone: '',
     }
+    console.log(err)
     const errors = handleErrors(emptyErrors, err, role);
     res.status(400).json({ errors });
   }
 }
 
-// @desc handle user registration
-// @route POST /user
+// @desc handle user password reset
+// @route POST /tbd
 // @access Private
 const reset_password = async (req, res) => {
   const { id, oldPassword, newPassword } = req.body

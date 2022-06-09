@@ -99,32 +99,30 @@ userSchema.statics.reset = async function (id, oldPassword, newPassword) {
 
 const User = mongoose.model('user', userSchema);
 
-const StudentUser = User.discriminator(
-  'student',
-  new Schema({
-    school: {
-      type: String,
-      required: [true, 'Lūdzu ievadi skolu'],
-    },
-    internships: [{ type: String }],
-  }),
-  options,
-);
-
 const TeacherUser = User.discriminator(
   'teacher',
   new Schema(
     {
+      students: {
+        type: [String],
+      },
       school: {
         type: String,
         required: [true, 'Lūdzu ievadi skolu'],
       },
-      students: {
-        type: [String],
-      },
+    }), options
+);
+
+const StudentUser = User.discriminator(
+  'student',
+  new Schema({
+    internships: [{ type: String }],
+    school: {
+      type: String,
+      required: [true, 'Lūdzu ievadi skolu'],
     },
-    options,
-  ),
+  }),
+  options,
 );
 
 const SupervisorUser = User.discriminator(
@@ -139,9 +137,7 @@ const SupervisorUser = User.discriminator(
         type: String,
         required: [true, 'Lūdzu ievadi uzņēmumu'],
       },
-    },
-    options,
-  ),
+    }), options
 );
 
 export { User, StudentUser, TeacherUser, SupervisorUser };

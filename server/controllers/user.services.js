@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 // that is meant to be sent to the client,
 // from whatever error the User model returned
 const handleErrors = (emptyErrorObject, err, role) => {
+  console.log("I hit")
   // REGISTER
 
   console.log(err)
