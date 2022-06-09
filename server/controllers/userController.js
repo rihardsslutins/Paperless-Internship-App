@@ -176,7 +176,6 @@ const change_me = async (req, res) => {
 
     res.status(200).json({ user })
   } catch (err) {
-    console.log("YAYAYAYAYAAY")
     let emptyErrors = {
       name: '',
       surname: '',
@@ -196,9 +195,10 @@ const change_me = async (req, res) => {
 // @access Private
 const reset_password = async (req, res) => {
   const { id, oldPassword, newPassword } = req.body
+  console.log(id)
   try {
     const user = await User.reset(id, oldPassword, newPassword);
-
+    
     await user.save()
     res.status(200).json({ user })
   } catch (err) {

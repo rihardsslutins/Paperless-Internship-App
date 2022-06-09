@@ -69,8 +69,7 @@ userSchema.statics.login = async function (email, password) {
 
 // resets password
 userSchema.statics.reset = async function (id, oldPassword, newPassword) {
-  const user = await this.findOne({ id })
-  console.log(user)
+  const user = await User.findOne({ _id: id })
   if (!oldPassword) {
     throw Error('Lūdzu ievadi veco paroli');
   }
