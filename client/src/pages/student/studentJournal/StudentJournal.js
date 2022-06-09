@@ -111,14 +111,22 @@ const StudentJournal = () => {
         const getInternship = async () => {
             setIsPending(true);
             try {
-                const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/get-internship`, { _id });
-                setInternship(response.data);
-                setJournal(response.data.journal);
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/${_id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`,
+                    }
+                }
+                );
+                console.log(response)
+                setInternship(response.data)
+                setJournal(response.data.journal)
                 setIsPending(false);
             } catch (err) {
                 console.log(err);
                 setIsPending(false);
             }
+            console.log('I hit')
         }
         getInternship()
     }, [_id])
@@ -162,12 +170,23 @@ const StudentJournal = () => {
                 setAlert('Lūdzu ievadiet izpildes laiku!')
                 setAlertType('warning')
             } else {
-                    await axios.post(`${process.env.REACT_APP_SERVER_URL}/journal-record`, { _id, date, taskDescription, hoursSpent })
-                    setAlertType('success')
-                    setAlert('Ieraksts tika pievienots dienasgrāmatai!')
-                    setDate('');
-                    setTaskDescription('');
-                    setHoursSpent('');
+                await axios.post(`${process.env.REACT_APP_SERVER_URL}/journals`,
+                { 
+                    _id, 
+                    date, 
+                    taskDescription, 
+                    hoursSpent 
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`,
+                    }
+                })
+                setAlertType('success')
+                setAlert('Ieraksts tika pievienots dienasgrāmatai!')
+                setDate('');
+                setTaskDescription('');
+                setHoursSpent('');
             }
         } catch (err) {
             console.log(err)

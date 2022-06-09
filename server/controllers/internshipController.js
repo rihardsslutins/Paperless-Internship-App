@@ -4,7 +4,6 @@ import { User } from "../models/user.js";
 
 // functions
 
-
 // @desc handle internship creation
 // @route POST /internship
 // @access Private
@@ -17,7 +16,7 @@ const internship_create = async (req, res) => {
         supervisor: '',
         startingDate: '', 
     }
-    // handles error object from mongoose
+
     const handleErrors = (err) => {
         if (err.message.includes('internship validation failed')) {
             Object.values(err.errors).forEach(({ properties }) => {
@@ -73,7 +72,7 @@ const get_internships = async (req, res) => {
 
 const get_internship = async (req, res) => {
     try {
-        const internship = await Internship.findOne({_id: req.body._id});
+        const internship = await Internship.findOne({_id: req.params.id});
         let { _id, isActive, company, student, teacher, supervisor, startingDate, journal } = internship;
         const Student = await User.findOne({email: internship.student})
         const Teacher = await User.findOne({email: internship.teacher})
@@ -90,12 +89,34 @@ const get_internship = async (req, res) => {
 
 const journal_record_create = async (req, res) => {
     const { _id, date, taskDescription, hoursSpent } = req.body
-    console.log(req.body)
+
+    let errors = {
+        date: '',
+        taskDescription: '',
+        hoursSpent: '',
+    }
+
+    const handleErrors = (err) => {
+        if (err.message.includes('internship validation failed')) {
+            Object.values(err.errors).forEach(({ properties }) => {
+                console.log(properties.message)
+              errors[properties.path] = properties.message;
+            });
+          }
+    }
     try {
-        const alteredInternship = await Internship.findByIdAndUpdate({ _id }, { $push: { journal: { date, taskDescription, hoursSpent } } }); 
-        res.status(201).json({ alteredInternship })
+        const internship = await Internship.findOne({_id}).clone()
+        internship.journal.push({
+            date,
+            taskDescription,
+            hoursSpent,
+        })
+
+        await internship.save()
+        res.status(201).json({ internship })
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        handleErrors(err)
+        res.status(400).json({ errors })
     }
 }
 

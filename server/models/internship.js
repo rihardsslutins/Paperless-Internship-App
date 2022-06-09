@@ -2,20 +2,28 @@
 import mongoose from "mongoose";
 import isEmail from 'validator/lib/isEmail.js'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
-const Journal = new Schema({
+const validator = (array) => {
+    throw Error("sdfsdfds")
+}
+
+const journalSchema = new Schema({
     date: {
-        type: String
+        type: String,
+        required: [true, 'Lūdzu ievadi datumu'],
     },
     taskDescription: {
-        type: String
+        type: String,
+        required: [true, 'Lūdzu ievadi aprakstu']
     },
     hoursSpent: {
-        type: Number
+        type: Number,
+        max: [8, 'Lūdzu ievadi pavadīto stundu skaitu, kas nepārsniedz 8'],
+        required: [true, 'Lūdzu ievadi pavadīto laiku']
     },
     grade: {
-        type: Number
+        type: Number,
     }
 })
 
@@ -50,7 +58,12 @@ const internshipSchema = new Schema({
         type: String,
         required: [true, 'Lūdzu ievadi datumu kurā sākās prakse']
     },
-    journal: [Journal]
+    journal: {
+        type: [journalSchema],
+        // validate: (element) => {
+        //     throw Error(`sdfdsfsd ${element[0]}`)
+        // }
+    }
 });
 
 const Internship = mongoose.model('internship', internshipSchema);

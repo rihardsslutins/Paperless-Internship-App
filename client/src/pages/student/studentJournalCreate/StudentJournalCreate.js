@@ -81,7 +81,7 @@ const StudentJournalCreate = (props) => {
                 setAlert('Lūdzu ievadi prakses sākuma datumu!')
                 setAlertType('warning')
             }  else {
-                await axios.post(`${process.env.REACT_APP_SERVER_URL}/internship`,
+                await axios.post(`${process.env.REACT_APP_SERVER_URL}/internships`,
                 {
                     company,
                     student: props.user.email,

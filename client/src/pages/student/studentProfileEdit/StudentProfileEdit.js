@@ -9,10 +9,17 @@ import PageButton from "../../../components/atoms/button/PageButton";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import UpdateProfileForm from "../../../components/organisms/form/UpdateProfileForm";
+// redux
+import { connect } from "react-redux";
+// packages
+import axios from 'axios';
+import Cookies from "js-cookie";
 
 import { useState } from "react";
 
-const StudentProfileEdit = () => {
+const StudentProfileEdit = (props) => {
+
+    const student = props.user
 
     // Sidebar
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
@@ -20,17 +27,17 @@ const StudentProfileEdit = () => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
-    // Logged in users info
-    const student = { 
-        id: '6283abad20a71c3f8b4a2e07',
-        name: "Ulvis",
-        surname: "Čakstiņš",
-        school: "Saldus thenikums",
-        phone: 25412514,
-        gender: "male",
-        email: "ulvisc3@gmail.com",
-        password: "parole123"
-    }
+    // // Logged in users info
+    // const student = { 
+    //     id: '6283abad20a71c3f8b4a2e07',
+    //     name: "Ulvis",
+    //     surname: "Čakstiņš",
+    //     school: "Saldus thenikums",
+    //     phone: 25412514,
+    //     gender: "male",
+    //     email: "ulvisc3@gmail.com",
+    //     password: "parole123"
+    // }
 
     const [editForm, setEditForm] = useState(true);
 
@@ -56,15 +63,15 @@ const StudentProfileEdit = () => {
     const onChangeArray = [changeName, changeSurname, changeSchool, changePhone];
     const formValue = [name, surname, school, phone];
 
-    const handleUpdateStudent = (e) => {
-        e.preventDefault();
-        if (name.length && surname.length && school.length && phone) {
-            console.log(name, surname, school, phone);
-            setAlert('');
-        } else {
-            setAlert('Aizpildiet visus ievades laukus!');
-        }
-    }
+    // const handleUpdateStudent = (e) => {
+    //     e.preventDefault();
+    //     if (name && surname && school && phone) {
+    //         console.log(name, surname, school, phone);
+    //         setAlert('');
+    //     } else {
+    //         setAlert('Aizpildiet visus ievades laukus!');
+    //     }
+    // }
 
     // Edit user password
     const [oldPassword, setOldPassword] = useState('');
@@ -82,7 +89,7 @@ const StudentProfileEdit = () => {
 
     const handleChangePassword = (e) => {
         e.preventDefault();
-        if (oldPassword.length && newPassword.length && confirmNewPassword.length) {
+        if (oldPassword && newPassword && confirmNewPassword) {
             if (oldPassword === student.password) {
                 if (newPassword === confirmNewPassword) {
                     console.log('Parole tika nomainīta!');
@@ -103,6 +110,18 @@ const StudentProfileEdit = () => {
     const handleAlertClose = () => {
         setAlert('');
     };
+
+    // change basic info
+    const handleUpdateStudent = async (e) => {
+        e.preventDefault()
+        try {
+            console.log(school)
+            const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/change-me`, { role: student.role, email: student.email, name, surname, school, phone }, { headers: { Authorization: `Bearer ${Cookies.get('auth')}` } })
+            console.log(response)
+        } catch (err) {
+            console.log(err)
+        }
+    }
    
     return (
         <>
@@ -139,4 +158,8 @@ const StudentProfileEdit = () => {
     );
 }
  
-export default StudentProfileEdit;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(StudentProfileEdit);
