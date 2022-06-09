@@ -76,7 +76,6 @@ function App(props) {
         };
         getUser();
     }, [dispatch, props.user._id]);
-    console.log(userIsReady);
     return (
         <div className={`App ${theme}`}>
             {userIsReady && (

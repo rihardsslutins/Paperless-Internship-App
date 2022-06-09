@@ -7,26 +7,48 @@ const CardGrid = ({
     internships,
     role
 }) => {
-    console.log(internships);
+    let activeInternships = [];
+    let inactiveInternships = [];
+    for (let i = 0; i < internships.length; i++) {
+        internships[i].isActive ?
+            activeInternships.push(internships[i])
+        :
+            inactiveInternships.push(internships[i])
+    }
     return (
-        <div>
-            <div className="journals-active">
-                <h2>Aktīvs</h2>
-                <div className="journals-grid">
-                    {internships && internships.map((internship) => (
-                        internship.isActive && <JournalCard journalCard={internship} key={internship._id} role={role}  />
-                    ))}
+        <>
+            {!internships.length ? 
+                <h2 className="no-journals"> Nav nevienas dienasgrāmatas</h2>
+            :
+                <div>
+                    <div className="journals-active">
+                        <h2>Aktīvs</h2>
+                            {activeInternships.length ?
+                                    <div className="journals-grid">
+                                        {activeInternships.map((activeInternship) => (
+                                                <JournalCard journalCard={activeInternship} key={activeInternship._id} role={role}  />
+                                        ))}
+                                    </div>
+                                :
+                                    <h3>Nav nevienas aktīvas dienasgrāmatas</h3>
+                            }
+                    </div>
+                    <div className="journals-finished">
+                        <h2>Pabeigts</h2>
+                            {inactiveInternships.length ?
+                                    <div className="journals-grid">
+                                        {inactiveInternships.map((inactiveInternship) => (
+                                            <JournalCard journalCard={inactiveInternship} key={inactiveInternship._id} role={role}  />
+                                        ))}
+                                    </div>
+                                :
+                                    <h3>Nav nevienas pabeigtas dienasgrāmatas</h3>
+                            }
+                        
+                    </div>
                 </div>
-            </div>
-            <div className="journals-finished">
-                <h2>Pabeigts</h2>
-                <div className="journals-grid">
-                    {internships && internships.map((internship) => (
-                        !internship.isActive && <JournalCard journalCard={internship} key={internship._id} role={role} />
-                    ))}
-                </div>
-            </div>
-        </div>
+            }
+        </>
     );
 }
  

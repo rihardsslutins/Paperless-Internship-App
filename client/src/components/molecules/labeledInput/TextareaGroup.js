@@ -5,7 +5,15 @@ import "./InputGroup.css";
 import Textarea from '../../atoms/input/Textarea';
 import Label from '../../atoms/label/Label';
 
-const TextareaGroup = ({ id, onChange, type, name, placeholder, label }) => {
+const TextareaGroup = ({ 
+    id, 
+    onChange, 
+    type, 
+    name,
+    value,
+    placeholder, 
+    label 
+}) => {
     return (
         <div className="textarea-group">
             <Label id={id} label={label} />
@@ -13,6 +21,7 @@ const TextareaGroup = ({ id, onChange, type, name, placeholder, label }) => {
                 id={id}
                 type={type}
                 name={name}
+                value={value}
                 placeholder={placeholder}
                 onChange={onChange}
             />

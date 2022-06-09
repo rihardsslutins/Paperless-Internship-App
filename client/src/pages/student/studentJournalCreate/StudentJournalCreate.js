@@ -2,6 +2,7 @@
 import "./StudentJournalCreate.css";
 // atoms
 import Alert from "../../../components/atoms/alerts/Alert";
+import PageButton2 from "../../../components/atoms/button/PageButton2";
 // organism
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import JournalForm from "../../../components/organisms/form/JournalForm";
@@ -12,9 +13,12 @@ import axios from "axios";
 import { connect } from "react-redux";
 // hooks
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const StudentJournalCreate = (props) => {
+
+    const navigate = useNavigate();
 
     const handleErrors = (errors, propertyOrder) => {
         for (let i = 0; i < propertyOrder.length; i++) {
@@ -50,25 +54,32 @@ const StudentJournalCreate = (props) => {
     const formNames = ['company', 'teacher', 'supervisor', 'startingDate'];
     const formTypes = ['text', 'email', 'email', 'date'];
     const formPlaceholders = ['', 'E-pasts', 'E-pasts', ''];
+    const formValues = [company, teacherEmail, supervisorEmail, startingDate];
 
     // Alert
     const [alert, setAlert] = useState('');
-    const [alertType, setAlertType] = useState('warning')
+    const [alertType, setAlertType] = useState('');
+    const [alertLink, setAlertLink] = useState([]);
     const handleAlertClose = () => {
         setAlert('');
+        setAlertType('');
     };
 
     const handleCreateJournal = async (e) => {
         e.preventDefault()
         try {
             if (!company) {
-                setAlert('Lūdzu ievadi uzņēmuma nosaukumu')
+                setAlert('Lūdzu ievadi uzņēmuma nosaukumu!')
+                setAlertType('warning')
             } else if (!teacherEmail) {
-                setAlert('Lūdzu ievadi prakses vadītāja (no skolas) epastu')
+                setAlert('Lūdzu ievadi prakses vadītāja (no skolas) epastu!')
+                setAlertType('warning')
             } else if (!supervisorEmail) {
-                setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu')
+                setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu!')
+                setAlertType('warning')
             } else if (!startingDate) {
-                setAlert('Lūdzu ievadi prakses sākuma datumu')
+                setAlert('Lūdzu ievadi prakses sākuma datumu!')
+                setAlertType('warning')
             }  else {
                 await axios.post(`${process.env.REACT_APP_SERVER_URL}/internships`,
                 {
@@ -84,8 +95,13 @@ const StudentJournalCreate = (props) => {
                     },
                 }
                 )
-                setAlertType('success')
-                setAlert('Dienasgrāmata ir izveidota!')
+                setAlertType('success');
+                setAlert('Dienasgrāmata ir izveidota!');
+                setAlertLink(['Doties uz dienasgrāmatu', '/student-journals']);
+                setCompany('');
+                setTeacherEmail('');
+                setSupervisorEmail('');
+                setStartingDate('');
             }
         } catch (err) {
             const errors = err.response.data.errors;
@@ -100,11 +116,19 @@ const StudentJournalCreate = (props) => {
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="student-journals" />
             <div className="dashboard-container">
                 <div className="student-journal-create">
-                    <h1>Dienasgrāmatas izveide</h1>
+                    <div className="student-create-journal-header">
+                        <PageButton2
+                            text="Atpakaļ"
+                            active=""
+                            onClick={() => navigate("../student-journals")}
+                        />
+                        <h1>Dienasgrāmatas izveide</h1>
+                    </div>
                     {alert && 
                         <Alert 
                             type={alertType}
                             text={alert}
+                            link={alertLink}
                             handleAlertClose={handleAlertClose}
                         />
                     }
@@ -113,6 +137,7 @@ const StudentJournalCreate = (props) => {
                         name={formNames}
                         label={formLabels}
                         type={formTypes}
+                        value={formValues}
                         placeholder={formPlaceholders}
                         onClick={handleCreateJournal}
                         onChange={onChangeArray}

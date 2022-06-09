@@ -11,6 +11,7 @@ const InputGroupValue = ({
     type, 
     name,
     value,
+    placeholder,
     label
 }) => {
     return (
@@ -21,6 +22,7 @@ const InputGroupValue = ({
                 type={type}
                 name={name}
                 value={value}
+                placeholder={placeholder}
                 onChange={onChange}
             />
         </div>

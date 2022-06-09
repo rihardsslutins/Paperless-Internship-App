@@ -39,6 +39,7 @@
     display: grid;
     grid-template-columns: 2fr 10fr;
     grid-column-gap: 30px;
+    margin-top: 20px;
 }
 .journal-record-form .input-group:first-child input {
     max-height: 39px;
@@ -46,6 +47,9 @@
 .journal-record-form .textarea-group {
     grid-row: 1 / 3;
     grid-column-start: 2;
+}
+.journal-record-form .textarea-group .input-label {
+    white-space: nowrap;
 }
 .journal-record-form .textarea-group textarea {
     resize: none;
@@ -106,7 +110,7 @@
         gap: 10px;
     }
 }
-/* Hide arrows on input field */
+/* Hide arrows on number input field */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
