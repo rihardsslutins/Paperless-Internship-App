@@ -1,7 +1,7 @@
 import express from 'express';
 
 // controllers
-import { user_create, user_login, get_me, change_me } from '../controllers/userController.js';
+import { user_create, user_login, user_get_me, change_me, reset_password } from '../controllers/userController.js';
 
 // // middleware
 import { protect } from '../middleware/authMiddleware.js';
@@ -14,10 +14,13 @@ userRouter.post('/user', user_create);
 // login route
 userRouter.post('/login', user_login);
 
-// get the logged in user's data
-userRouter.get('/me', protect, get_me);
+// get the logged in users data
+userRouter.get('/me', protect, user_get_me);
 
-// update logged in users info
-userRouter.put('/change-me', protect, change_me)
+// update logged in user's info
+userRouter.post('/change-me', protect, change_me)
+
+// reset logged in user's password
+userRouter.post('/reset', protect, reset_password)
 
 export default userRouter;

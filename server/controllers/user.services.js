@@ -5,7 +5,10 @@ import jwt from 'jsonwebtoken';
 // that is meant to be sent to the client,
 // from whatever error the User model returned
 const handleErrors = (emptyErrorObject, err, role) => {
+  console.log("I hit")
   // REGISTER
+
+  console.log(err)
 
   // the yet unpopulated errors object
   const errors = emptyErrorObject;
@@ -35,6 +38,30 @@ const handleErrors = (emptyErrorObject, err, role) => {
   // checks whether or not the entered password corresponds to the user with the previously entered email
   if (err.message === 'Ievadītā parole ir nepareiza') {
     errors.password = 'Ievadītā parole ir nepareiza';
+  }
+
+  if (err.message === 'Vecā parole ir ievadīta nepareizi') {
+    errors.password = 'Vecā parole ir ievadīta nepareizi';
+  }
+
+  if (err.message === 'Lietotājs neeksistē') {
+    errors.password = 'Lietotājs neeksistē';
+  }
+
+  if (err.message === 'Lūdzu ievadi veco paroli') {
+    errors.password = 'Lūdzu ievadi veco paroli';
+  }
+
+  if (err.message === 'Lūdzu ievadi jauno paroli') {
+    errors.password = 'Lūdzu ievadi jauno paroli';
+  }
+
+  if (err.message === 'Vecā parole nevar būt īsāka par 8 rakstzīmēm') {
+    errors.password = 'Vecā parole nevar būt īsāka par 8 rakstzīmēm';
+  }
+
+  if (err.message === 'Jaunā parole nevar būt īsāka par 8 rakstzīmēm') {
+    errors.password = 'Jaunā parole nevar būt īsāka par 8 rakstzīmēm';
   }
 
   return errors;

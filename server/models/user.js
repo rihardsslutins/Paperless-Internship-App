@@ -43,9 +43,13 @@ const userSchema = new Schema(
 
 // hashes password
 userSchema.pre('save', async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+  const user = await User.findOne({ _id: this._id })
+  if (!user) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  }
+
 });
 
 // authorizes a user (sends them user data by way of token)
@@ -63,34 +67,62 @@ userSchema.statics.login = async function (email, password) {
   throw Error('Ievadītais e-pasts ir nepareizs');
 };
 
-const User = mongoose.model('user', userSchema);
+// resets password
+userSchema.statics.reset = async function (id, oldPassword, newPassword) {
+  const user = await this.findOne({ id })
+  console.log(user)
+  if (!oldPassword) {
+    throw Error('Lūdzu ievadi veco paroli');
+  }
+  if (oldPassword.length < 8) {
+    throw Error('Vecā parole nevar būt īsāka par 8 rakstzīmēm');
+  }
+  if (!newPassword) {
+    throw Error('Lūdzu ievadi jauno paroli');
+  }
+  if (newPassword.length < 8) {
+    throw Error('Jaunā parole nevar būt īsāka par 8 rakstzīmēm');
+  } 
+  if (user) {
+    const auth = await bcrypt.compare(oldPassword, user.password)
+    console.log(auth, oldPassword, user.password)
+    if (auth) {
+      const salt = await bcrypt.genSalt();
+      const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+      user.password = hashedNewPassword
+      return user
+    }
+    throw Error('Vecā parole ir ievadīta nepareizi');
+  }
+  throw Error('Lietotājs neeksistē');
+}
 
-const StudentUser = User.discriminator(
-  'student',
-  new Schema({
-    school: {
-      type: String,
-      required: [true, 'Lūdzu ievadi skolu'],
-    },
-    internships: [{ type: String }],
-  }),
-  options,
-);
+const User = mongoose.model('user', userSchema);
 
 const TeacherUser = User.discriminator(
   'teacher',
   new Schema(
     {
+      students: {
+        type: [String],
+      },
       school: {
         type: String,
         required: [true, 'Lūdzu ievadi skolu'],
       },
-      students: {
-        type: [String],
-      },
+    }), options
+);
+
+const StudentUser = User.discriminator(
+  'student',
+  new Schema({
+    internships: [{ type: String }],
+    school: {
+      type: String,
+      required: [true, 'Lūdzu ievadi skolu'],
     },
-    options,
-  ),
+  }),
+  options,
 );
 
 const SupervisorUser = User.discriminator(
@@ -105,9 +137,7 @@ const SupervisorUser = User.discriminator(
         type: String,
         required: [true, 'Lūdzu ievadi uzņēmumu'],
       },
-    },
-    options,
-  ),
+    }), options
 );
 
 export { User, StudentUser, TeacherUser, SupervisorUser };

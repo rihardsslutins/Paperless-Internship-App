@@ -87,23 +87,23 @@ const StudentProfileEdit = (props) => {
     const passwordFormTypes = ['password', 'password', 'password'];
     const passwordFormOnChange = [changeOldPassword, changeNewPassword, changeConfirmNewPassword];
 
-    const handleChangePassword = (e) => {
-        e.preventDefault();
-        if (oldPassword && newPassword && confirmNewPassword) {
-            if (oldPassword === student.password) {
-                if (newPassword === confirmNewPassword) {
-                    console.log('Parole tika nomainīta!');
-                    setAlert('');
-                } else {
-                    setAlert('Jaunā parole nesakrīt!');
-                }
-            } else {
-                setAlert('Parole nav pareiza!');
-            }
-        } else {
-            setAlert('Aizpildiet visus ievades laukus!');
-        }
-    }
+    // const handleChangePassword = (e) => {
+    //     e.preventDefault();
+    //     if (oldPassword && newPassword && confirmNewPassword) {
+    //         if (oldPassword === student.password) {
+    //             if (newPassword === confirmNewPassword) {
+    //                 console.log('Parole tika nomainīta!');
+    //                 setAlert('');
+    //             } else {
+    //                 setAlert('Jaunā parole nesakrīt!');
+    //             }
+    //         } else {
+    //             setAlert('Parole nav pareiza!');
+    //         }
+    //     } else {
+    //         setAlert('Aizpildiet visus ievades laukus!');
+    //     }
+    // }
 
     // Alert
     const [alert, setAlert] = useState('');
@@ -115,11 +115,44 @@ const StudentProfileEdit = (props) => {
     const handleUpdateStudent = async (e) => {
         e.preventDefault()
         try {
-            console.log(school)
-            const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/change-me`, { role: student.role, email: student.email, name, surname, school, phone }, { headers: { Authorization: `Bearer ${Cookies.get('auth')}` } })
-            console.log(response)
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/change-me`,
+                {   
+                    id: student._id,
+                    role: student.role, 
+                    name, 
+                    surname, 
+                    school, 
+                    phone
+                },
+                { 
+                    headers: { 
+                        Authorization: `Bearer ${Cookies.get('auth')}` 
+                    } 
+                }
+                )
         } catch (err) {
-            console.log(err)
+            console.log("I hit")
+
+            console.log(err.response.data.errors)
+        }
+    }
+    const handleChangePassword = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
+            {   
+                id: student._id,
+                oldPassword,
+                newPassword
+            },
+            { 
+                headers: { 
+                    Authorization: `Bearer ${Cookies.get('auth')}` 
+                } 
+            }
+            )
+        } catch (err) {
+            console.log(err.response.data.errors)
         }
     }
    
