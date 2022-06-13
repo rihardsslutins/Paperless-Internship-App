@@ -4,7 +4,6 @@ import "./TeacherJournal.css";
 import SearchInput from "../../../components/atoms/input/SearchInput";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
-// import SelectInput from "../../../components/atoms/input/SelectInput";
 import StudentsTable from "../../../components/organisms/table/StudentsTable";
 // hooks
 import { useState } from "react";
@@ -20,22 +19,6 @@ const TeacherJournal = () => {
     // Search input
     const [searchQuery, setSearchQuery] = useState('');
     const changeSearchQuery = (e) => setSearchQuery(e.target.value);
-    
-    // Select input
-    // const options = [
-    //     {
-    //         label: 'Visi',
-    //         value: 'all'
-    //     },
-    //     {
-    //         label: 'Atrodas praksē',
-    //         value: 'active'
-    //     },
-    //     {
-    //         label: 'Nav praksē',
-    //         value: 'inactive'
-    //     }
-    // ]
 
     // Journal list
     const studentList = [
@@ -73,7 +56,6 @@ const TeacherJournal = () => {
                     <h1>Studenti</h1>
                     <div className="teacher-journal-table-filter">
                         <SearchInput onChange={changeSearchQuery} />
-                        {/* <SelectInput options={options} /> */}
                     </div>
                     <StudentsTable headerCells={headerCells} data={studentList} link="../teacher-student-journals/"/>
                 </div>

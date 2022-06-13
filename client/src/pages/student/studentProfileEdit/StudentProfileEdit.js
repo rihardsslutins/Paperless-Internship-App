@@ -27,18 +27,6 @@ const StudentProfileEdit = (props) => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
-    // // Logged in users info
-    // const student = { 
-    //     id: '6283abad20a71c3f8b4a2e07',
-    //     name: "Ulvis",
-    //     surname: "Čakstiņš",
-    //     school: "Saldus thenikums",
-    //     phone: 25412514,
-    //     gender: "male",
-    //     email: "ulvisc3@gmail.com",
-    //     password: "parole123"
-    // }
-
     const [editForm, setEditForm] = useState(true);
 
     const handlePasswordForm = () => {
@@ -63,16 +51,6 @@ const StudentProfileEdit = (props) => {
     const onChangeArray = [changeName, changeSurname, changeSchool, changePhone];
     const formValue = [name, surname, school, phone];
 
-    // const handleUpdateStudent = (e) => {
-    //     e.preventDefault();
-    //     if (name && surname && school && phone) {
-    //         console.log(name, surname, school, phone);
-    //         setAlert('');
-    //     } else {
-    //         setAlert('Aizpildiet visus ievades laukus!');
-    //     }
-    // }
-
     // Edit user password
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -86,34 +64,35 @@ const StudentProfileEdit = (props) => {
     const passwordFormLabels = ['Pašreizējā parole:', 'Jaunā parole:', 'Apstiprināt paroli:'];
     const passwordFormTypes = ['password', 'password', 'password'];
     const passwordFormOnChange = [changeOldPassword, changeNewPassword, changeConfirmNewPassword];
-
-    // const handleChangePassword = (e) => {
-    //     e.preventDefault();
-    //     if (oldPassword && newPassword && confirmNewPassword) {
-    //         if (oldPassword === student.password) {
-    //             if (newPassword === confirmNewPassword) {
-    //                 console.log('Parole tika nomainīta!');
-    //                 setAlert('');
-    //             } else {
-    //                 setAlert('Jaunā parole nesakrīt!');
-    //             }
-    //         } else {
-    //             setAlert('Parole nav pareiza!');
-    //         }
-    //     } else {
-    //         setAlert('Aizpildiet visus ievades laukus!');
-    //     }
-    // }
+    const passwordFormValue = [oldPassword, newPassword, confirmNewPassword];
 
     // Alert
     const [alert, setAlert] = useState('');
+    const [alertType, setAlertType] = useState('');
     const handleAlertClose = () => {
         setAlert('');
+        setAlertType('');
+    };
+
+    // Error handling
+    const handleErrors = (errors, propertyOrder) => {
+        for (let i = 0; i < propertyOrder.length; i++) {
+            if (errors[propertyOrder[i]]) {
+                setAlertType('warning');
+                setAlert(errors[propertyOrder[i]]);
+                return;
+            } else {
+                setAlertType('');
+                setAlert('');
+            }
+        }
     };
 
     // change basic info
     const handleUpdateStudent = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setAlertType('');
+        setAlert('');
         try {
             await axios.post(`${process.env.REACT_APP_SERVER_URL}/change-me`,
                 {   
@@ -129,28 +108,47 @@ const StudentProfileEdit = (props) => {
                         Authorization: `Bearer ${Cookies.get('auth')}` 
                     } 
                 }
-                )
+            )
+            setAlertType('success');
+            setAlert('Dati tika nomainīti');
         } catch (err) {
-            console.log(err.response.data.errors)
+            const errors = err.response.data.errors;
+            const propertyOrder = ['name', 'surname', 'school', 'phone'];
+            handleErrors(errors, propertyOrder);
         }
     }
     const handleChangePassword = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setAlertType('');
+        setAlert('');
         try {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
-            {   
-                id: student._id,
-                oldPassword,
-                newPassword
-            },
-            { 
-                headers: { 
-                    Authorization: `Bearer ${Cookies.get('auth')}` 
-                } 
+            if (newPassword !== confirmNewPassword) {
+                setAlertType('warning');
+                setAlert('Jaunās paroles apstiprināšana nesakrīt');
+                return;
             }
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
+                {   
+                    id: student._id,
+                    oldPassword,
+                    newPassword
+                },
+                { 
+                    headers: { 
+                        Authorization: `Bearer ${Cookies.get('auth')}` 
+                    } 
+                }
             )
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmNewPassword('');
+            setAlertType('success');
+            setAlert('Parole tika nomainīta');
+            setEditForm(true);
         } catch (err) {
-            console.log(err.response.data.errors)
+            const errors = err.response.data.errors;
+            const propertyOrder = ['password'];
+            handleErrors(errors, propertyOrder);
         }
     }
    
@@ -167,7 +165,7 @@ const StudentProfileEdit = (props) => {
                     }
                     {alert && 
                         <Alert 
-                            type='warning'
+                            type={alertType}
                             text={alert}
                             handleAlertClose={handleAlertClose}
                         />
@@ -179,7 +177,7 @@ const StudentProfileEdit = (props) => {
                             label={editForm ? formLabels : passwordFormLabels}
                             type={editForm ? formTypes : passwordFormTypes}
                             onChange={editForm ? onChangeArray : passwordFormOnChange}
-                            value={editForm ? formValue : ''}
+                            value={editForm ? formValue : passwordFormValue}
                             onClick={editForm ? handleUpdateStudent : handleChangePassword}
                             buttonText={editForm ? 'Saglabāt izmaiņas' : 'Mainīt paroli'}
                         />

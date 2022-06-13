@@ -21,50 +21,6 @@ const TeacherProfileEdit = (props) => {
 
     const teacher = props.user
 
-    // change basic info
-    const handleUpdateTeacher = async (e) => {
-        e.preventDefault()
-        try {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/change-me`,
-                {   
-                    id: teacher._id,
-                    role: teacher.role, 
-                    name, 
-                    surname, 
-                    school,
-                    phone
-                },
-                { 
-                    headers: { 
-                        Authorization: `Bearer ${Cookies.get('auth')}` 
-                    } 
-                }
-                )
-        } catch (err) {
-            console.log(err.response.data.errors)
-        }
-    }
-    const handleChangePassword = async (e) => {
-        e.preventDefault()
-        try {
-            console.log(teacher._id)
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
-            {   
-                id: teacher._id,
-                oldPassword,
-                newPassword
-            },
-            { 
-                headers: { 
-                    Authorization: `Bearer ${Cookies.get('auth')}` 
-                } 
-            }
-            )
-        } catch (err) {
-            console.log(err.response.data.errors)
-        }
-    }
-
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
     const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
@@ -107,16 +63,6 @@ const TeacherProfileEdit = (props) => {
     const onChangeArray = [changeName, changeSurname, changeSchool, changePhone];
     const formValue = [name, surname, school, phone];
 
-    // const handleUpdateTeacher = (e) => {
-    //     e.preventDefault();
-    //     if (name.length && surname.length && school.length && phone) {
-    //         console.log(name, surname, school, phone);
-    //         setAlert('');
-    //     } else {
-    //         setAlert('Aizpildiet visus ievades laukus!');
-    //     }
-    // }
-
     // Edit user password
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -130,31 +76,93 @@ const TeacherProfileEdit = (props) => {
     const passwordFormLabels = ['Pašreizējā parole:', 'Jaunā parole:', 'Apstiprināt paroli:'];
     const passwordFormTypes = ['password', 'password', 'password'];
     const passwordFormOnChange = [changeOldPassword, changeNewPassword, changeConfirmNewPassword];
-
-    // const handleChangePassword = (e) => {
-    //     e.preventDefault();
-    //     if (oldPassword.length && newPassword.length && confirmNewPassword.length) {
-    //         if (oldPassword === teacher.password) {
-    //             if (newPassword === confirmNewPassword) {
-    //                 console.log('Parole tika nomainīta!');
-    //                 setAlert('');
-    //             } else {
-    //                 setAlert('Jaunā parole nesakrīt!');
-    //             }
-    //         } else {
-    //             setAlert('Parole nav pareiza!');
-    //         }
-    //     } else {
-    //         setAlert('Aizpildiet visus ievades laukus!');
-    //     }
-    // }
+    const passwordFormValue = [oldPassword, newPassword, confirmNewPassword];
 
     // Alert
     const [alert, setAlert] = useState('');
-
+    const [alertType, setAlertType] = useState('');
     const handleAlertClose = () => {
         setAlert('');
+        setAlertType('');
     };
+
+    // Error handling
+    const handleErrors = (errors, propertyOrder) => {
+        for (let i = 0; i < propertyOrder.length; i++) {
+            if (errors[propertyOrder[i]]) {
+                setAlertType('warning');
+                setAlert(errors[propertyOrder[i]]);
+                return;
+            } else {
+                setAlertType('');
+                setAlert('');
+            }
+        }
+    };
+
+    // change basic info
+    const handleUpdateTeacher = async (e) => {
+        e.preventDefault();
+        setAlertType('');
+        setAlert('');
+        try {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/change-me`,
+                {   
+                    id: teacher._id,
+                    role: teacher.role, 
+                    name, 
+                    surname, 
+                    school,
+                    phone
+                },
+                { 
+                    headers: { 
+                        Authorization: `Bearer ${Cookies.get('auth')}` 
+                    } 
+                }
+                )
+                setAlertType('success');
+                setAlert('Dati tika nomainīti');
+        } catch (err) {
+            const errors = err.response.data.errors;
+            const propertyOrder = ['name', 'surname', 'school', 'phone'];
+            handleErrors(errors, propertyOrder);
+        }
+    }
+    const handleChangePassword = async (e) => {
+        e.preventDefault();
+        setAlertType('');
+        setAlert('');
+        try {
+            if (newPassword !== confirmNewPassword) {
+                setAlertType('warning');
+                setAlert('Jaunās paroles apstiprināšana nesakrīt');
+                return;
+            }
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
+            {   
+                id: teacher._id,
+                oldPassword,
+                newPassword
+            },
+            { 
+                headers: { 
+                    Authorization: `Bearer ${Cookies.get('auth')}` 
+                } 
+            }
+            )
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmNewPassword('');
+            setAlertType('success');
+            setAlert('Parole tika nomainīta');
+            setEditForm(true);
+        } catch (err) {
+            const errors = err.response.data.errors;
+            const propertyOrder = ['password'];
+            handleErrors(errors, propertyOrder);
+        }
+    }
    
     return (
         <>
@@ -169,7 +177,7 @@ const TeacherProfileEdit = (props) => {
                     }
                     {alert && 
                         <Alert 
-                            type='warning'
+                            type={alertType}
                             text={alert}
                             handleAlertClose={handleAlertClose}
                         />
@@ -181,7 +189,7 @@ const TeacherProfileEdit = (props) => {
                             label={editForm ? formLabels : passwordFormLabels}
                             type={editForm ? formTypes : passwordFormTypes}
                             onChange={editForm ? onChangeArray : passwordFormOnChange}
-                            value={editForm ? formValue : ''}
+                            value={editForm ? formValue : passwordFormValue}
                             onClick={editForm ? handleUpdateTeacher : handleChangePassword}
                             buttonText={editForm ? 'Saglabāt izmaiņas' : 'Mainīt paroli'}
                         />

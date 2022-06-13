@@ -70,8 +70,7 @@ function App(props) {
                         )
                     console.log(res)
                     }
-                    )
-                    
+                    )         
                     .then(() => setUserIsReady(true))
                     .catch(() => setUserIsReady(true))
             }

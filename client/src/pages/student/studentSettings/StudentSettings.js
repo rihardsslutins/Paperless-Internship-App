@@ -6,6 +6,9 @@ import female from "../../../assets/female.svg";
 // atoms
 import DangerButton from "../../../components/atoms/button/DangerButton";
 import PageButton from "../../../components/atoms/button/PageButton";
+import Alert from "../../../components/atoms/alerts/Alert";
+// molecules
+import InputButtonGroup from "../../../components/molecules/labeledInput/InputButtonGroup";
 // components
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import DeleteProfileModal from "../../../components/organisms/modal/DeleteProfileModal";
@@ -17,8 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const StudentSettings = (props) => {
-    console.log(props)
-    const student = props.user
+    // const student = props.user
 
     const navigate = useNavigate();
 
@@ -29,28 +31,47 @@ const StudentSettings = (props) => {
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
     // Logged in users info
-//     const student = { 
-//         id: '6283abad20a71c3f8b4a2e07',
-//         name: "Ulvis",
-//         surname: "Čakstiņš",
-//         school: "Saldus thenikums",
-//         phone: 25412514,
-//         gender: "male",
-//         email: "ulvisc3@gmail.com",
-//         password: "parole123",
-//         teachers: [
-//             {
-//                 teacherName: "Elīna",
-//                 teacherSurname: "Dēvita",
-//                 email: "elina@gmail.com"
-//             },
-//             {
-//                 teacherName: "Mārtiņs",
-//                 teacherSurname: "Zīlīte",
-//                 email: "martins@gmail.com"
-//             }
-//         ]
-//     }
+    const student = { 
+        id: '6283abad20a71c3f8b4a2e07',
+        name: "Ulvis",
+        surname: "Čakstiņš",
+        school: "Saldus thenikums",
+        phone: 25412514,
+        gender: "male",
+        email: "ulvisc3@gmail.com",
+        password: "parole123",
+        teachers: [
+            {
+                fullName: "Elīna Dēvita",
+                email: "elinadevita@gmail.com"
+            },
+            {
+                fullName: "Mārtiņs Zīlīte",
+                email: "martins@gmail.com"
+            }
+        ]
+    }
+
+    // Add teacher
+    const [teacherEmail, setTeacherEmail] = useState('');
+    const handleAddTeacher = () => {
+        if (!teacherEmail) {
+            setAlertType('warning');
+            setAlert('Ievadiet skolotāja e-pastu!');
+        } else {
+            setAlertType('success');
+            setAlert('Skolotājas pievienošanas uzaicinājums tika nosūtīts!');
+            console.log(teacherEmail);
+        }
+    }
+
+    // Alerts
+    const [alert, setAlert] = useState('');
+    const [alertType, setAlertType] = useState('');
+    const handleAlertClose = () => {
+        setAlert('');
+        setAlertType('');
+    };
 
     // Delete profile modal
     const [displayModal, setDisplayModal] = useState(false);
@@ -78,11 +99,28 @@ const StudentSettings = (props) => {
                             <div className="student-teachers-grid">
                                 {student.teachers.length ?
                                         student.teachers.map((teacher) => (
-                                            <p>{teacher.teacherName} {teacher.teacherSurname}</p>
+                                            <p>{teacher.fullName}</p>
                                         ))
                                     :
                                         <p>Nav pievienots neviens skolotājs</p>
                                 }
+                            </div>
+                            <div className="add-teacher">
+                                {alert && 
+                                    <Alert 
+                                        type={alertType}
+                                        text={alert}
+                                        handleAlertClose={handleAlertClose}
+                                    />
+                                }
+                                <InputButtonGroup 
+                                    type='email'
+                                    onChange={(e) => setTeacherEmail(e.target.value)}
+                                    name='teacherEmail'
+                                    placeholder='Skolotāja e-pasts'
+                                    text='Pievienot'
+                                    onClick={handleAddTeacher}
+                                />
                             </div>
                         </div>
                     </div>

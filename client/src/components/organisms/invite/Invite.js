@@ -1,16 +1,22 @@
 // style
+import "./Invite.css";
+// atoms
 import DangerButton2 from "../../atoms/button/DangerButton2";
 import PageButton from "../../atoms/button/PageButton";
-import "./Invite.css";
+// hooks
+import useTheme from "../../../hooks/useTheme";
 
 const Invite = ({
     invites,
     handleAccept,
     handleReject
 }) => {
+
+    const theme = useTheme();
+
     return (
         invites.map(invite => 
-            <div className="invite-box" key={invite.id}>         
+            <div className={`invite-box ${theme}`} key={invite.id}>         
                     <h2>{invite.title}</h2>
                     <p>{invite.from} no {invite.school} uzaicināja Jūs pievienoties savai deinasgrāmatai, uzņēmumā {invite.companyName}.</p>
                     <div className="invite-button-group">

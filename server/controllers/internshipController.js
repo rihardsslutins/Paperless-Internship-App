@@ -96,6 +96,8 @@ const journal_record_create = async (req, res) => {
         hoursSpent: '',
     }
 
+    console.log(req.body);
+
     const handleErrors = (err) => {
         if (err.message.includes('internship validation failed')) {
             Object.values(err.errors).forEach(({ properties }) => {

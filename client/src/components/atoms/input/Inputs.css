@@ -100,7 +100,6 @@
 /* Select Input */
 .select-input {
     cursor: pointer;
-    min-width: 282px;
     appearance: none;
     background-image: url(../../../assets/arrowDown.svg);
     background-repeat: no-repeat;

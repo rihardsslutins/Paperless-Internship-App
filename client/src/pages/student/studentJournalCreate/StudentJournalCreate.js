@@ -44,17 +44,47 @@ const StudentJournalCreate = (props) => {
     const [startingDate, setStartingDate] = useState('');
 
     const changeCompany = e => setCompany(e.target.value);
-    const changeTeacherEmail = e => setTeacherEmail(e.target.value);
     const changeSupervisorEmail = e => setSupervisorEmail(e.target.value);
     const changeStartingDate = e => setStartingDate(e.target.value);
 
-    const onChangeArray = [changeCompany, changeTeacherEmail, changeSupervisorEmail, changeStartingDate];
+    const onChangeArray = [changeCompany, '', changeSupervisorEmail, changeStartingDate];
 
-    const formLabels = ['Uzņēmuma nosaukums:', 'Prakses vadītājs (skola):', 'Prakses vadītājs (uzņēmums):', 'Prakses sākums:'];
+    // Logged in users info
+    const student = { 
+        id: '6283abad20a71c3f8b4a2e07',
+        name: "Ulvis",
+        surname: "Čakstiņš",
+        school: "Saldus thenikums",
+        phone: 25412514,
+        gender: "male",
+        email: "ulvisc3@gmail.com",
+        password: "parole123",
+        teachers: [
+            {
+                fullName: "Elīna Dēvita",
+                email: "elinadevita@gmail.com"
+            },
+            {
+                fullName: "Mārtiņs Zīlīte",
+                email: "martins@gmail.com"
+            }
+        ]
+    }
+
+    const formLabels = ['Uzņēmuma nosaukums:', '', 'Prakses vadītājs (uzņēmums):', 'Prakses sākums:'];
     const formNames = ['company', 'teacher', 'supervisor', 'startingDate'];
-    const formTypes = ['text', 'email', 'email', 'date'];
-    const formPlaceholders = ['', 'E-pasts', 'E-pasts', ''];
+    const formTypes = ['text', '', 'email', 'date'];
+    const formPlaceholders = ['', '', 'E-pasts', ''];
     const formValues = [company, teacherEmail, supervisorEmail, startingDate];
+    const defaultFormOption = 'Izvēlieties skolotāju';
+    let formOptions = [['', 'Izvēlieties skolotāju']];
+    if (student.teachers.length) {
+        for (let i = 0; i < student.teachers.length; i++) {
+            formOptions.push([student.teachers[i].email, student.teachers[i].fullName])
+        }
+    } else {
+        formOptions = [['', 'Pievienojiet skolotāju iestatījumu lapā']]
+    }
 
     // Alert
     const [alert, setAlert] = useState('');
@@ -141,6 +171,9 @@ const StudentJournalCreate = (props) => {
                         placeholder={formPlaceholders}
                         onClick={handleCreateJournal}
                         onChange={onChangeArray}
+                        options={formOptions}
+                        defaultFormOption={defaultFormOption}
+                        setChosen={setTeacherEmail}
                         buttonText="Izveidot"
                     />  
                 </div>

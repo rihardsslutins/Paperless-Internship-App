@@ -22,12 +22,14 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 20px;
 }
 .student-info button {
-    margin: 20px auto 30px auto;
+    margin: 0 auto;
 }
 .student-theme {
     display: flex;
+    margin: 30px auto 40px auto;
     margin-left: auto;
     margin-right: auto;
     white-space: nowrap;
@@ -36,7 +38,6 @@
     gap: 10px;
 }
 .student-teachers h3{
-    margin-top: 40px;
     margin-bottom: 20px;
     text-decoration: underline;
 }
@@ -47,6 +48,14 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 20px;
+}
+.add-teacher button {
+    margin: 0 !important;
+}
+.add-teacher .alert-box {
+    margin: 0 auto 10px auto;
+    text-align: left;
 }
 .student-settings button {
     margin-left: auto;

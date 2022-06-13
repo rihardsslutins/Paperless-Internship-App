@@ -4,6 +4,7 @@ import "./Forms.css";
 import PageButton from '../../atoms/button/PageButton';
 // molecules
 import InputGroupValue from "../../molecules/labeledInput/InputGroupValue";
+import SelectInputGroup from "../../molecules/labeledInput/SelectInputGroup";
 
 const JournalForm = ({
     id,
@@ -14,22 +15,34 @@ const JournalForm = ({
     value,
     placeholder,
     onClick,
+    options,
+    setChosen,
+    defaultFormOption,
     buttonText
 }) => {
     let inputArray = [];
     for (let i = 0; i < name.length; i++) {
-        inputArray.push(
-            <InputGroupValue
-                id={id[i]}
-                onChange={onChange[i]}
-                type={type[i]}
-                name={name[i]}
-                value={value[i]}
-                label={label[i]}
-                placeholder={placeholder[i]}
-                key={[i]}
-            />
-        );
+        name[i] === 'teacher' ?
+            inputArray.push(
+                <SelectInputGroup 
+                    options={options}
+                    setChosen={setChosen}
+                    defaultFormOption={defaultFormOption}
+                />
+            )
+        :
+            inputArray.push(
+                <InputGroupValue
+                    id={id[i]}
+                    onChange={onChange[i]}
+                    type={type[i]}
+                    name={name[i]}
+                    value={value[i]}
+                    label={label[i]}
+                    placeholder={placeholder[i]}
+                    key={[i]}
+                />
+            );
     }
     return (
         <form className="journal-form">

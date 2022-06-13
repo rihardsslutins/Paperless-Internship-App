@@ -41,12 +41,13 @@ const UpdateProfileForm = ({
             );
         } else {
             inputArray.push(
-                <InputGroup
+                <InputGroupValue
                     id={id[i]}
                     name={name[i]}
                     label={label[i]}
                     type={type[i]}
                     onChange={onChange[i]}
+                    value={value[i]}
                     key={[i]}
                 />
             );
@@ -64,7 +65,7 @@ const UpdateProfileForm = ({
                 {inputArray.map((element) => element)}
                 <div className="edit-profile-buttons">
                     <PageButton onClick={onClick} text={buttonText} />
-                    <PageButton2 text='Atcelt' active='' onClick={handleCancel}/>
+                    <PageButton2 text='Atpakaļ' active='' onClick={handleCancel}/>
                 </div>
             </div>
         </form>
