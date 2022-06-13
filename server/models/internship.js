@@ -19,8 +19,8 @@ const journalSchema = new Schema({
     },
     hoursSpent: {
         type: Number,
-        max: [8, 'Lūdzu ievadi pavadīto stundu skaitu, kas nepārsniedz 8'],
-        required: [true, 'Lūdzu ievadi pavadīto laiku']
+        required: [true, 'Lūdzu ievadi pavadīto laiku'],
+        max: [8, 'Lūdzu ievadi pavadīto stundu skaitu, kas nepārsniedz 8']
     },
     grade: {
         type: Number,

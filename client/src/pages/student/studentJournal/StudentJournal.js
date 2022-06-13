@@ -160,16 +160,16 @@ const StudentJournal = () => {
     const handleAddJournalRecord = async (e) => {
         e.preventDefault();
         try {
-            if (!date) {
-                setAlert('Lūdzu ievadiet datumu!')
-                setAlertType('warning')
-            } else if (!taskDescription) {
-                setAlert('Lūdzu ievadiet izpildītā darba raksturojumu!')
-                setAlertType('warning')
-            } else if (!hoursSpent) {
-                setAlert('Lūdzu ievadiet izpildes laiku!')
-                setAlertType('warning')
-            } else {
+            // if (!date) {
+            //     setAlert('Lūdzu ievadiet datumu!')
+            //     setAlertType('warning')
+            // } else if (!taskDescription) {
+            //     setAlert('Lūdzu ievadiet izpildītā darba raksturojumu!')
+            //     setAlertType('warning')
+            // } else if (!hoursSpent) {
+            //     setAlert('Lūdzu ievadiet izpildes laiku!')
+            //     setAlertType('warning')
+            // } else {
                 await axios.post(`${process.env.REACT_APP_SERVER_URL}/journals`,
                 { 
                     _id, 
@@ -187,9 +187,8 @@ const StudentJournal = () => {
                 setDate('');
                 setTaskDescription('');
                 setHoursSpent('');
-            }
         } catch (err) {
-            console.log(err)
+            console.log(err.response.data.errors)
         }
     };
 
