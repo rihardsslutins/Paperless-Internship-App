@@ -24,83 +24,6 @@ const StudentJournal = () => {
     const [journal, setJournal] = useState([]);
     const [isPending, setIsPending] = useState(false);
 
-    // const internships = [
-    //     {
-    //         id: '31928h312312ui3adww',
-    //         active: true,
-    //         companyName: 'Accenture',
-    //         mentor: 'Roberts Tarhanovs',
-    //         overseeingTeacher: 'Elīna Dēvita',
-    //         student: 'Ulvis Čakstiņs',
-    //         date: '01.03.2022.',
-    //         journal: [
-    //             {
-    //                 recordId: '8567ui9bcdefghjnrvmsx',
-    //                 recordDate: '07.05.2022',
-    //                 taskDesc: 'Izveidoju navbar',
-    //                 hoursSpent: 8,
-    //                 grade: 10,
-    //             },
-    //             {
-    //                 recordId: '98icjmnu67v5dfkbghre',
-    //                 recordDate: '08.05.2022',
-    //                 taskDesc: 'Izveidoju sidebar',
-    //                 hoursSpent: 8,
-    //                 grade: 8,
-    //             },
-    //             {
-    //                 recordId: '9bdefghjmnrv56c8i7u',
-    //                 recordDate: '09.05.2022',
-    //                 taskDesc: 'Stila uzlabojumi',
-    //                 hoursSpent: 8,
-    //                 grade: '',
-    //             },
-    //         ],
-    //     },
-    //     {
-    //         id: 'du12bi1v23v1y2v3i1v2',
-    //         active: false,
-    //         companyName: 'Brocēnu novada dome',
-    //         mentor: 'Jānis Bērziņš',
-    //         overseeingTeacher: 'Elīna Dēvita',
-    //         student: 'Ulvis Čakstiņs',
-    //         date: '07.11.2021.',
-    //         journal: [
-    //             {
-    //                 recordId: '679cg58idfjmruvbhnk',
-    //                 recordDate: '14.02.2020',
-    //                 taskDesc: 'Izveidoju reģistrācijas formu',
-    //                 hoursSpent: 8,
-    //                 grade: 10,
-    //             },
-    //             {
-    //                 recordId: '95678icjmnudefghrv4',
-    //                 recordDate: '15.02.2020',
-    //                 taskDesc: 'Izveidoju pieslēgšanos funkcionalitāti',
-    //                 hoursSpent: 8,
-    //                 grade: 8,
-    //             },
-    //             {
-    //                 recordId: 'o968iec5dfhjmnruv47bg',
-    //                 recordDate: '16.02.2020',
-    //                 taskDesc: 'Izveidoju studentu lapu',
-    //                 hoursSpent: 8,
-    //                 grade: 9,
-    //             },
-    //         ],
-    //     },
-    //     {
-    //         id: '31298b9be201xnxe9u2b',
-    //         active: false,
-    //         companyName: 'Brocēnu novada dome',
-    //         mentor: 'Jānis Bērziņš',
-    //         overseeingTeacher: 'Elīna Dēvita',
-    //         student: 'Ulvis Čakstiņs',
-    //         date: '03.02.2021.',
-    //         journal: [],
-    //     },
-    // ];
-
     // Sidebar
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
     const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
@@ -118,7 +41,6 @@ const StudentJournal = () => {
                     }
                 }
                 );
-                console.log(response)
                 setInternship(response.data)
                 setJournal(response.data.journal)
                 setIsPending(false);
@@ -126,7 +48,6 @@ const StudentJournal = () => {
                 console.log(err);
                 setIsPending(false);
             }
-            console.log('I hit')
         }
         getInternship()
     }, [_id])
@@ -157,28 +78,47 @@ const StudentJournal = () => {
         setAlertType('');
     };
 
+    // Error handling
+    const handleErrors = (errors, propertyOrder) => {
+        for (let i = 0; i < propertyOrder.length; i++) {
+            if (errors[propertyOrder[i]]) {
+                setAlertType('warning');
+                setAlert(errors[propertyOrder[i]]);
+                return;
+            } else {
+                setAlertType('');
+                setAlert('');
+            }
+        }
+    };
+
+    // Add record to journal
     const handleAddJournalRecord = async (e) => {
         e.preventDefault();
+        setAlertType('');
+        setAlert('');
         try {
-                await axios.post(`${process.env.REACT_APP_SERVER_URL}/journals`,
-                { 
-                    _id, 
-                    date, 
-                    taskDescription, 
-                    hoursSpent 
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get('auth')}`,
-                    }
-                })
-                setAlertType('success')
-                setAlert('Ieraksts tika pievienots dienasgrāmatai!')
-                setDate('');
-                setTaskDescription('');
-                setHoursSpent('');
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/journals`,
+            { 
+                _id, 
+                date, 
+                taskDescription, 
+                hoursSpent 
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`,
+                }
+            })
+            setAlertType('success')
+            setAlert('Ieraksts tika pievienots dienasgrāmatai!')
+            setDate('');
+            setTaskDescription('');
+            setHoursSpent('');
         } catch (err) {
-            console.log(err.response.data.errors)
+            const errors = err.response.data.errors;
+            const propertyOrder = ['date', 'taskDescription', 'hoursSpent'];
+            handleErrors(errors, propertyOrder);
         }
     };
 
@@ -242,7 +182,6 @@ const StudentJournal = () => {
                                 )}
                                 {internship.isActive && (
                                     <JournalModal
-                                        companyName={internship.company}
                                         display={displayModal}
                                         handleClose={handleClose}
                                     />

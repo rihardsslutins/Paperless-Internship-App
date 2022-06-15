@@ -84,7 +84,14 @@
     display: block;
     width: 100%;
 }
+.journal-modal-inputs {
+    display: flex;
+    gap: 50px;
+}
 @media only screen and (max-width: 600px) {
+    .journal-modal-inputs {
+        flex-direction: column;
+    }
     .journal-modal .modal-footer {
         grid-template-columns: 1fr;
         grid-gap: 10px;

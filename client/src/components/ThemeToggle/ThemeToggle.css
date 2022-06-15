@@ -12,3 +12,16 @@
     background-color: var(--secondary-color);
     color: var(--white);
 }
+.theme-toggle-round {
+    padding: 10px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    cursor: pointer;
+    transition: all .3s;
+}
+.theme-toggle-round:hover {
+    box-shadow: 0 0 20px 5px rgba(63, 63, 63, 0.4);
+}
+.theme-toggle-round.dark:hover {
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.2);
+}
