@@ -11,16 +11,17 @@ const protect = async (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET_STRING, (err, decoded) => {
       // checks if token is absolute
       if (err) {
-        res.status(401).json({ error: 'JWT nav oriģināls' });
+        return res.status(401).json({ error: 'JWT nav oriģināls' });
       }
       // Get user from token
       req.user = decoded;
       next();
+      return;
     });
   }
   // checks if token exists (can only exist if the user has registered or logged in)
   if (!token) {
-    res.status(401).json({ error: 'Lūdzu pieslēdzies vai reģistrējies' });
+    return res.status(401).json({ error: 'Lūdzu pieslēdzies vai reģistrējies' });
   }
 };
 

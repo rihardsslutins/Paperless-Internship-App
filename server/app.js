@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 // routers
 import userRouter from './routes/userRoutes.js';
 import internshipRouter from './routes/internshipRoutes.js';
+import inviteRouter from './routes/inviteRoutes.js';
 
 // creates an express app
 const app = express();
@@ -50,3 +51,6 @@ app.use(userRouter);
 
 // internship routes
 app.use(internshipRouter)
+
+// invite routes
+app.use(inviteRouter)

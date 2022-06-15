@@ -1,7 +1,7 @@
 import express from 'express';
 
 // controllers
-import { user_create, user_login, user_get_me, change_me, reset_password } from '../controllers/userController.js';
+import { user_create, user_login, user_logout, user_get_me, change_me, reset_password } from '../controllers/userController.js';
 
 // // middleware
 import { protect } from '../middleware/authMiddleware.js';
@@ -14,7 +14,10 @@ userRouter.post('/user', user_create);
 // login route
 userRouter.post('/login', user_login);
 
-// get the logged in users data
+// logout route
+userRouter.get('/logout', user_logout)
+
+// get the logged in user's data
 userRouter.get('/me', protect, user_get_me);
 
 // update logged in user's info
