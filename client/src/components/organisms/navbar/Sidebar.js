@@ -42,7 +42,7 @@ const Sidebar = ({
     }
 
     const handleLogout = () => {
-        Cookies.remove("auth");
+        Cookies.remove('auth');
         window.location.reload();
     }
 

@@ -45,12 +45,12 @@ const internship_create = async (req, res) => {
         }
 
         await Internship.create({ isActive: true, company, student, teacher, supervisor, startingDate });
-        res.status(201).json({message: 'Dienasgrāmata ir izveidota!'})
+        return res.status(201).json({message: 'Dienasgrāmata ir izveidota!'})
         
     } catch (err) {
         console.log(err)
         handleErrors(err)
-        res.status(400).json({ errors })
+        return res.status(400).json({ errors })
     }
 }
 
@@ -64,9 +64,9 @@ const get_internships = async (req, res) => {
                 internship.teacher = `${teacher.name} ${teacher.surname}`
                 internship.supervisor = `${supervisor.name} ${supervisor.surname}`
             }))
-        res.status(200).json({internships})
+        return res.status(200).json({internships})
     } catch (err) {
-        res.status(400).json({message: err.message})
+        return res.status(400).json({message: err.message})
     }
 }
 
@@ -80,10 +80,10 @@ const get_internship = async (req, res) => {
         student = `${Student.name.charAt(0).toUpperCase() + Student.name.slice(1)} ${Student.surname.charAt(0).toUpperCase() + Student.surname.slice(1)}`
         teacher = `${Teacher.name.charAt(0).toUpperCase() + Teacher.name.slice(1)} ${Teacher.surname.charAt(0).toUpperCase() + Teacher.surname.slice(1)}`
         supervisor = `${Supervisor.name.charAt(0).toUpperCase() + Supervisor.name.slice(1)} ${Supervisor.surname.charAt(0).toUpperCase() + Supervisor.surname.slice(1)}`
-        res.status(200).json({ _id, isActive, company, student, teacher, supervisor, startingDate, journal });
+        return res.status(200).json({ _id, isActive, company, student, teacher, supervisor, startingDate, journal });
     } catch (err) {
         console.log(err)
-        res.status(400).json({ message: err.message })
+        return res.status(400).json({ message: err.message })
     }
 }
 
@@ -115,10 +115,10 @@ const journal_record_create = async (req, res) => {
         })
 
         await internship.save()
-        res.status(201).json({ internship })
+        return res.status(201).json({ internship })
     } catch (err) {
         handleErrors(err)
-        res.status(400).json({ errors })
+        return res.status(400).json({ errors })
     }
 }
 
