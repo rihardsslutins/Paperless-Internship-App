@@ -18,9 +18,13 @@ import { connect } from "react-redux";
 // hooks
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+// packages
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const StudentSettings = (props) => {
-    // const student = props.user
+    
+    const student = props.user
 
     const navigate = useNavigate();
 
@@ -30,39 +34,53 @@ const StudentSettings = (props) => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
-    // Logged in users info
-    const student = { 
-        id: '6283abad20a71c3f8b4a2e07',
-        name: "Ulvis",
-        surname: "Čakstiņš",
-        school: "Saldus thenikums",
-        phone: 25412514,
-        gender: "male",
-        email: "ulvisc3@gmail.com",
-        password: "parole123",
-        teachers: [
-            {
-                fullName: "Elīna Dēvita",
-                email: "elinadevita@gmail.com"
-            },
-            {
-                fullName: "Mārtiņs Zīlīte",
-                email: "martins@gmail.com"
-            }
-        ]
-    }
+    // // Logged in users info
+    // const student = { 
+    //     id: '6283abad20a71c3f8b4a2e07',
+    //     name: "Ulvis",
+    //     surname: "Čakstiņš",
+    //     school: "Saldus thenikums",
+    //     phone: 25412514,
+    //     gender: "male",
+    //     email: "ulvisc3@gmail.com",
+    //     password: "parole123",
+    //     teachers: [
+    //         {
+    //             fullName: "Elīna Dēvita",
+    //             email: "elinadevita@gmail.com"
+    //         },
+    //         {
+    //             fullName: "Mārtiņs Zīlīte",
+    //             email: "martins@gmail.com"
+    //         }
+    //     ]
+    // }
 
     // Add teacher
     const [teacherEmail, setTeacherEmail] = useState('');
-    const handleAddTeacher = () => {
-        if (!teacherEmail) {
-            setAlertType('warning');
-            setAlert('Ievadiet skolotāja e-pastu!');
-        } else {
-            setAlertType('success');
-            setAlert('Skolotājas pievienošanas uzaicinājums tika nosūtīts!');
-            console.log(teacherEmail);
+    const handleAddTeacher = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/invites`, {
+                student: student.email,
+                teacher: teacherEmail
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`
+                }
+            })
+        } catch (err) {
+            console.log(err.response.data.errors)
         }
+        // if (!teacherEmail) {
+        //     setAlertType('warning');
+        //     setAlert('Ievadiet skolotāja e-pastu!');
+        // } else {
+        //     setAlertType('success');
+        //     setAlert('Skolotājas pievienošanas uzaicinājums tika nosūtīts!');
+        //     console.log(teacherEmail);
+        // }
     }
 
     // Alerts
@@ -76,6 +94,8 @@ const StudentSettings = (props) => {
     // Delete profile modal
     const [displayModal, setDisplayModal] = useState(false);
     const handleCloseModal = () => setDisplayModal(false);
+
+    console.log(student)
 
     return (
         <>
@@ -97,7 +117,7 @@ const StudentSettings = (props) => {
                         <div className="student-teachers">
                             <h3>Skolotāji</h3>
                             <div className="student-teachers-grid">
-                                {student.teachers.length ?
+                                {student.teachers ?
                                         student.teachers.map((teacher) => (
                                             <p>{teacher.fullName}</p>
                                         ))

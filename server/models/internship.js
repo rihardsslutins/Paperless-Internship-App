@@ -4,10 +4,6 @@ import isEmail from 'validator/lib/isEmail.js'
 
 const Schema = mongoose.Schema
 
-const validator = (array) => {
-    throw Error("sdfsdfds")
-}
-
 const journalSchema = new Schema({
     date: {
         type: String,

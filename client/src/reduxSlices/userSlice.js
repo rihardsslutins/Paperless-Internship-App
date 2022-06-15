@@ -14,6 +14,8 @@ export const userSlice = createSlice({
         email: '',
         password: '',
         internships: '',
+        teachers: '',
+        students: '',
         role: '',
     },
     reducers: {
@@ -33,6 +35,8 @@ export const userSlice = createSlice({
             state.email = action.payload.email;
             state.password = action.payload.password;
             state.internships = action.payload.internships;
+            state.teachers = action.payload.teachers;
+            state.students = action.payload.students;
             state.role = action.payload.role;
         },
         clearUser: (state) => {
@@ -47,6 +51,8 @@ export const userSlice = createSlice({
             state.email = '';
             state.password = '';
             state.internships = '';
+            state.teachers = '';
+            state.students = '';
             state.role = '';
         },
     },

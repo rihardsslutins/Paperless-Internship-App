@@ -65,6 +65,8 @@ function App(props) {
                                 email: res.email,
                                 password: res.password,
                                 internships: res.internships,
+                                teachers: res.teachers,
+                                students: res.students,
                                 role: res.role,
                             })
                         )

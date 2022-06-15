@@ -62,7 +62,7 @@ const user_create = async (req, res) => {
         })
       : '';
     const errors = handleErrors(emptyErrors, err, role);
-    res.status(400).json({ errors });
+    return res.status(400).json({ errors });
   }
 };
 
@@ -76,7 +76,7 @@ const user_login = async (req, res) => {
     const token = createToken(user._id);
     // const user = await Student.findById(student._id);
     // res.status(200).json({ user: user });
-    res
+    return res
       .status(200)
       .cookie('auth', token, { httpOnly: false, maxAge: maxAge * 1000 })
       .send();
@@ -86,22 +86,30 @@ const user_login = async (req, res) => {
       password: '',
     };
     const errors = handleErrors(emptyErrors, err);
-    res.status(400).json({ errors });
+    return res.status(400).json({ errors });
   }
 };
+
+// @desc handle user logout
+// @route POST /logout
+// @access Public
+const user_logout = async (req, res) => {
+  return res.status(200).cookie('auth', '', { maxAge: 1 }).send()
+}
+
 
 // @desc Get user data
 // @route GET /me
 // @access Private
 const user_get_me = async (req, res) => {
   try {
-    const { id, name, surname, gender, phone, school, field, company, internships, email, password, role } =
+    const { id, name, surname, gender, phone, school, field, company, internships, teachers, students, email, password, role } =
     await User.findById(req.user.id);
   res
     .status(200)
-    .json({ id, name, surname, gender, phone, school, field, company, internships, email, password, role });
+    .json({ id, name, surname, gender, phone, school, field, company, internships, teachers, students, email, password, role });
   } catch (err) {
-    res.status(401).json({ error: "Not authorized" })
+    return res.status(401).json({ error: "Not authorized" })
   }
 };
 
@@ -174,7 +182,7 @@ const change_me = async (req, res) => {
     await user.save()
     console.log(user)
 
-    res.status(200).json({ user })
+    return res.status(200).json({ user })
   } catch (err) {
     let emptyErrors = {
       name: '',
@@ -186,7 +194,7 @@ const change_me = async (req, res) => {
     }
     console.log(err)
     const errors = handleErrors(emptyErrors, err, role);
-    res.status(400).json({ errors });
+    return res.status(400).json({ errors });
   }
 }
 
@@ -200,14 +208,14 @@ const reset_password = async (req, res) => {
     const user = await User.reset(id, oldPassword, newPassword);
     
     await user.save()
-    res.status(200).json({ user })
+    return res.status(200).json({ user })
   } catch (err) {
     let emptyErrors = {
       password: ''
     }
     const errors = handleErrors(emptyErrors, err)
-    res.status(400).json({ errors })
+    return res.status(400).json({ errors })
   }
 }
 
-export { user_create, user_login, user_get_me, change_me, reset_password };
+export { user_create, user_login, user_logout, user_get_me, change_me, reset_password };

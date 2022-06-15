@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 
 const StudentJournalCreate = (props) => {
 
+    const student = props.user
+
     const navigate = useNavigate();
 
     const handleErrors = (errors, propertyOrder) => {
@@ -50,26 +52,26 @@ const StudentJournalCreate = (props) => {
     const onChangeArray = [changeCompany, '', changeSupervisorEmail, changeStartingDate];
 
     // Logged in users info
-    const student = { 
-        id: '6283abad20a71c3f8b4a2e07',
-        name: "Ulvis",
-        surname: "Čakstiņš",
-        school: "Saldus thenikums",
-        phone: 25412514,
-        gender: "male",
-        email: "ulvisc3@gmail.com",
-        password: "parole123",
-        teachers: [
-            {
-                fullName: "Elīna Dēvita",
-                email: "elinadevita@gmail.com"
-            },
-            {
-                fullName: "Mārtiņs Zīlīte",
-                email: "martins@gmail.com"
-            }
-        ]
-    }
+    // const student = { 
+    //     id: '6283abad20a71c3f8b4a2e07',
+    //     name: "Ulvis",
+    //     surname: "Čakstiņš",
+    //     school: "Saldus thenikums",
+    //     phone: 25412514,
+    //     gender: "male",
+    //     email: "ulvisc3@gmail.com",
+    //     password: "parole123",
+    //     teachers: [
+    //         {
+    //             fullName: "Elīna Dēvita",
+    //             email: "elinadevita@gmail.com"
+    //         },
+    //         {
+    //             fullName: "Mārtiņs Zīlīte",
+    //             email: "martins@gmail.com"
+    //         }
+    //     ]
+    // }
 
     const formLabels = ['Uzņēmuma nosaukums:', '', 'Prakses vadītājs (uzņēmums):', 'Prakses sākums:'];
     const formNames = ['company', 'teacher', 'supervisor', 'startingDate'];
