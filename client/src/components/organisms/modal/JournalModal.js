@@ -14,24 +14,54 @@ import useTheme from "../../../hooks/useTheme";
 
 const JournalModal = ({
     display,
-    handleClose,
-    companyName
+    handleClose
 }) => {
-    const theme = useTheme();
-    const [alert, setAlert] = useState('');
-    const [companyNameCheck, setCompanyNameCheck] = useState('');
 
-    const handleEndJournal = () => {
-        if (companyName === companyNameCheck) {
-            console.log('Change active to false');
-            handleModel();
-        } else {
-            setAlert('Nosaukumi nesakrīt!');
-        }
+    const student = { 
+        id: '6283abad20a71c3f8b4a2e07',
+        name: "Ulvis",
+        surname: "Čakstiņš",
+        school: "Saldus thenikums",
+        phone: 25412514,
+        gender: "male",
+        email: "ulvisc3@gmail.com",
+        password: "password",
+        teachers: [
+            {
+                fullName: "Elīna Dēvita",
+                email: "elinadevita@gmail.com"
+            },
+            {
+                fullName: "Mārtiņs Zīlīte",
+                email: "martins@gmail.com"
+            }
+        ]
     }
+
+    const theme = useTheme();
+
+    // Alert
+    const [alert, setAlert] = useState('');
     const handleAlertClose = () => {
         setAlert('');
     }
+    const [passwordCheck, setPasswordCheck] = useState('');
+    const [endDate, setEndDate] = useState('');
+
+    const handleEndJournal = () => {
+        console.log('hit');
+        console.log(endDate);
+        setAlert('');
+        if (!endDate) {
+            setAlert('Ievadiet prakses beigu datumu');
+        } else if (student.password !== passwordCheck) {
+            setAlert('Parole nav pareiza!');
+        } else {
+            console.log('Change active to false');
+            handleModel();
+        }
+    }
+
     const handleModel = () => {
         handleClose();
         handleAlertClose();
@@ -49,13 +79,22 @@ const JournalModal = ({
                         <div className="modal-body">
                             <h3>Ja noslēgsiet dienasgrāmatu, tad šajā dienasgrāmatā vairs nēbūs iespējams pievienot jaunus ierakstus, kā arī prakses vadītājs nevarēs Jums ielikt atzīmes!</h3>
                             {alert && <Alert type="warning" text={alert} handleAlertClose={handleAlertClose} />}
-                            <LabeledInput
-                                id='companyName'
-                                name='companyName'
-                                label='Ievadiet uzņēmuma nosaukumu, lai noslēgtu praksi:'
-                                type='text'
-                                onChange={e => setCompanyNameCheck(e.target.value)}
-                            />
+                            <div className="journal-modal-inputs">
+                                <LabeledInput
+                                    id='endDate'
+                                    name='endDate'
+                                    label='Prakses beigu datums:'
+                                    type='date'
+                                    onChange={e => setEndDate(e.target.value)}
+                                />
+                                <LabeledInput
+                                    id='companyName'
+                                    name='companyName'
+                                    label='Ievadiet savu paroli, lai noslēgtu praksi:'
+                                    type='password'
+                                    onChange={e => setPasswordCheck(e.target.value)}
+                                />
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <PageButton text="Atcelt" onClick={handleModel} />
