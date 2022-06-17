@@ -29,11 +29,12 @@ const StudentJournal = () => {
     const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
+    const [konstante, setKonstante] = useState(true)
 
     useEffect(() => {
         const getInternship = async () => {
-            setIsPending(true);
             try {
+                setIsPending(true)
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/${_id}`,
                 {
                     headers: {
@@ -41,8 +42,8 @@ const StudentJournal = () => {
                     }
                 }
                 );
-                setInternship(response.data)
-                setJournal(response.data.journal)
+                setInternship(response.data.internship)
+                setJournal(response.data.internship.journal)
                 setIsPending(false);
             } catch (err) {
                 console.log(err);
@@ -50,8 +51,7 @@ const StudentJournal = () => {
             }
         }
         getInternship()
-    }, [_id])
-    
+    }, [konstante])
     // Table
     const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
 
@@ -113,6 +113,8 @@ const StudentJournal = () => {
             setAlertType('success')
             setAlert('Ieraksts tika pievienots dienasgrāmatai!')
             setDate('');
+            setKonstante(false)
+            setKonstante(true)
             setTaskDescription('');
             setHoursSpent('');
         } catch (err) {
@@ -155,9 +157,9 @@ const StudentJournal = () => {
                                         />
                                     )}
                                     <div className="student-journal-info">
-                                        <p>Prakses vadītājs: {internship.supervisor}</p>
-                                        <p>Skolotāja: {internship.teacher}</p>
-                                        <p>Praktikants: {internship.student}</p>
+                                        <p>Prakses vadītājs: {internship.supervisorFullName}</p>
+                                        <p>Skolotāja: {internship.teacherFullName}</p>
+                                        <p>Praktikants: {internship.studentFullName}</p>
                                     </div>
                                 </div>
                                 <JournalTable headerCells={headerCells} data={journal} />

@@ -26,6 +26,7 @@ const StudentJournals = () => {
                 },
             });
             setInternships(response.data.internships)
+            console.log(internships)
             setIsPending(false);
         }
         getInternships()

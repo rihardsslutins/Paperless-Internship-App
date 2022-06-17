@@ -10,16 +10,30 @@ import InputGroup from "../../../components/molecules/labeledInput/InputGroup";
 // organisms
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import JournalTable from "../../../components/organisms/table/JournalTable";
-
+// react & react router dom
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+// packages
+import axios from 'axios';
+import Cookies from "js-cookie";
 
 const SupervisorStudentJournal = () => {
     const navigate = useNavigate();
 
     const { id } = useParams();
-    const [journalInfo, setJournalInfo] = useState([]);
-    const [journal, setJournal] = useState([]);
+    const [internship, setInternship] = useState([])
+
+    useEffect(() => {
+        const getStudentInternship = async () => {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/user/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`
+                }
+            })
+            setInternship(response.data.internship)
+        }
+        getStudentInternship()
+    }, [])
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
@@ -27,69 +41,34 @@ const SupervisorStudentJournal = () => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
     const link = ['supervisor-home', 'supervisor-journal', 'supervisor-mail', 'supervisor-invites', 'supervisor-settings', 'help'];
 
-    // All users internships
-    const internships = [
-        {
-            _id: '31928h312312ui3adww',
-            active: true,
-            companyName: 'Accenture',
-            mentor: 'Roberts Tarhanovs',
-            overseeingTeacher: 'Elīna Dēvita',
-            student: 'Ulvis Čakstiņs',
-            date: '01.03.2022.',
-            journal: [
-                {
-                    _id: '8567ui9bcdefghjnrvmsx',
-                    date: '07.05.2022',
-                    taskDescription: 'Izveidoju navbar',
-                    hoursSpent: 8,
-                    grade: 10
-                },
-                {
-                    _id: '98icjmnu67v5dfkbghre',
-                    date: '08.05.2022',
-                    taskDescription: 'Izveidoju sidebar',
-                    hoursSpent: 8,
-                    grade: 8
-                },
-                {
-                    _id: '9bdefghjmnrv56c8i7u',
-                    date: '09.05.2022',
-                    taskDescription: 'Stila uzlabojumi',
-                    hoursSpent: 8,
-                    grade: ''
-                }
-            ]
-        }
-    ]
-
     // Table
     const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
 
-    // Display record where journal id matches id param
-    useEffect(() => {
-        internships.forEach(internship => {
-            if (internship._id === id) {
-                setJournalInfo(internship);
-                setJournal(internship.journal);
-            }
-        });
-    }, [id]);
-
     // Add grade
-    const [editRcord, setEditRecord] = useState();
+    const [editRecord, setEditRecord] = useState();
     const [grade, setGrade] = useState('');
     const [alert, setAlert] = useState('');
     
-    const handleAddGrade = () => {
-        if (grade.length) {
-            console.log(`Ieraksta id: ${editRcord[0]}, datums: ${editRcord[1]}, atzīme: ${grade}`);
-            setEditRecord();
-            setGrade('');
-            setAlert('');
-        } else {
-            setAlert('Atzīmes lauks nav aizpildīts');
+    const handleAddGrade = async () => {
+        // if (grade.length) {
+        //     console.log(`Ieraksta id: ${editRecord[0]}, datums: ${editRecord[1]}, atzīme: ${grade}`);
+        //     setEditRecord();
+        //     setGrade('');
+        //     setAlert('');
+        // } else {
+        //     setAlert('Atzīmes lauks nav aizpildīts');
+        // }
+        // console.log(Cookies.get('auth'))
+        try {
+            await axios.put(`${process.env.REACT_APP_SERVER_URL}/journals/${editRecord[0]}`, { id, grade }, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`
+                }
+            })
+        } catch (err) {
+            console.log(err.response.data.errors)
         }
+
     }
     const handleReset = () => {
         setEditRecord();
@@ -99,30 +78,29 @@ const SupervisorStudentJournal = () => {
     const handleAlertClose = () => {
         setAlert('');
     };
-    console.log(editRcord);
     return (
         <div>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="supervisor-journal" />
             <div className="dashboard-container">
-                {journalInfo._id && <div className="supervisor-student-journal">
+                {internship._id && <div className="supervisor-student-journal">
                     <div className="supervisor-student-journal-header">
                         <PageButton2 text="Atpakaļ" active="" onClick={() => navigate(-1)} />
-                        <h1>{journalInfo.companyName}</h1>
+                        <h1>{internship.company}</h1>
                         <div className="supervisor-student-journal-info">
-                            <p>Prakses vadītājs: {journalInfo.mentor}</p>
-                            <p>Skolotāja: {journalInfo.overseeingTeacher}</p>
-                            <p>Praktikants: {journalInfo.student}</p>
+                            <p>Prakses vadītājs: {internship.supervisorFullName}</p>
+                            <p>Skolotāja: {internship.teacherFullName}</p>
+                            <p>Praktikants: {internship.studentFullName}</p>
                         </div>
                     </div>
-                    <JournalTable headerCells={headerCells} data={journal} setEditRecord={setEditRecord} />
-                    {editRcord && <div className="supervisor-journal-form">
+                    <JournalTable headerCells={headerCells} data={internship.journal} setEditRecord={setEditRecord} />
+                    {editRecord && <div className="supervisor-journal-form">
                         {alert && <Alert text={alert} type='warning' handleAlertClose={handleAlertClose} />}
                         <InputGroup 
                             onChange={e => setGrade(e.target.value)}
                             type='number'
                             name='grade'
-                            label={`Atzīme ${editRcord[1]} ierakstam:`}
-                            placeholder={editRcord[2] ? `Pašreizējā atzīme ${editRcord[2]}` : ''}
+                            label={`Atzīme ${editRecord[1]} ierakstam:`}
+                            placeholder={editRecord[2] ? `Pašreizējā atzīme ${editRecord[2]}` : ''}
                         />
                         <div className="supervisor-journal-form-buttons">
                             <DangerButton2 
@@ -136,7 +114,7 @@ const SupervisorStudentJournal = () => {
                         </div>
                     </div>}
                 </div>}
-                {!journalInfo._id &&
+                {!internship._id &&
                     <h2>Šāda dienasgrāmata nepastāv</h2>
                 }
             </div>

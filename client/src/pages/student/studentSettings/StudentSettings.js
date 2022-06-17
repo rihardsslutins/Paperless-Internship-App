@@ -17,7 +17,7 @@ import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
 import { connect } from "react-redux";
 // hooks
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // packages
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -62,8 +62,8 @@ const StudentSettings = (props) => {
         e.preventDefault();
         try {
             await axios.post(`${process.env.REACT_APP_SERVER_URL}/invites`, {
-                student: student.email,
-                teacher: teacherEmail
+                sender: student.email,
+                receiver: teacherEmail
             },
             {
                 headers: {
@@ -83,6 +83,23 @@ const StudentSettings = (props) => {
         // }
     }
 
+    const [pendingTeachers, setPendingTeachers] = useState([])
+    
+    useEffect(() => {
+        const getPendingTeachers = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/invites/teachers`, {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`
+                    }
+                })
+                setPendingTeachers(response.data.invites)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getPendingTeachers()
+    })
     // Alerts
     const [alert, setAlert] = useState('');
     const [alertType, setAlertType] = useState('');
@@ -94,8 +111,6 @@ const StudentSettings = (props) => {
     // Delete profile modal
     const [displayModal, setDisplayModal] = useState(false);
     const handleCloseModal = () => setDisplayModal(false);
-
-    console.log(student)
 
     return (
         <>
@@ -123,6 +138,13 @@ const StudentSettings = (props) => {
                                         ))
                                     :
                                         <p>Nav pievienots neviens skolotājs</p>
+                                }
+                                {pendingTeachers.length ?
+                                        pendingTeachers.map((teacher) => (
+                                            <p style={{color: 'gray'}}>{teacher.receiverFullName}</p>
+                                        ))
+                                    :
+                                        null
                                 }
                             </div>
                             <div className="add-teacher">

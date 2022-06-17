@@ -6,7 +6,10 @@ import SearchInput from "../../../components/atoms/input/SearchInput";
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import StudentsTable from "../../../components/organisms/table/StudentsTable";
 // hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
+// packages
+import axios from 'axios'
+import Cookies from "js-cookie";
 
 const TeacherJournal = () => {
 
@@ -20,30 +23,44 @@ const TeacherJournal = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const changeSearchQuery = (e) => setSearchQuery(e.target.value);
 
-    // Journal list
-    const studentList = [
-        {
-            _id: '567eu8rbcdfghijnsvx9',
-            name: 'Juris',
-            surname: 'Bērziņš',
-            phone: '22123987',
-            email: 'J.Berzins@gmail.com',
-        },
-        {
-            _id: '897ui56bchjnvxfe23e',
-            name: 'Anna',
-            surname: 'Krūmiņs',
-            phone: '21564143',
-            email: 'AnnKrumm@gmail.com',
-        },
-        {
-            _id: '87ui9hjn65bcmvxefgdr',
-            name: 'Kārlis',
-            surname: 'Ozols',
-            phone: '29587904',
-            email: 'Karlis123@inbox.lv',
+    const [studentList, setStudentList] = useState([])
+
+    useEffect(() => {
+        const getStudentList = async () => {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`
+                }
+            })
+            console.log(response)
+            setStudentList(response.data.users)
         }
-    ]
+        getStudentList()
+    }, [])
+    // Journal list
+    // const studentList = [
+    //     {
+    //         _id: '567eu8rbcdfghijnsvx9',
+    //         name: 'Juris',
+    //         surname: 'Bērziņš',
+    //         phone: '22123987',
+    //         email: 'J.Berzins@gmail.com',
+    //     },
+    //     {
+    //         _id: '897ui56bchjnvxfe23e',
+    //         name: 'Anna',
+    //         surname: 'Krūmiņs',
+    //         phone: '21564143',
+    //         email: 'AnnKrumm@gmail.com',
+    //     },
+    //     {
+    //         _id: '87ui9hjn65bcmvxefgdr',
+    //         name: 'Kārlis',
+    //         surname: 'Ozols',
+    //         phone: '29587904',
+    //         email: 'Karlis123@inbox.lv',
+    //     }
+    // ]
 
     // Table
     const headerCells = ['Vārds', 'Uzvārds', 'Tālrunis', 'E-pasts'];

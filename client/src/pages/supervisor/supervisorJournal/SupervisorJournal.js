@@ -6,8 +6,12 @@ import SearchInput from "../../../components/atoms/input/SearchInput";
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 // import SelectInput from "../../../components/atoms/input/SelectInput";
 import StudentsJournalTable from "../../../components/organisms/table/StudentsJournalTable";
+// hooks
+import { useEffect, useState } from "react";
+// packages
+import axios from 'axios'
+import Cookies from "js-cookie";
 
-import { useState } from "react";
 
 const SupervisorJournal = () => {
 
@@ -21,16 +25,20 @@ const SupervisorJournal = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const changeSearchQuery = (e) => setSearchQuery(e.target.value);
 
-    // Journal list
-    const studentList = [
-        {
-            _id: '31928h312312ui3adww',
-            name: 'Juris',
-            surname: 'Bērziņš',
-            phone: '22123987',
-            email: 'J.Berzins@gmail.com',
+    const [internList, setInternList] = useState([])
+
+    useEffect(() => {
+        const getInternList = async () => {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`
+                }
+            })
+            console.log(response)
+            setInternList(response.data.users)
         }
-    ]
+        getInternList()
+    }, [])
     
     // Table
     const headerCells = ['Vārds', 'Uzvārds', 'Tālrunis', 'E-pasts'];
@@ -45,7 +53,7 @@ const SupervisorJournal = () => {
                         <SearchInput onChange={changeSearchQuery} />
                         {/* <SelectInput options={options} /> */}
                     </div>
-                    <StudentsJournalTable headerCells={headerCells} data={studentList} link="../supervisor-student-journal/" />
+                    <StudentsJournalTable headerCells={headerCells} data={internList} link="../supervisor-student-journal/" />
                 </div>
             </div>
         </div>

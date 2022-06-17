@@ -8,23 +8,27 @@ import { User } from "./user.js";
 const Schema = mongoose.Schema
 
 const inviteSchema = new Schema({
-    student: {
+    sender: {
         type: String,
         required: [true, 'Studenta e-pasts netika pievienots'],
         validate: [isEmail, 'Pievienotais studenta e-pasts nav derīgs'],
     },
-    studentFullName: {
+    senderFullName: {
         type: String,
         required: [true, 'Studenta pilnais vārds nav pievienots']
     },
-    teacher: {
+    receiver: {
         type: String,
         required: [true, 'Skolotāja e-pasts netika pievienots'],
         validate: [isEmail, 'Pievienotā skolotāja e-pasts nav derīgs'],
     },
-    teacherFullName: {
+    receiverFullName: {
         type: String,
         required: [true, 'Skolotāja pilnais vārds nav pievienots']
+    },
+    receiverRole: {
+        type: String,
+        required: [true, 'Adresāta loma nav iestatīta']
     },
     subject: {
         type: String,
@@ -40,25 +44,27 @@ const inviteSchema = new Schema({
 }
 )
 
-inviteSchema.statics.invite = async function (student, teacher) {
-    if (teacher) {
-        const Student = await User.findOne({ email: student, role: 'student' })
-        if (Student) {
-            const Teacher = await User.findOne({ email: teacher, role: 'teacher' })
-            if (Teacher) {
-                const teachersArray = Student.teachers.filter(object => object.email === teacher)
+inviteSchema.statics.invite = async function (sender, receiver) {
+    console.log(`THIS IS THEM: :: : : :: :${sender, receiver}`)
+    if (receiver) {
+        const Sender = await User.findOne({ email: sender, role: 'student' })
+        if (Sender) {
+            const Receiver = await User.findOne({ email: receiver, role: 'teacher' })
+            if (Receiver) {
+                const teachersArray = Sender.teachers.filter(object => object.email === receiver)
                 console.log(teachersArray)
                 if (!teachersArray.length) {
-                    const invite = await Invite.findOne({ student, teacher})
+                    const invite = await Invite.findOne({ sender, receiver})
                     console.log(invite)
                     if (!invite) {
                         Invite.create({
-                            student, 
-                            teacher, 
-                            studentFullName: `${Student.name + ' ' + Student.surname}`, 
-                            teacherFullName: `${Teacher.name + ' ' + Teacher.surname}`,
+                            sender, 
+                            receiver, 
+                            senderFullName: `${Sender.name + ' ' + Sender.surname}`, 
+                            receiverFullName: `${Receiver.name + ' ' + Receiver.surname}`,
+                            receiverRole: Receiver.role,
                             subject: 'Prakses dienasgrāmata',
-                            body: `${Student.name + ' ' + Student.surname} no ${Student.school} uzaicināja Jūs pievienoties savām dienasgrāmatām.`
+                            body: `${Sender.name + ' ' + Sender.surname} no ${Sender.school} uzaicināja Jūs pievienoties savām dienasgrāmatām.`
                         })
                     } else {
                         throw Error('Pieteikumus vienam skolotājam atkārtoti nevar sūtīt')

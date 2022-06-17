@@ -1,7 +1,7 @@
 import express from 'express';
 
 // controllers
-import { user_create, user_login, user_logout, user_get_me, change_me, reset_password } from '../controllers/userController.js';
+import { user_create, user_login, user_logout, user_get_me, change_me, reset_password, get_user_list } from '../controllers/userController.js';
 
 // // middleware
 import { protect } from '../middleware/authMiddleware.js';
@@ -10,6 +10,9 @@ const userRouter = express.Router();
 
 // register route
 userRouter.post('/user', user_create);
+
+// get users
+userRouter.get('/user', protect, get_user_list)
 
 // login route
 userRouter.post('/login', user_login);

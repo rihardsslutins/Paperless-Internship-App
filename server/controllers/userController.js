@@ -218,4 +218,37 @@ const reset_password = async (req, res) => {
   }
 }
 
-export { user_create, user_login, user_logout, user_get_me, change_me, reset_password };
+const get_user_list = async (req, res) => {
+  const { role, students, interns } = await User.findById(req.user.id)
+  try {
+    let users
+    if (role === 'teacher') {
+      let studentsArray = []
+      await Promise.all(students.map(async (student) => {
+          const user = await User.findOne({ email: student.email })
+          studentsArray.push(user)
+          console.log(user)
+      }))
+      console.log(studentsArray)
+      users = studentsArray
+    }
+    if (role === 'supervisor') {
+      let internsArray = []
+      await Promise.all(interns.map(async (intern) => {
+          const user = await User.findOne({ email: intern.email })
+          internsArray.push(user)
+      }))
+      users = internsArray
+    }
+        
+    return res.status(200).json({ users })
+
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json({ message: err.message })
+  }
+}
+
+
+
+export { user_create, user_login, user_logout, user_get_me, change_me, reset_password, get_user_list };

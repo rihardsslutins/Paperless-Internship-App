@@ -30,7 +30,7 @@ const StudentsJournalTable = ({
                     ))}
                     {!data.length &&
                         <tr>
-                            <td colSpan={4} className="no-record"> Nav nevina ieraksta </td>
+                            <td colSpan={4} className="no-record"> Nav neviena ieraksta </td>
                         </tr>
                     }
                 </tbody>
