@@ -1,23 +1,19 @@
 // style
 import "./StudentHome.css";
-// assets
-import male from "../../../assets/male.svg";
-import female from "../../../assets/female.svg";
 // atoms
-import ClockAndDate from "../../../components/atoms/clockAndDate/ClockAndDate";
-import NameDay from "../../../components/atoms/nameDay/NameDay";
+import PageButton2 from "../../../components/atoms/button/PageButton2";
+// molecules
+import JournalCard from "../../../components/molecules/card/JournalCard";
 // organism
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
+import HomeInfoProfile from "../../../components/organisms/homeInfoProfile/HomeInfoProfile";
+
 
 // hooks
-import useTheme from "../../../hooks/useTheme";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import ThemeToggleRound from "../../../components/ThemeToggle/ThemeToggleRound";
 
 const StudentHome = () => {
-
-    const theme = useTheme();
 
     // Sidebar
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
@@ -28,7 +24,7 @@ const StudentHome = () => {
     const navigate = useNavigate();
     
     // Logged in users info
-    const student = { 
+    const user = { 
         id: '6283abad20a71c3f8b4a2e07',
         name: "Ulvis",
         surname: "Čakstiņš",
@@ -49,52 +45,58 @@ const StudentHome = () => {
         ]
     }
 
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = "https://srv2.weatherwidget.org/js/?id=ww_4fa87b484304c";
-        document.body.appendChild(script);
-        return () => {
-            document.body.removeChild(script);
+    // Active Journal
+    const internship = [
+        {
+        _id: "62ab1ddbdc12beab4c30811c",
+        isActive: true,
+        company: "Accenture",
+        supervisor: "robertstarhanovs@gmail.com",
+        teacher: "ivetakunkule@gmail.com",
+        student: "ulvisc3@gmail.com",
+        startingDate: "2022-06-22",
+        journal: [
+            {
+                date: "2022-06-16",
+                taskDescription: "Dizaina izveide",
+                hoursSpent: 8,
+                _id: "62ab2047c448ecf245525df1"
+            },
+            {
+                date: "2022-06-17",
+                taskDescription: "Navigācijas joslas izveide",
+                hoursSpent: 8,
+                _id: "62ab205fc448ecf245525df9"
+            },
+            {
+                date: "2022-06-18",
+                taskDescription: "Galvenās lapas izveide",
+                hoursSpent: 8,
+                _id: "62ab20a7c448ecf245525e01"
+            }
+        ]
         }
-      }, []);
+    ]
 
     return (
         <>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="student-home" />
             <div className="dashboard-container">
                 <div className="student-home">
-                    <div className="home-nameday-date">
-                        <NameDay />
-                        <ClockAndDate displayClock={true} displayTodaysDate={true} />
-                    </div>
-                    <div className={`home-profile ${theme}`} onClick={() => navigate("../student-settings")}>
-                        <img className="home-profile-image" src={student.gender === "male" ? male : female} alt="profile" />
-                        <h1>{student.name} {student.surname}</h1>
-                        <div className="home-profile-contact-info">
-                            <h3>E-pasts: {student.email}</h3>
-                            <h3>Tālrunis: {student.phone}</h3>
-                            <h3>Skola: {student.school}</h3>
+                    <HomeInfoProfile user={user} role='student' /> 
+                    <div className="home-student-journal-container">
+                        <div className="home-student-journal">
+                            <h2>Dienasgrāmata:</h2>
+                            {!internship.length ?
+                                <div className="student-home-no-journal">
+                                    <h3>Nav aktīvas dienasgrāmatas</h3>
+                                    <PageButton2 text='Izveidot dienasgrāmatu' active={''} onClick={() => navigate("../student-journal-create")} />
+                                </div>
+                            : 
+                                <JournalCard journalCard={internship[0]} role="student"/>}
                         </div>
                     </div>
-                    <div className="weather-container">
-                        {theme === 'dark' ?
-                            <div className="weather-widget" id="ww_4fa87b484304c" v='1.20' loc='auto' a='{"t":"horizontal","lang":"lv","ids":[],"cl_bkg":"#2b2b2b","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","sl_sot":"celsius","sl_ics":"one_a","font":"Arial"}'>
-                                Weather Data Source: <a href="https://sharpweather.com/" id="ww_4fa87b484304c_u" target="_blank">
-                                    Sharp Weather
-                                </a>
-                            </div>
-                        :
-                            <div className="weather-widget" id="ww_4fa87b484304c" v='1.20' loc='auto' a='{"t":"horizontal","lang":"lv","ids":[],"cl_bkg":"#FFFFFF","cl_font":"#333333","cl_cloud":"#d4d4d4","cl_persp":"#2196F3","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","sl_sot":"celsius","sl_ics":"one_a","font":"Arial"}'>
-                                Weather Data Source: <a href="https://sharpweather.com/" id="ww_4fa87b484304c_u" target="_blank">
-                                    Sharp Weather
-                                </a>
-                            </div>
-                        }
-                    </div>
-                    <div className="theme-toggle-sticky">
-                        <ThemeToggleRound />
-                    </div>
+                    <ThemeToggleRound />
                 </div>
             </div>
         </>

@@ -7,6 +7,7 @@ const CardGrid = ({
     internships,
     role
 }) => {
+    console.log(internships);
     let activeInternships = [];
     let inactiveInternships = [];
     for (let i = 0; i < internships.length; i++) {
