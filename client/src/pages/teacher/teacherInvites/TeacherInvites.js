@@ -52,7 +52,7 @@ const TeacherInvites = (props) => {
             }
         }
         getInvites()
-    }, [invites.length])
+    })
 
 
     

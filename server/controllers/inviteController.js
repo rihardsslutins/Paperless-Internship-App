@@ -1,21 +1,23 @@
 // models
 import { Invite } from "../models/invite.js";
+import { Internship } from "../models/internship.js";
 import { User } from "../models/user.js";
 
 // functions
 import { handleErrors } from "./invite.services.js";
 
 const send_invite = async (req, res) => {
-    const { student, teacher } = req.body;
+    const { sender, receiver } = req.body;
     try {
-        const invite = await Invite.invite(student, teacher)
+        const invite = await Invite.invite(sender, receiver)
         return res.status(201).json({ invite })
     } catch (err) {
+        console.log(err)
         const emptyErrorObject = {
-            teacher: '',
-            teacherFullName: '',
-            student: '',
-            studentFullName: '',
+            receiver: '',
+            receiverFullName: '',
+            sender: '',
+            senderFullName: '',
             subject: '',
             body: ''
         }
@@ -27,7 +29,7 @@ const send_invite = async (req, res) => {
 const get_invites = async (req, res) => {
     const { email } = await User.findById(req.user.id)
     try {
-        const invites = await Invite.find({ teacher: email }) 
+        const invites = await Invite.find({ receiver: email }) 
         return res.status(200).json({ invites })  
     } catch (err) {
         return res.status(400).json({ message: err.message })
@@ -37,11 +39,31 @@ const get_invites = async (req, res) => {
 const reject_invite = async (req, res) => {
     const _id = req.params.id
     try {
-        const invite = await Invite.findByIdAndDelete(_id);  
+        
+        // const invite = await Invite.findByIdAndDelete(_id);
+        const invite = await Invite.findOne({ _id })
+        const Receiver = await User.findOne({ email: invite.receiver })
+        // if () {
+
+        // }
+        switch (Receiver.role) {
+            case 'teacher':
+                await invite.remove()
+                break;
+            case 'supervisor':
+                // finds whatever internship the supervisor was invited in
+                const internship = await Internship.findOne({ student: invite.sender, supervisor: invite.receiver })
+                // deletes the rejected internship
+                await internship.remove()
+                // deletes the rejected invite
+                await invite.remove()
+                break;
+            default:
+                break;
+        }
         return res.status(200).json({ invite })
     } catch (err) {
         return res.status(400).json({ message: err.message })
-        console.log(err)
     }
 }
 
@@ -49,41 +71,72 @@ const accept_invite = async (req, res) => {
     const _id = req.params.id
     try {
         const invite = await Invite.findOne({_id})
-        const { teacherFullName, studentFullName, teacher, student } = invite
+        const { receiverFullName, senderFullName, receiver, sender } = invite
+        const Receiver = await User.findOne({ email: receiver })
+        const Sender = await User.findOne({ email: sender })
+        switch (Receiver.role) {
+            case 'teacher':
+                // pushes the teachers full name and email to the students teachers array
+                Sender.teachers.push({ 
+                    fullName: receiverFullName, 
+                    email: receiver 
+                })
+                // saves the students changes
+                await Sender.save()
+                
+                // pushes the students full name and email to the teachers students array
+                Receiver.students.push({
+                    fullName: senderFullName,
+                    email: sender
+                })
+                // saves the teachers changes
+                await Receiver.save()
+                
+                // deletes the invite
+                await invite.remove()
 
-        const Student = await User.findOne({ email: student })
-        Student.teachers.push({ 
-            fullName: teacherFullName, 
-            email: teacher 
-        })
-        await Student.save()
+                break;
 
-        console.log(Student)
-        const Teacher = await User.findOne({ email: teacher })
-        Teacher.students.push({
-            fullName: studentFullName,
-            email: student
-        })
-        await Teacher.save()
+            case 'supervisor':
+                // looks for the internship the supervisor has been invited to and hasn't accepted yet
+                const internship = await Internship.findOne({ student: sender, supervisor: receiver })
+                
+                // changes the internships isPending property to indicate that the invited supervisor has accepted the invite
+                internship.isPending = false;
+                // pushes the student's full name and email to the supervisor's interns array
+                Receiver.interns.push({
+                    fullName: senderFullName,
+                    email: sender
+                })
+                
+                // saves the altered internship
+                await internship.save()
+                // saves the altered supervisor
+                await Receiver.save()
 
-        await invite.remove()
+                // deletes the invite
+                await invite.remove()
+                break;
+            default:
+                break;
+        }
 
-        return res.status(200).json({ Teacher })
+        return res.status(200).json({ Receiver })
     } catch (err) {
         console.log(err)
         return res.status(400).json({ message: err.message })
     }
 }
 
-// const get_invited_teachers = async (req, res) => {
-//     const { email } = User.findOne({ _id: req.user.id })
-//     try {
-//         const invites = await Invite.find({ student: email })
-//         return res.status(200).json({ invites })
-//     } catch (err) {
-//         console.log(err)
-//         return res.status(400).json({ message: err.message })
-//     }
-// }
+const get_invited_teachers = async (req, res) => {
+    const { email } = await User.findOne({ _id: req.user.id })
+    try {
+        const invites = await Invite.find({ sender: email, receiverRole: 'teacher' })
+        return res.status(200).json({ invites })
+    } catch (err) {
+        console.log(err)
+        return res.status(400).json({ message: err.message })
+    }
+}
 
-export { send_invite, get_invites, reject_invite, accept_invite }
+export { send_invite, get_invites, reject_invite, accept_invite, get_invited_teachers }

@@ -16,10 +16,13 @@ const journalSchema = new Schema({
     hoursSpent: {
         type: Number,
         required: [true, 'Lūdzu ievadi pavadīto laiku'],
-        max: [8, 'Lūdzu ievadi pavadīto stundu skaitu, kas nepārsniedz 8']
+        max: [8, 'Lūdzu ievadi pavadīto stundu skaitu, kas nepārsniedz 8'],
+        min: [1, 'Lūdzu ievadi pavadīto stundu skaitu, kas ir vienāds ar vai pārsniedz 1']
     },
     grade: {
         type: Number,
+        max: [10, 'Lūdzu ievadi atzīmi, kas nepārsniedz 10'],
+        min: [1, 'Lūdzu ievadi atzīmi, kas ir vienāda ar vai pārsniedz 1'],
     }
 })
 
@@ -27,6 +30,10 @@ const internshipSchema = new Schema({
     isActive: {
         type: Boolean,
         required: [true, 'Praksei nav iestatīta aktivitātes īpašība']
+    },
+    isPending: {
+        type: Boolean,
+        required: [true, 'Praksei nav iestatīta verifikācijas īpašība']
     },
     company: {
         type: String,
@@ -38,17 +45,29 @@ const internshipSchema = new Schema({
         lowercase: true,
         validate: [isEmail, 'Lūdzu ievadi prakses vadītāja (no uzņēmuma) e-pastu pareizi']
     },
+    supervisorFullName: {
+        type: String,
+        required: [true, 'Prakses vadītāja pilnais vārds netika pievienots']
+    },
     teacher: {
         type: String,
         required: [true, 'Lūdzu ievadi prakses vadītāja (no skolas) e-pastu'],
         lowercase: true,
         validate: [isEmail, 'Lūdzu ievadi prakses vadītāja (no skolas) e-pastu pareizi']
     },
+    teacherFullName: {
+        type: String,
+        required: [true, 'Skolotāja pilnais vārds netika pievienots'],
+    },
     student: {
         type: String,
         required: [true, 'Studenta e-pasts nav sasniedzams'],
         lowercase: true,
         validate: [isEmail, 'Studenta e-pasts nav derīgs'],
+    },
+    studentFullName: {
+        type: String,
+        required: [true, 'Studenta pilnais vārds netika pievienots']
     },
     startingDate: {
         type: String,

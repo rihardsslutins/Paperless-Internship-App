@@ -138,6 +138,9 @@ const SupervisorUser = User.discriminator(
         type: String,
         required: [true, 'Lūdzu ievadi uzņēmumu'],
       },
+      interns: [
+        {fullName: String, email: String}
+      ]
     }), options
 );
 

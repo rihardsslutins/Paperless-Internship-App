@@ -79,7 +79,7 @@ function App(props) {
             setUserIsReady(true);
         };
         getUser();
-    }, [dispatch, props.user._id]);
+    });
     return (
         <div className={`App ${theme}`}>
             {userIsReady && (
