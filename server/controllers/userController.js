@@ -103,11 +103,11 @@ const user_logout = async (req, res) => {
 // @access Private
 const user_get_me = async (req, res) => {
   try {
-    const { id, name, surname, gender, phone, school, field, company, internships, teachers, students, email, password, role } =
+    const { id, name, surname, gender, phone, school, field, company, internships, teachers, students, interns, email, password, role } =
     await User.findById(req.user.id);
   res
     .status(200)
-    .json({ id, name, surname, gender, phone, school, field, company, internships, teachers, students, email, password, role });
+    .json({ id, name, surname, gender, phone, school, field, company, internships, teachers, students, interns, email, password, role });
   } catch (err) {
     return res.status(401).json({ error: "Not authorized" })
   }

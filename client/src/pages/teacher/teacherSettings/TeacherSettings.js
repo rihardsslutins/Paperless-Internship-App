@@ -13,8 +13,10 @@ import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
 // hooks
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+// redux
+import { connect } from "react-redux";
 
-const TeacherSettings = () => {
+const TeacherSettings = (props) => {
 
     const navigate = useNavigate();
 
@@ -25,16 +27,7 @@ const TeacherSettings = () => {
     const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
 
     // Logged in users info
-    const teacher = { 
-        id: 'uitycfjdghnvmkr6578rfed',
-        name: "Zane",
-        surname: "Krūmiņa",
-        school: "Saldus thenikums",
-        phone: 28490186,
-        gender: "female",
-        email: "zan.kru@gmail.com",
-        password: "parole123"
-    }
+    const teacher = props.user
 
     // Delete profile modal
     const [displayModal, setDisplayModal] = useState(false);
@@ -65,5 +58,9 @@ const TeacherSettings = () => {
         </>
     );
 }
- 
-export default TeacherSettings;
+
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(TeacherSettings);

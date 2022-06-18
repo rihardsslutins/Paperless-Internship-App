@@ -25,13 +25,13 @@ const TeacherStudentJournals = () => {
 
     useEffect(() => {
         const getStudentInternships = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/user/${id}`, {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/teacher/${id}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('auth')}`
                 }
             })
             setInternships(response.data.internships)
-            console.log(internships)
+            console.log(response.data)
         }
         getStudentInternships()
     }, [])
@@ -84,7 +84,7 @@ const TeacherStudentJournals = () => {
             <div className="dashboard-container">
                 <div className="teacher-students-journal">
                     <h1>Dienasgrāmata - {id}</h1>
-                    <CardGrid internships={internships} role="teacher" />
+                    {internships && <CardGrid internships={internships} role="teacher" />}
                 </div>
             </div>
         </div>

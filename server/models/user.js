@@ -103,7 +103,7 @@ const TeacherUser = User.discriminator(
   new Schema(
     {
       students: [
-        {fullName: String, email: String}
+        {fullName: String, email: String, phone: Number}
       ],
       school: {
         type: String,
@@ -121,7 +121,7 @@ const StudentUser = User.discriminator(
       required: [true, 'Lūdzu ievadi skolu'],
     },
     teachers: [
-      {fullName: String, email: String}
+      {fullName: String, email: String, phone: Number}
     ]
   }), options
 );
@@ -139,7 +139,7 @@ const SupervisorUser = User.discriminator(
         required: [true, 'Lūdzu ievadi uzņēmumu'],
       },
       interns: [
-        {fullName: String, email: String}
+        {fullName: String, email: String, phone: Number}
       ]
     }), options
 );

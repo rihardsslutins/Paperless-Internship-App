@@ -16,6 +16,7 @@ export const userSlice = createSlice({
         internships: '',
         teachers: '',
         students: '',
+        interns: '',
         role: '',
     },
     reducers: {
@@ -37,6 +38,7 @@ export const userSlice = createSlice({
             state.internships = action.payload.internships;
             state.teachers = action.payload.teachers;
             state.students = action.payload.students;
+            state.interns = action.payload.interns;
             state.role = action.payload.role;
         },
         clearUser: (state) => {
@@ -53,6 +55,7 @@ export const userSlice = createSlice({
             state.internships = '';
             state.teachers = '';
             state.students = '';
+            state.interns = '';
             state.role = '';
         },
     },

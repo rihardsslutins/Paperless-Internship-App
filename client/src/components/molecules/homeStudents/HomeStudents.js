@@ -35,12 +35,12 @@ const HomeStudents = ({
                             {studentList.map((student) => (
                                 <tr className="home-student" 
                                     onClick={() => role === 'supervisor' ? 
-                                            navigate("../supervisor-student-journal/" + student.id)
+                                            navigate("../supervisor-student-journal/" + student._id)
                                         :
-                                            navigate("../teacher-student-journals/" + student.id)
+                                            navigate("../teacher-student-journals/" + student._id)
                                     }
                                 >
-                                    <td>{student.name} {student.surname}</td>
+                                    <td>{student.name + ' ' + student.surname}</td>
                                     <td>{student.phone}</td>
                                     <td>{student.email}</td>
                                 </tr>
