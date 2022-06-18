@@ -52,7 +52,9 @@ const StudentHome = () => {
         isActive: true,
         company: "Accenture",
         supervisor: "robertstarhanovs@gmail.com",
+        supervisorFullName: "Roberts Tarhanovs",
         teacher: "ivetakunkule@gmail.com",
+        teacherFullName: "Iveta Kunkule",
         student: "ulvisc3@gmail.com",
         startingDate: "2022-06-22",
         journal: [

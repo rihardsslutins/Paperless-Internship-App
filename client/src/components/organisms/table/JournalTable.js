@@ -5,7 +5,8 @@ import { useLocation } from "react-router-dom";
 const JournalTable = ({
     headerCells,
     data,
-    setEditRecord
+    setEditRecord,
+    setAlert
 }) => {
     const location = useLocation();
     return (
@@ -20,9 +21,12 @@ const JournalTable = ({
                 </thead>
                 <tbody>
                     {data.map(record => (
-                        <tr onClick={(
+                        <tr key={record._id} onClick={(
                             location.pathname.split("/")[1] === 'supervisor-student-journal' ?
-                                () => setEditRecord([record._id, record.date, record.grade])
+                                () => {
+                                    setEditRecord([record._id, record.date, record.grade])
+                                    setAlert('');
+                                }
                             :
                                 undefined
                             )}>

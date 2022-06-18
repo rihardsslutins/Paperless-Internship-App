@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 const StudentsTable = ({
     headerCells,
     data,
-    link
+    link,
+    isPending
 }) => {
     const navigate = useNavigate();
     return (
@@ -20,15 +21,20 @@ const StudentsTable = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map(record => (
-                        <tr onClick={() => navigate(link + record._id)}>
+                    {!isPending && data.map(record => (
+                        <tr key={record._id} onClick={() => navigate(link + record._id)}>
                             <td>{record.name}</td>
                             <td>{record.surname}</td>
                             <td>{record.phone}</td>
                             <td>{record.email}</td>
                         </tr>
                     ))}
-                    {!data.length &&
+                    {isPending && 
+                        <tr>
+                            <td colSpan={4}><div className="loading"></div></td>
+                        </tr>
+                    }
+                    {!isPending && !data.length &&
                         <tr>
                             <td colSpan={4} className="no-record"> Nav neviena ieraksta </td>
                         </tr>

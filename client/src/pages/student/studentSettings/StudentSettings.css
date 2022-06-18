@@ -61,6 +61,23 @@
     margin-left: auto;
     height: fit-content;
 }
+.pending-teacher {
+    color: var(--secondary-text);
+}
+
+@media only screen and (min-width: 800px) {
+    .pending-teacher:hover::after {
+        position: absolute;
+        content: "Gaida apstiprinājumu";
+        font-size: 16px;
+        border-radius: 5px;
+        white-space: wrap;
+        margin-left: 10px;
+        color: var(--white);
+        background-color: var(--dark-primary-color);
+        padding: 5px 10px;
+    }
+}
 
 @media only screen and (max-width: 800px) {
     .student-settings {

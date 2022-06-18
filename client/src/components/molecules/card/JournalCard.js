@@ -7,8 +7,12 @@ import { Link } from "react-router-dom";
 // hooks
 import useTheme from "../../../hooks/useTheme";
 
-const JournalCard = ({ journalCard, role }) => {
+const JournalCard = ({ 
+    journalCard, 
+    role 
+}) => {
     const theme = useTheme();
+
     return (
         <div className={`journal-card ${theme}`}>
                 <h4 className="journal-card-company">{journalCard.company}</h4>
@@ -21,11 +25,16 @@ const JournalCard = ({ journalCard, role }) => {
                     <p>Datums:</p>
                     <p>{journalCard.startingDate}</p>
                 </div>
-                {role === 'student' ?
-                    <Link to={`../student-journal/${journalCard._id}`}><PageButton text="Apskatīt" /></Link>
-                :
-                    <Link to={`../teacher-student-journal/${journalCard._id}`}><PageButton text="Apskatīt" /></Link>
+                {!journalCard.isPending &&
+                    <>
+                        {role === 'student' ?
+                                <Link to={`../student-journal/${journalCard._id}`}><PageButton text="Apskatīt" /></Link>
+                        :
+                            <Link to={`../teacher-student-journal/${journalCard._id}`}><PageButton text="Apskatīt" /></Link>
+                        }
+                    </>
                 }
+                {journalCard.isPending && <div className="journal-pending">Gaiada prakses vadītāja apstiprinājumu</div>}
         </div>
     );
 }

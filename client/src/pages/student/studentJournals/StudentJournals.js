@@ -14,6 +14,12 @@ import { Link } from 'react-router-dom';
 
 const StudentJournals = () => {
 
+    // Sidebar
+    const icon = ['home', 'journal', 'mail', 'settings', 'help'];
+    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
+    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
+
     const [internships, setInternships] = useState('')
     const [isPending, setIsPending] = useState(false);
 
@@ -32,39 +38,6 @@ const StudentJournals = () => {
         getInternships()
     }, [])
 
-    // Sidebar
-    const icon = ['home', 'journal', 'mail', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
-    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
-
-    // Journal Card
-    // const internships = [
-    //     {
-    //         id: '31928h312312ui3adww',
-    //         active: true,
-    //         companyName: 'Accenture',
-    //         overseeingTeacher: 'Elīna Dēvita',
-    //         mentor: 'Roberts Tarhanovs',
-    //         date: '01.03.2022.',
-    //     },
-    //     {
-    //         id: 'du12bi1v23v1y2v3i1v2',
-    //         active: false,
-    //         companyName: 'Brocēnu novada dome',
-    //         overseeingTeacher: 'Elīna Dēvita',
-    //         mentor: 'Jānis Bērziņš',
-    //         date: '07.11.2021.',
-    //     },
-    //     {
-    //         id: '31298b9be201xnxe9u2b',
-    //         active: false,
-    //         companyName: 'Brocēnu novada dome',
-    //         overseeingTeacher: 'Elīna Dēvita',
-    //         mentor: 'Jānis Bērziņš',
-    //         date: '03.02.2021.',
-    //     },
-    // ];
     return (
         <>
             <Sidebar

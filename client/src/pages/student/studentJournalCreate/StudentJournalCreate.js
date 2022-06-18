@@ -19,19 +19,7 @@ import { useNavigate } from "react-router-dom";
 const StudentJournalCreate = (props) => {
 
     const student = props.user
-
     const navigate = useNavigate();
-
-    const handleErrors = (errors, propertyOrder) => {
-        for (let i = 0; i < propertyOrder.length; i++) {
-            if (errors[propertyOrder[i]]) {
-                setAlert(errors[propertyOrder[i]]);
-                return;
-            } else {
-                setAlert('');
-            }
-        }
-    };
 
     // SIDEBAR
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
@@ -50,28 +38,6 @@ const StudentJournalCreate = (props) => {
     const changeStartingDate = e => setStartingDate(e.target.value);
 
     const onChangeArray = [changeCompany, '', changeSupervisorEmail, changeStartingDate];
-
-    // Logged in users info
-    // const student = { 
-    //     id: '6283abad20a71c3f8b4a2e07',
-    //     name: "Ulvis",
-    //     surname: "Čakstiņš",
-    //     school: "Saldus thenikums",
-    //     phone: 25412514,
-    //     gender: "male",
-    //     email: "ulvisc3@gmail.com",
-    //     password: "parole123",
-    //     teachers: [
-    //         {
-    //             fullName: "Elīna Dēvita",
-    //             email: "elinadevita@gmail.com"
-    //         },
-    //         {
-    //             fullName: "Mārtiņs Zīlīte",
-    //             email: "martins@gmail.com"
-    //         }
-    //     ]
-    // }
 
     const formLabels = ['Uzņēmuma nosaukums:', '', 'Prakses vadītājs (uzņēmums):', 'Prakses sākums:'];
     const formNames = ['company', 'teacher', 'supervisor', 'startingDate'];
@@ -97,8 +63,23 @@ const StudentJournalCreate = (props) => {
         setAlertType('');
     };
 
+    // handle errors
+    const handleErrors = (errors, propertyOrder) => {
+        for (let i = 0; i < propertyOrder.length; i++) {
+            if (errors[propertyOrder[i]]) {
+                setAlertType('warning');
+                setAlert(errors[propertyOrder[i]]);
+                return;
+            } else {
+                setAlert('');
+            }
+        }
+    };
+
     const handleCreateJournal = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setAlertType('');
+        setAlert('');
         try {
             if (!company) {
                 setAlert('Lūdzu ievadi uzņēmuma nosaukumu!')
@@ -128,8 +109,8 @@ const StudentJournalCreate = (props) => {
                 }
                 )
                 setAlertType('success');
-                setAlert('Dienasgrāmata ir izveidota!');
-                setAlertLink(['Doties uz dienasgrāmatu', '/student-journals']);
+                setAlert('Dienasgrāmata ir izveidota un tā būs pieejama, kad to apstiprinās prakses vadītājs!');
+                setAlertLink(['Manas deinasgrāmtas', '/student-journals']);
                 setCompany('');
                 setTeacherEmail('');
                 setSupervisorEmail('');
@@ -137,9 +118,8 @@ const StudentJournalCreate = (props) => {
             }
         } catch (err) {
             const errors = err.response.data.errors;
-            const propertyOrder = ['company', 'student', 'teacher', 'supervisor', 'startingDate']
-            handleErrors(errors, propertyOrder)
-            setAlertType('warning')
+            const propertyOrder = ['company', 'student', 'teacher', 'supervisor', 'startingDate'];
+            handleErrors(errors, propertyOrder);
         }
     }
 

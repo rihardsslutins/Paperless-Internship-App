@@ -31,3 +31,7 @@
 .journal-card button {
     width: 100%;
 }
+.journal-pending {
+    text-align: center;
+    font-size: 18px;
+}

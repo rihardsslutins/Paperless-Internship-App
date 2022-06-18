@@ -13,6 +13,8 @@ import Cookies from "js-cookie";
 
 const TeacherJournal = () => {
 
+    const [isPending, setIsPending] = useState(false);
+
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
     const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
@@ -27,40 +29,32 @@ const TeacherJournal = () => {
 
     useEffect(() => {
         const getStudentList = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('auth')}`
-                }
-            })
-            console.log(response)
-            setStudentList(response.data.users)
+            setIsPending(true);
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`
+                    }
+                })
+                let data = [];
+                response.data.users.map((student) => {
+                    if (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        student.surname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        student.phone.toString().includes(searchQuery) ||
+                        student.email.toLowerCase().includes(searchQuery.toLowerCase())
+                    ) {
+                        data.push(student);
+                    }
+                })
+                setStudentList(data);
+                setIsPending(false); 
+            } catch (err) {
+                console.log(err);
+                setIsPending(false);
+            }
         }
         getStudentList()
-    }, [])
-    // Journal list
-    // const studentList = [
-    //     {
-    //         _id: '567eu8rbcdfghijnsvx9',
-    //         name: 'Juris',
-    //         surname: 'Bērziņš',
-    //         phone: '22123987',
-    //         email: 'J.Berzins@gmail.com',
-    //     },
-    //     {
-    //         _id: '897ui56bchjnvxfe23e',
-    //         name: 'Anna',
-    //         surname: 'Krūmiņs',
-    //         phone: '21564143',
-    //         email: 'AnnKrumm@gmail.com',
-    //     },
-    //     {
-    //         _id: '87ui9hjn65bcmvxefgdr',
-    //         name: 'Kārlis',
-    //         surname: 'Ozols',
-    //         phone: '29587904',
-    //         email: 'Karlis123@inbox.lv',
-    //     }
-    // ]
+    }, [searchQuery])
 
     // Table
     const headerCells = ['Vārds', 'Uzvārds', 'Tālrunis', 'E-pasts'];
@@ -74,7 +68,12 @@ const TeacherJournal = () => {
                     <div className="teacher-journal-table-filter">
                         <SearchInput onChange={changeSearchQuery} />
                     </div>
-                    <StudentsTable headerCells={headerCells} data={studentList} link="../teacher-student-journals/"/>
+                    <StudentsTable 
+                        headerCells={headerCells} 
+                        data={studentList} 
+                        link="../teacher-student-journals/"
+                        isPending={isPending}
+                    />
                 </div>
             </div>
         </div>
