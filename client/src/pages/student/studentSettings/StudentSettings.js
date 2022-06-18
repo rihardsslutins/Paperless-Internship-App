@@ -34,31 +34,25 @@ const StudentSettings = (props) => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
-    // // Logged in users info
-    // const student = { 
-    //     id: '6283abad20a71c3f8b4a2e07',
-    //     name: "Ulvis",
-    //     surname: "Čakstiņš",
-    //     school: "Saldus thenikums",
-    //     phone: 25412514,
-    //     gender: "male",
-    //     email: "ulvisc3@gmail.com",
-    //     password: "parole123",
-    //     teachers: [
-    //         {
-    //             fullName: "Elīna Dēvita",
-    //             email: "elinadevita@gmail.com"
-    //         },
-    //         {
-    //             fullName: "Mārtiņs Zīlīte",
-    //             email: "martins@gmail.com"
-    //         }
-    //     ]
-    // }
+    // Error handling
+    const handleErrors = (errors, propertyOrder) => {
+        for (let i = 0; i < propertyOrder.length; i++) {
+            if (errors[propertyOrder[i]]) {
+                setAlertType('warning');
+                setAlert(errors[propertyOrder[i]]);
+                return;
+            } else {
+                setAlertType('');
+                setAlert('');
+            }
+        }
+    };
 
     // Add teacher
     const [teacherEmail, setTeacherEmail] = useState('');
     const handleAddTeacher = async (e) => {
+        setAlertType('');
+        setAlert('');
         e.preventDefault();
         try {
             await axios.post(`${process.env.REACT_APP_SERVER_URL}/invites`, {
@@ -70,17 +64,15 @@ const StudentSettings = (props) => {
                     Authorization: `Bearer ${Cookies.get('auth')}`
                 }
             })
+            setAlertType('success');
+            setAlert('Uzaicinājums tika nosūtīts skolotājam!');
+            setTeacherEmail('');
         } catch (err) {
-            console.log(err.response.data.errors)
+            const errors = err.response.data.errors;
+            console.log(errors);
+            const propertyOrder = ['sender', 'receiver'];
+            handleErrors(errors, propertyOrder);
         }
-        // if (!teacherEmail) {
-        //     setAlertType('warning');
-        //     setAlert('Ievadiet skolotāja e-pastu!');
-        // } else {
-        //     setAlertType('success');
-        //     setAlert('Skolotājas pievienošanas uzaicinājums tika nosūtīts!');
-        //     console.log(teacherEmail);
-        // }
     }
 
     const [pendingTeachers, setPendingTeachers] = useState([])
@@ -134,14 +126,14 @@ const StudentSettings = (props) => {
                             <div className="student-teachers-grid">
                                 {student.teachers ?
                                         student.teachers.map((teacher) => (
-                                            <p>{teacher.fullName}</p>
+                                            <p key={teacher._id}>{teacher.fullName}</p>
                                         ))
                                     :
                                         <p>Nav pievienots neviens skolotājs</p>
                                 }
                                 {pendingTeachers.length ?
                                         pendingTeachers.map((teacher) => (
-                                            <p style={{color: 'gray'}}>{teacher.receiverFullName}</p>
+                                            <p key={teacher._id} className="pending-teacher">{teacher.receiverFullName}</p>
                                         ))
                                     :
                                         null
@@ -159,6 +151,7 @@ const StudentSettings = (props) => {
                                     type='email'
                                     onChange={(e) => setTeacherEmail(e.target.value)}
                                     name='teacherEmail'
+                                    value={teacherEmail}
                                     placeholder='Skolotāja e-pasts'
                                     text='Pievienot'
                                     onClick={handleAddTeacher}

@@ -8,6 +8,7 @@ const InputButtonGroup = ({
     type,
     onChange,
     name,
+    value,
     placeholder,
     text,
     onClick
@@ -18,6 +19,7 @@ const InputButtonGroup = ({
                 type={type}
                 onChange={onChange}
                 name={name}
+                value={value}
                 placeholder={placeholder}
             />
             <PageButton text={text} onClick={onClick} />

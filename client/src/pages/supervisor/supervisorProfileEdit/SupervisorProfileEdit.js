@@ -27,19 +27,6 @@ const SupervisorProfileEdit = (props) => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
     const link = ['supervisor-home', 'supervisor-journal', 'supervisor-mail', 'supervisor-invites', 'supervisor-settings', 'help'];
 
-    // // Logged in users info
-    // const supervisor = { 
-    //     id: 'uiytcfdg6hjnrv7bm12ee3',
-    //     name: "Juris",
-    //     surname: "Ozols",
-    //     phone: 28490186,
-    //     email: "ozols123@gmail.com",
-    //     gender: "male",
-    //     company: "Accenture",
-    //     field: "Full Stack Web Developer",
-    //     password: "parole123"
-    // }
-
     const [editForm, setEditForm] = useState(true);
 
     const handlePasswordForm = () => {

@@ -17,41 +17,21 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Alert from '../../../components/atoms/alerts/Alert';
 
 const StudentJournal = () => {
+
     const navigate = useNavigate()
     
     const { id: _id } = useParams();
     const [internship, setInternship] = useState('');
     const [journal, setJournal] = useState([]);
     const [isPending, setIsPending] = useState(false);
+    const [refreshTable, setRefreshTable] = useState(true);
 
     // Sidebar
     const icon = ['home', 'journal', 'mail', 'settings', 'help'];
     const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
-    const [konstante, setKonstante] = useState(true)
 
-    useEffect(() => {
-        const getInternship = async () => {
-            try {
-                setIsPending(true)
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/${_id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get('auth')}`,
-                    }
-                }
-                );
-                setInternship(response.data.internship)
-                setJournal(response.data.internship.journal)
-                setIsPending(false);
-            } catch (err) {
-                console.log(err);
-                setIsPending(false);
-            }
-        }
-        getInternship()
-    }, [konstante])
     // Table
     const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
 
@@ -77,6 +57,28 @@ const StudentJournal = () => {
         setAlert('');
         setAlertType('');
     };
+
+    useEffect(() => {
+        const getInternship = async () => {
+            setIsPending(true);
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/${_id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`,
+                    }
+                }
+                );
+                setInternship(response.data.internship)
+                setJournal(response.data.internship.journal)
+                setIsPending(false);
+            } catch (err) {
+                console.log(err);
+                setIsPending(false);
+            }
+        }
+        getInternship()
+    }, [refreshTable])
 
     // Error handling
     const handleErrors = (errors, propertyOrder) => {
@@ -110,11 +112,11 @@ const StudentJournal = () => {
                     Authorization: `Bearer ${Cookies.get('auth')}`,
                 }
             })
-            setAlertType('success')
-            setAlert('Ieraksts tika pievienots dienasgrāmatai!')
+            setAlertType('success');
+            setAlert('Ieraksts tika pievienots dienasgrāmatai!');
             setDate('');
-            setKonstante(false)
-            setKonstante(true)
+            setRefreshTable(false);
+            setRefreshTable(true);
             setTaskDescription('');
             setHoursSpent('');
         } catch (err) {

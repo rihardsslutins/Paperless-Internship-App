@@ -19,24 +19,7 @@ const TeacherInvites = (props) => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
     const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
 
-    const [invites, setInvites] = useState([])
-    // Invite
-    // const invites = [
-    //     {
-    //         id: "uibcdefgjmnrtv7986yhkx",
-    //         title: "Prakses dienasgrāmata",
-    //         from: "Jānis Ozols",
-    //         school: "Saldus tehnikums",
-    //         companyName: "Accenture"
-    //     },
-    //     {
-    //         id: "rgt56e4fvbhijklmnouy78",
-    //         title: "Prakses dienasgrāmata",
-    //         from: "Kārlis Krūmiņš",
-    //         school: "Saldus tehnikums",
-    //         companyName: "AirBaltic"
-    //     }
-    // ]
+    const [invites, setInvites] = useState([]);
 
     useEffect(() => {
         const getInvites = async () => {

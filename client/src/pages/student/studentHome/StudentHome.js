@@ -47,38 +47,6 @@ const StudentHome = (props) => {
         }
         getInternship()
     }, [])
-    console.log(internship)
-    // const internship = [
-    //     {
-    //     _id: "62ab1ddbdc12beab4c30811c",
-    //     isActive: true,
-    //     company: "Accenture",
-    //     supervisor: "robertstarhanovs@gmail.com",
-    //     teacher: "ivetakunkule@gmail.com",
-    //     student: "ulvisc3@gmail.com",
-    //     startingDate: "2022-06-22",
-    //     journal: [
-    //         {
-    //             date: "2022-06-16",
-    //             taskDescription: "Dizaina izveide",
-    //             hoursSpent: 8,
-    //             _id: "62ab2047c448ecf245525df1"
-    //         },
-    //         {
-    //             date: "2022-06-17",
-    //             taskDescription: "Navigācijas joslas izveide",
-    //             hoursSpent: 8,
-    //             _id: "62ab205fc448ecf245525df9"
-    //         },
-    //         {
-    //             date: "2022-06-18",
-    //             taskDescription: "Galvenās lapas izveide",
-    //             hoursSpent: 8,
-    //             _id: "62ab20a7c448ecf245525e01"
-    //         }
-    //     ]
-    //     }
-    // ]
 
     return (
         <>
