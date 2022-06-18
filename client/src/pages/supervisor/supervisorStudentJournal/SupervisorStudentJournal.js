@@ -21,6 +21,7 @@ const SupervisorStudentJournal = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
+
     const [internship, setInternship] = useState([]);
     const [refreshTable, setRefreshTable] = useState(true);
     const [isPending, setIsPending] = useState(false);
@@ -50,7 +51,7 @@ const SupervisorStudentJournal = () => {
         const getStudentInternship = async () => {
             setIsPending(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/user/${id}`,
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/supervisor/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('auth')}`

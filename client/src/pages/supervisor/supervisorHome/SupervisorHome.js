@@ -8,8 +8,15 @@ import HomeInfoProfile from "../../../components/organisms/homeInfoProfile/HomeI
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
 
 import ThemeToggleRound from "../../../components/ThemeToggle/ThemeToggleRound";
+// redux
+import { connect } from "react-redux";
+// react
+import { useEffect, useState } from "react";
+// packages
+import axios from 'axios';
+import Cookies from "js-cookie";
 
-const SupervisorHome = () => {
+const SupervisorHome = (props) => {
 
     // Sidebar properties
     const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
@@ -18,70 +25,50 @@ const SupervisorHome = () => {
     const link = ['supervisor-home', 'supervisor-journal', 'supervisor-mail', 'supervisor-invites', 'supervisor-settings', 'help'];
 
     // Logged in users info
-    const user = { 
-        id: '6283abad20a71c3f8b4a2e07',
-        field: "Programmēšana",
-        company: "Accenture",
-        name: "Roberts",
-        surname: "Tarhanovs",
-        phone: 28839540,
-        gender: "male",
-        email: "robertstarhanovs@gmail.com",
-        password: "password",
-        role: "supervisor",
-        interns: [
-        ]
-    }
+    const supervisor = props.user
 
     // Journal invites
-    const invites = [
-        {
-            id: "62ab88418e8dd7fc859cb862",
-            sender: "rihardsslutins@yahoo.com",
-            senderFullName: "Rihards Slūtiņš",
-            receiver: "robertstarhanovs@gmail.com",
-            receiverFullName: "Roberts Tarhanovs",
-            subject: "Prakses dienasgrāmata",
-            body: "Rihards Slūtiņš no Saldus tehnikums uzaicināja Jūs pievienoties savai dienasgrāmatai"
-        },
-        {
-            id: "87uij569hn4deftvbmcn9j",
-            sender: "ulvisc3@gmail.com",
-            senderFullName: "Ulvis Čakstiņš",
-            receiver: "robertstarhanovs@gmail.com",
-            receiverFullName: "Roberts Tarhanovs",
-            subject: "Prakses dienasgrāmata",
-            body: "Ulvis Čakstiņš no Saldus tehnikums uzaicināja Jūs pievienoties savai dienasgrāmatai"
+    const [invites, setInvites] = useState([])
+    useEffect(() => {
+        try {
+            const getInvites = async () => {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/invites`, {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`
+                    }
+                })
+                setInvites(response.data.invites)
+            }
+            getInvites()
+        } catch (err) {
+            console.log(err)
         }
-    ];
+    }, [])
 
-    // Journal list
-    const studentList = [
-        {
-            id: '31928h312312ui3adww',
-            name: 'Ulvis',
-            surname: 'Čakstiņš',
-            email: 'ulvis@gmail.com',
-            phone: '21789871'
-        },
-        {
-            id: '98ijmu6n7b5cdefrv4t',
-            name: 'Rihards',
-            surname: 'Slūtiņš',
-            email: 'rihardsslutins@gmail.com',
-            phone: '21861982'
+    // Get intern list
+    const [internList, setInternList] = useState([])
+    useEffect(() => {
+        const getInternList = async () => {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`
+                }
+            })
+            console.log(response)
+            setInternList(response.data.users)
         }
-    ];
+        getInternList()
+    }, [])
 
     return (
         <div>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="supervisor-home" />
             <div className="dashboard-container">
                 <div className="supervisor-home">
-                    <HomeInfoProfile user={user} role='supervisor' />
+                    <HomeInfoProfile user={supervisor} role='supervisor' />
                     <div className="supervisor-home-grid">
                         <HomeInvites invites={invites} role="supervisor" />
-                        <HomeStudents studentList={studentList} role="supervisor" />
+                        <HomeStudents studentList={internList} role="supervisor" />
                     </div>
                     <ThemeToggleRound />
                 </div>
@@ -90,4 +77,8 @@ const SupervisorHome = () => {
     );
 }
 
-export default SupervisorHome;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(SupervisorHome);

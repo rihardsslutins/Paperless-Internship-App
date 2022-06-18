@@ -13,8 +13,10 @@ import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
 // hooks
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+// redux
+import { connect } from "react-redux";
 
-const SupervisorSettings = () => {
+const SupervisorSettings = (props) => {
 
     const navigate = useNavigate();
 
@@ -25,17 +27,7 @@ const SupervisorSettings = () => {
     const link = ['supervisor-home', 'supervisor-journal', 'supervisor-mail', 'supervisor-invites', 'supervisor-settings', 'help'];
 
     // Logged in users info
-    const supervisor = { 
-        id: 'uiytcfdg6hjnrv7bm12ee3',
-        name: "Juris",
-        surname: "Ozols",
-        phone: 28490186,
-        email: "ozols123@gmail.com",
-        gender: "male",
-        company: "Accenture",
-        field: "Full Stack Web Developer",
-        password: "parole123"
-    }
+    const supervisor = props.user
 
     // Delete profile modal
     const [displayModal, setDisplayModal] = useState(false);
@@ -68,4 +60,8 @@ const SupervisorSettings = () => {
     );
 }
  
-export default SupervisorSettings;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(SupervisorSettings);

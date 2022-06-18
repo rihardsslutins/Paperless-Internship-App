@@ -17,6 +17,10 @@ const inviteSchema = new Schema({
         type: String,
         required: [true, 'Studenta pilnais vārds nav pievienots']
     },
+    senderPhone: {
+        type: Number,
+        required: [true, 'Studenta tālrunis nav pievienots']
+    },
     receiver: {
         type: String,
         required: [true, 'Skolotāja e-pasts netika pievienots'],
@@ -45,7 +49,6 @@ const inviteSchema = new Schema({
 )
 
 inviteSchema.statics.invite = async function (sender, receiver) {
-    console.log(`THIS IS THEM: :: : : :: :${sender, receiver}`)
     if (receiver) {
         const Sender = await User.findOne({ email: sender, role: 'student' })
         if (Sender) {
@@ -62,6 +65,7 @@ inviteSchema.statics.invite = async function (sender, receiver) {
                             receiver, 
                             senderFullName: `${Sender.name + ' ' + Sender.surname}`, 
                             receiverFullName: `${Receiver.name + ' ' + Receiver.surname}`,
+                            senderPhone: Sender.phone,
                             receiverRole: Receiver.role,
                             subject: 'Prakses dienasgrāmata',
                             body: `${Sender.name + ' ' + Sender.surname} no ${Sender.school} uzaicināja Jūs pievienoties savām dienasgrāmatām.`

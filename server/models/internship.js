@@ -57,7 +57,7 @@ const internshipSchema = new Schema({
     },
     teacherFullName: {
         type: String,
-        required: [true, 'Skolotāja pilnais vārds netika pievienots'],
+        required: [true, 'Skolotāja pilnais vārds nav pievienots'],
     },
     student: {
         type: String,
@@ -67,7 +67,11 @@ const internshipSchema = new Schema({
     },
     studentFullName: {
         type: String,
-        required: [true, 'Studenta pilnais vārds netika pievienots']
+        required: [true, 'Studenta pilnais vārds nav pievienots']
+    },
+    studentPhone: {
+        type: Number,
+        required: [true, 'Studenta tālrunis nav pievienots']
     },
     startingDate: {
         type: String,

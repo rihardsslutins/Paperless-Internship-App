@@ -18,6 +18,7 @@ const send_invite = async (req, res) => {
             receiverFullName: '',
             sender: '',
             senderFullName: '',
+            senderPhone: '',
             subject: '',
             body: ''
         }
@@ -71,7 +72,7 @@ const accept_invite = async (req, res) => {
     const _id = req.params.id
     try {
         const invite = await Invite.findOne({_id})
-        const { receiverFullName, senderFullName, receiver, sender } = invite
+        const { receiverFullName, senderFullName, senderPhone, receiver, sender } = invite
         const Receiver = await User.findOne({ email: receiver })
         const Sender = await User.findOne({ email: sender })
         switch (Receiver.role) {
@@ -87,7 +88,8 @@ const accept_invite = async (req, res) => {
                 // pushes the students full name and email to the teachers students array
                 Receiver.students.push({
                     fullName: senderFullName,
-                    email: sender
+                    email: sender,
+                    phone: senderPhone,
                 })
                 // saves the teachers changes
                 await Receiver.save()
@@ -106,7 +108,8 @@ const accept_invite = async (req, res) => {
                 // pushes the student's full name and email to the supervisor's interns array
                 Receiver.interns.push({
                     fullName: senderFullName,
-                    email: sender
+                    email: sender,
+                    phone: senderPhone,
                 })
                 
                 // saves the altered internship
