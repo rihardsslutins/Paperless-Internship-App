@@ -25,7 +25,7 @@ const SupervisorStudentJournal = () => {
 
     useEffect(() => {
         const getStudentInternship = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/user/${id}`, {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/supervisor/${id}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('auth')}`
                 }

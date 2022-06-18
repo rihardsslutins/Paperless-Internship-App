@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 // models
 import { Internship } from "../models/internship.js";
 import { User } from "../models/user.js";
@@ -16,6 +17,7 @@ const internship_create = async (req, res) => {
         company: '',
         student: '',
         studentFullName: '',
+        studentPhone: '',
         teacher: '',
         teacherFullName: '',
         supervisor: '',
@@ -59,6 +61,7 @@ const internship_create = async (req, res) => {
                 company, 
                 student, 
                 studentFullName: `${Student.name} ${Student.surname}`,
+                studentPhone: Student.phone,
                 teacher, 
                 teacherFullName: `${Teacher.name} ${Teacher.surname}`,
                 supervisor, 
@@ -71,6 +74,7 @@ const internship_create = async (req, res) => {
                 sender: student, 
                 receiver: supervisor, 
                 senderFullName: `${Student.name + ' ' + Student.surname}`, 
+                senderPhone: Student.phone,
                 receiverFullName: `${Supervisor.name + ' ' + Supervisor.surname}`,
                 receiverRole: Supervisor.role,
                 subject: 'Prakses dienasgrāmata',
@@ -99,21 +103,53 @@ const get_internships = async (req, res) => {
     }
 }
 
-const get_internship_student = async (req, res) => {
-    const { email } = await User.findById(req.params.id)
+const get_internships_supervisor = async (req, res) => {
     try {
-        const internship = await Internship.findOne({ student: email })
-        return res.status(200).json({ internship })
+        if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+            const { email } = await User.findById(req.params.id)
+            const internship = await Internship.findOne({ student: email })
+            return res.status(200).json({ internship })
+        } else {
+            throw Error("ID parameter doesn't exist")
+        }
     } catch (err) {
         return res.status(400).json({ message: 'Could not retrieve any internships'})
     }
+}
 
+const get_internships_teacher = async (req, res) => {
+    try {
+        if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+            const { email } = await User.findById(req.params.id)
+            const internships = await Internship.find({ student: email })
+            return res.status(200).json({ internships })
+        } else {
+            throw Error("ID parameter doesn't exist")
+        }
+    } catch (err) {
+        return res.status(400).json({ message: 'Could not retrieve any internships'})
+    }
+}
+
+const get_internships_student = async (req, res) => {
+    try {
+        console.log(req.user)
+        const { email } = await User.findById(req.user.id)
+        const internship = await Internship.findOne({ student: email, isActive: true })
+        return res.status(200).json({ internship })
+    } catch (err) {
+        return res.status(400).json({ message: err.message })
+    }
 }
 
 const get_internship = async (req, res) => {
     try {
-        const internship = await Internship.findOne({_id: req.params.id});
-        return res.status(200).json({ internship });
+        if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+            const internship = await Internship.findOne({_id: req.params.id});
+            return res.status(200).json({ internship });
+        } else {
+            throw Error("ID parameter doesn't exist")
+        }
     } catch (err) {
         console.log(err)
         return res.status(400).json({ message: err.message })
@@ -187,4 +223,4 @@ const journal_record_add_grade = async (req, res) => {
 
 }
 
-export { internship_create, get_internships, get_internship, journal_record_create, get_internship_student, journal_record_add_grade }
+export { internship_create, get_internships, get_internship, journal_record_create, get_internships_supervisor, get_internships_teacher, get_internships_student, journal_record_add_grade }
