@@ -96,13 +96,17 @@ const get_internships = async (req, res) => {
 const get_internships_teacher = async (req, res) => {
     try {
         if (mongoose.Types.ObjectId.isValid(req.params.id)) {
-            const { email } = await User.findById(req.params.id)
-            const internships = await Internship.find({ student: email })
+            console.log(req.params.id)
+            const internship = await Internship.findById(req.params.id)
+            const Student = await User.findOne({ email: internship.student })
+            console.log(Student)
+            const internships = await Internship.find({ student: Student.email })
             return res.status(200).json({ internships })
         } else {
             throw Error("ID parameter doesn't exist")
         }
     } catch (err) {
+        console.log(err)
         return res.status(400).json({ message: err.message })
     }
 }

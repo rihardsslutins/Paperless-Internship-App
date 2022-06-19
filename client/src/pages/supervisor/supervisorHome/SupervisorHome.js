@@ -62,7 +62,6 @@ const SupervisorHome = (props) => {
                     }
                 })
                 setInternships(response.data.internships);
-                console.log(response.data.internships)
                 setIsPendingStudents(false);
             } catch (err) {
                 console.log(err);

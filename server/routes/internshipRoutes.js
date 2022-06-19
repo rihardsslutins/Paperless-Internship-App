@@ -26,13 +26,4 @@ internshipRouter.post('/journals', protect, post_journal)
 // grade journal record
 internshipRouter.put('/journals/:id', protect, put_journal)
 
-// get specific student internships
-// internshipRouter.get('/internships/supervisor/:id', protect, get_internships_supervisor)
-
-// // get specific student internships
-// internshipRouter.get('/internships/teacher/:id', protect, get_internships_teacher)
-
-// // get specific student internship
-// internshipRouter.get('/internships/student', protect, get_internships_student)
-
 export default internshipRouter;

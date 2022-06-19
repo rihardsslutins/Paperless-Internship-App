@@ -66,7 +66,7 @@ const SupervisorStudentJournal = () => {
             }
         }
         getStudentInternship()
-    }, [refreshTable])
+    }, [refreshTable, id])
     
     // Error handling
     const handleErrors = (errors, propertyOrder) => {

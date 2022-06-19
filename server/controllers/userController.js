@@ -9,7 +9,7 @@ const maxAge = 3 * 24 * 60 * 60; // the amount of time is measured in seconds
 // @desc handle user registration
 // @route POST /user
 // @access Public
-const user_create = async (req, res) => {
+const post_users = async (req, res) => {
   // grabs the role with which the user is registering with from the role request header
   const role = req.headers.role;
 
@@ -69,7 +69,7 @@ const user_create = async (req, res) => {
 // @desc handle user login
 // @route POST /login
 // @access Public
-const user_login = async (req, res) => {
+const post_users_login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.login(email, password);
@@ -93,7 +93,7 @@ const user_login = async (req, res) => {
 // @desc handle user logout
 // @route POST /logout
 // @access Public
-const user_logout = async (req, res) => {
+const post_users_logout = async (req, res) => {
   return res.status(200).cookie('auth', '', { maxAge: 1 }).send()
 }
 
@@ -101,7 +101,7 @@ const user_logout = async (req, res) => {
 // @desc Get user data
 // @route GET /me
 // @access Private
-const user_get_me = async (req, res) => {
+const get_users = async (req, res) => {
   try {
     const { id, name, surname, gender, phone, school, field, company, internships, teachers, students, interns, email, password, role } =
     await User.findById(req.user.id);
@@ -116,7 +116,7 @@ const user_get_me = async (req, res) => {
 // @desc Update user basic data
 // @route POST /tbd
 // @access Public
-const change_me = async (req, res) => {
+const put_users = async (req, res) => {
   const { id, role, name, surname, school, phone, field, company } = req.body
   console.log(role)
   try {
@@ -170,6 +170,7 @@ const change_me = async (req, res) => {
 
     const user = await User.findOne({ _id: id })
 
+    console.log(user)
 
     user.name = name,
     user.surname = surname,
@@ -179,6 +180,7 @@ const change_me = async (req, res) => {
     user.company = company
 
     await user.save()
+    console.log(user)
 
     return res.status(200).json({ user })
   } catch (err) {
@@ -199,7 +201,7 @@ const change_me = async (req, res) => {
 // @desc handle user password reset
 // @route POST /tbd
 // @access Private
-const reset_password = async (req, res) => {
+const put_users_password = async (req, res) => {
   const { id, oldPassword, newPassword } = req.body
   console.log(id)
   try {
@@ -225,6 +227,7 @@ const get_user_list = async (req, res) => {
       await Promise.all(students.map(async (student) => {
           const user = await User.findOne({ email: student.email })
           studentsArray.push(user)
+          console.log(user)
       }))
       console.log(studentsArray)
       users = studentsArray
@@ -248,4 +251,4 @@ const get_user_list = async (req, res) => {
 
 
 
-export { user_create, user_login, user_logout, user_get_me, change_me, reset_password, get_user_list };
+export { post_users, post_users_login, post_users_logout, get_users, put_users, put_users_password, get_user_list };

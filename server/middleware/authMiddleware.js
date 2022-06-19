@@ -11,6 +11,7 @@ const protect = async (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET_STRING, (err, decoded) => {
       // checks if token is absolute
       if (err) {
+        console.log(token)
         return res.status(401).json({ error: 'JWT nav oriģināls' });
       }
       // Get user from token
