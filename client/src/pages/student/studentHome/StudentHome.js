@@ -38,15 +38,19 @@ const StudentHome = (props) => {
         const getInternship = async () => {
             setIsPending(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/student`,
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships`,
                 {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 }
                 )
-                if (response.data.internship) {
-                    setInternship([response.data.internship])
+                if (response.data.internships) {
+                    response.data.internships.map((internship) => {
+                        if (internship.isActive) {
+                            setInternship([internship])
+                        }
+                    })
                 }
                 setIsPending(false);
             } catch (err) {
@@ -56,6 +60,7 @@ const StudentHome = (props) => {
         }
         getInternship()
     }, [])
+    console.log(internship)
 
     return (
         <>

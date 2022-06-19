@@ -45,7 +45,7 @@ function App(props) {
         const getUser = async () => {
             if (!props.user._id) {
                 await axios
-                    .get(`${process.env.REACT_APP_SERVER_URL}/me`, {
+                    .get(`${process.env.REACT_APP_SERVER_URL}/users`, {
                         headers: {
                             Authorization: `Bearer ${Cookies.get('auth')}`,
                         },

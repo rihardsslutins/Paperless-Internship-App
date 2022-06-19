@@ -136,7 +136,7 @@ const Register = (props) => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/user`,
+                `${process.env.REACT_APP_SERVER_URL}/users`,
                 {
                     name: studentName,
                     surname: studentSurname,
@@ -235,7 +235,7 @@ const Register = (props) => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/user`,
+                `${process.env.REACT_APP_SERVER_URL}/users`,
                 {
                     name: teacherName,
                     surname: teacherSurname,
@@ -340,7 +340,7 @@ const Register = (props) => {
                 return;
             }
             await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/user`,
+                `${process.env.REACT_APP_SERVER_URL}/users`,
                 {
                     name: supervisorName,
                     surname: supervisorSurname,
