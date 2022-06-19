@@ -1,35 +1,38 @@
 import express from 'express';
 
 // controllers
-import { internship_create, get_internships, get_internship, journal_record_create, get_internships_supervisor, get_internships_teacher, get_internships_student, journal_record_add_grade } from '../controllers/internshipController.js';
+import { post_internships, get_internships, get_internships_teacher, get_single_internships, post_journal, put_journal } from '../controllers/internshipController.js';
 
 // // middleware
 import { protect } from '../middleware/authMiddleware.js';
 
 const internshipRouter = express.Router();
 
-// create a single internship
-internshipRouter.post('/internships', protect, internship_create);
+// post an internship
+internshipRouter.post('/internships', protect, post_internships);
 
 // get internships
 internshipRouter.get('/internships', protect, get_internships)
 
-// get specific student internships
-internshipRouter.get('/internships/supervisor/:id', protect, get_internships_supervisor)
-
-// get specific student internships
+// get internships for teacher
 internshipRouter.get('/internships/teacher/:id', protect, get_internships_teacher)
 
-// get specific student internship
-internshipRouter.get('/internships/student', protect, get_internships_student)
-
 // get a single internship
-internshipRouter.get('/internships/:id', protect, get_internship)
+internshipRouter.get('/internships/:id', protect, get_single_internships)
 
 // create a journal record
-internshipRouter.post('/journals', protect, journal_record_create)
+internshipRouter.post('/journals', protect, post_journal)
 
 // grade journal record
-internshipRouter.put('/journals/:id', protect, journal_record_add_grade)
+internshipRouter.put('/journals/:id', protect, put_journal)
+
+// get specific student internships
+// internshipRouter.get('/internships/supervisor/:id', protect, get_internships_supervisor)
+
+// // get specific student internships
+// internshipRouter.get('/internships/teacher/:id', protect, get_internships_teacher)
+
+// // get specific student internship
+// internshipRouter.get('/internships/student', protect, get_internships_student)
 
 export default internshipRouter;

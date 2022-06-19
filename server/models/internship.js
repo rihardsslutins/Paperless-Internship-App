@@ -2,7 +2,22 @@
 import mongoose from "mongoose";
 import isEmail from 'validator/lib/isEmail.js'
 
+// models
+import { User } from "./user.js";
+
 const Schema = mongoose.Schema
+
+const studentExists = async (value) => {
+    return await User.findOne({ email: value, role: 'student'})
+}
+
+const supervisorExists = async (value) => {
+    return await User.findOne({ email: value, role: 'supervisor' })
+}
+
+const teacherExists = async (value) => {
+    return await User.findOne({ email: value, role: 'teacher' })
+}
 
 const journalSchema = new Schema({
     date: {
@@ -43,7 +58,7 @@ const internshipSchema = new Schema({
         type: String,
         required: [true, 'Lūdzu ievadi prakses vadītāja (no uzņēmuma) e-pastu'],
         lowercase: true,
-        validate: [isEmail, 'Lūdzu ievadi prakses vadītāja (no uzņēmuma) e-pastu pareizi']
+        validate: [supervisorExists, 'Lūdzu ievadi prakses vadītāja (no uzņēmuma) e-pastu pareizi']
     },
     supervisorFullName: {
         type: String,
@@ -53,7 +68,7 @@ const internshipSchema = new Schema({
         type: String,
         required: [true, 'Lūdzu ievadi prakses vadītāja (no skolas) e-pastu'],
         lowercase: true,
-        validate: [isEmail, 'Lūdzu ievadi prakses vadītāja (no skolas) e-pastu pareizi']
+        validate: [teacherExists, 'Lūdzu ievadi prakses vadītāja (no skolas) e-pastu pareizi']
     },
     teacherFullName: {
         type: String,
@@ -63,7 +78,7 @@ const internshipSchema = new Schema({
         type: String,
         required: [true, 'Studenta e-pasts nav sasniedzams'],
         lowercase: true,
-        validate: [isEmail, 'Studenta e-pasts nav derīgs'],
+        validate: [studentExists, 'Studenta e-pasts nav derīgs'],
     },
     studentFullName: {
         type: String,

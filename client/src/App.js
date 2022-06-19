@@ -71,7 +71,6 @@ function App(props) {
                                 role: res.role,
                             })
                         )
-                    console.log(res)
                     }
                     )         
                     .then(() => setUserIsReady(true))

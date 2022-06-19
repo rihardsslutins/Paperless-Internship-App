@@ -24,10 +24,9 @@ const StudentsJournalTable = ({
                 <tbody>
                     {!isPending && data.map(record => (
                         <tr key={record._id} onClick={() => navigate(link + record._id)}>
-                            <td>{record.name}</td>
-                            <td>{record.surname}</td>
-                            <td>{record.phone}</td>
-                            <td>{record.email}</td>
+                            <td>{record.studentFullName}</td>
+                            <td>{record.studentPhone}</td>
+                            <td>{record.student}</td>
                         </tr>
                     ))}
                     {isPending && 

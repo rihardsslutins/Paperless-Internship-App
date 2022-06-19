@@ -81,19 +81,19 @@ const StudentJournalCreate = (props) => {
         setAlertType('');
         setAlert('');
         try {
-            if (!company) {
-                setAlert('Lūdzu ievadi uzņēmuma nosaukumu!')
-                setAlertType('warning')
-            } else if (!teacherEmail) {
-                setAlert('Lūdzu ievadi prakses vadītāja (no skolas) epastu!')
-                setAlertType('warning')
-            } else if (!supervisorEmail) {
-                setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu!')
-                setAlertType('warning')
-            } else if (!startingDate) {
-                setAlert('Lūdzu ievadi prakses sākuma datumu!')
-                setAlertType('warning')
-            }  else {
+            // if (!company) {
+            //     setAlert('Lūdzu ievadi uzņēmuma nosaukumu!')
+            //     setAlertType('warning')
+            // } else if (!teacherEmail) {
+            //     setAlert('Lūdzu ievadi prakses vadītāja (no skolas) epastu!')
+            //     setAlertType('warning')
+            // } else if (!supervisorEmail) {
+            //     setAlert('Lūdzu ievadi prakses vadītāja (no uzņēmuma) epastu!')
+            //     setAlertType('warning')
+            // } else if (!startingDate) {
+            //     setAlert('Lūdzu ievadi prakses sākuma datumu!')
+            //     setAlertType('warning')
+            // }  else {
                 await axios.post(`${process.env.REACT_APP_SERVER_URL}/internships`,
                 {
                     company,
@@ -115,9 +115,10 @@ const StudentJournalCreate = (props) => {
                 setTeacherEmail('');
                 setSupervisorEmail('');
                 setStartingDate('');
-            }
+            // }
         } catch (err) {
             const errors = err.response.data.errors;
+            console.log(err.response.data.errors)
             const propertyOrder = ['company', 'student', 'teacher', 'supervisor', 'startingDate'];
             handleErrors(errors, propertyOrder);
         }

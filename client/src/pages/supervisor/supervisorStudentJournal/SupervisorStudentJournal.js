@@ -51,7 +51,7 @@ const SupervisorStudentJournal = () => {
         const getStudentInternship = async () => {
             setIsPending(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/supervisor/${id}`,
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('auth')}`
@@ -87,7 +87,13 @@ const SupervisorStudentJournal = () => {
         setAlertType('');
         setAlert('');
         try {
-            await axios.put(`${process.env.REACT_APP_SERVER_URL}/journals/${editRecord[0]}`, { id, grade }, {
+            console.log(`${editRecord[0]}`)
+            await axios.put(`${process.env.REACT_APP_SERVER_URL}/journals/${editRecord[0]}`,
+            { 
+                id,
+                grade 
+            }, 
+            {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('auth')}`
                 }

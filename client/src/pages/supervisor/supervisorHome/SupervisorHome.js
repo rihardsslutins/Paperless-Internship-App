@@ -50,27 +50,27 @@ const SupervisorHome = (props) => {
     }, [])
 
     // Get intern list
-    const [internList, setInternList] = useState([]);
+    const [internships, setInternships] = useState([]);
     const [isPendingStudents, setIsPendingStudents] = useState(false);
     useEffect(() => {
-        const getInternList = async () => {
+        const getInternships = async () => {
             setIsPendingStudents(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships`, {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 })
-                setInternList(response.data.users);
+                setInternships(response.data.internships);
+                console.log(response.data.internships)
                 setIsPendingStudents(false);
             } catch (err) {
                 console.log(err);
                 setIsPendingStudents(false);
             }
         }
-        getInternList()
+        getInternships()
     }, [])
-
     return (
         <div>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="supervisor-home" />
@@ -79,7 +79,7 @@ const SupervisorHome = (props) => {
                     <HomeInfoProfile user={supervisor} role='supervisor' />
                     <div className="supervisor-home-grid">
                         <HomeInvites invites={invites} role="supervisor" isPending={isPendingInvites} />
-                        <HomeStudents studentList={internList} role="supervisor" isPending={isPendingStudents} />
+                        <HomeStudents internships={internships} role="supervisor" isPending={isPendingStudents} />
                     </div>
                     <ThemeToggleRound />
                 </div>

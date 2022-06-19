@@ -170,7 +170,6 @@ const change_me = async (req, res) => {
 
     const user = await User.findOne({ _id: id })
 
-    console.log(user)
 
     user.name = name,
     user.surname = surname,
@@ -180,7 +179,6 @@ const change_me = async (req, res) => {
     user.company = company
 
     await user.save()
-    console.log(user)
 
     return res.status(200).json({ user })
   } catch (err) {
@@ -227,7 +225,6 @@ const get_user_list = async (req, res) => {
       await Promise.all(students.map(async (student) => {
           const user = await User.findOne({ email: student.email })
           studentsArray.push(user)
-          console.log(user)
       }))
       console.log(studentsArray)
       users = studentsArray
