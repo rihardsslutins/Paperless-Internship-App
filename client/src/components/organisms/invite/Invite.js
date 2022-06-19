@@ -10,7 +10,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const Invite = ({
-    invites
+    invites,
+    setRefreshTable
 }) => {
 
     const theme = useTheme();
@@ -29,7 +30,9 @@ const Invite = ({
                                         Authorization: `Bearer ${Cookies.get('auth')}`
                                     }
                                 })
-                                console.log(response)
+                                console.log(response);
+                                setRefreshTable(false);
+                                setRefreshTable(true);
                             } catch (err) {
                                 console.log(err.message)
                             }
@@ -42,9 +45,11 @@ const Invite = ({
                                         Authorization: `Bearer ${Cookies.get('auth')}`
                                     }
                                 })
-                                console.log(response)
+                                console.log(response);
+                                setRefreshTable(false);
+                                setRefreshTable(true);
                             } catch (err) {
-                                console.log(err.message)
+                                console.log(err.message);
                             }
                         }} />
                     </div>

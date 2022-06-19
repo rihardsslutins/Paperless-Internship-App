@@ -28,7 +28,9 @@ const SupervisorJournal = () => {
     const changeSearchQuery = (e) => setSearchQuery(e.target.value);
 
     const [internList, setInternList] = useState([]);
+    const [internSearchList, setInternSearchList] = useState([]);
 
+    // Gets all interns
     useEffect(() => {
         const getInternList = async () => {
             setIsPending(true);
@@ -38,25 +40,30 @@ const SupervisorJournal = () => {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 })
-                let data = [];
-                response.data.users.map((intern) => {
-                    if (intern.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        intern.surname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        intern.phone.toString().includes(searchQuery) ||
-                        intern.email.toLowerCase().includes(searchQuery.toLowerCase())
-                    ) {
-                        data.push(intern);
-                    }
-                })
-                setInternList(data);
-                setIsPending(false);   
+                setInternList(response.data.users);
+                setIsPending(false); 
             } catch (err) {
                 console.log(err);
                 setIsPending(false);
             }
-        }    
+        }
         getInternList()
-    }, [searchQuery]);
+    }, [])
+
+    // Gets interns based on search query
+    useEffect(() => {
+        let searchList = [];
+        internList.map((intern) => {
+            if (intern.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                intern.surname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                intern.phone.toString().includes(searchQuery) ||
+                intern.email.toLowerCase().includes(searchQuery.toLowerCase())
+            ) {
+                searchList.push(intern);
+            }
+        })
+        setInternSearchList(searchList);
+    }, [searchQuery, internList])
 
     // Table
     const headerCells = ['Vārds', 'Uzvārds', 'Tālrunis', 'E-pasts'];
@@ -72,7 +79,7 @@ const SupervisorJournal = () => {
                     </div>
                     <StudentsJournalTable 
                         headerCells={headerCells} 
-                        data={internList} 
+                        data={searchQuery ? internSearchList : internList} 
                         link="../supervisor-student-journal/"
                         isPending={isPending}
                     />

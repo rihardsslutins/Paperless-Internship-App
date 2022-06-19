@@ -24,16 +24,20 @@ const StudentJournals = () => {
     const [isPending, setIsPending] = useState(false);
 
     useEffect(() => {
-        setIsPending(true);
         const getInternships = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships`, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('auth')}`,
-                },
-            });
-            setInternships(response.data.internships)
-            console.log(internships)
-            setIsPending(false);
+            setIsPending(true);
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships`, {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`,
+                    },
+                });
+                setInternships(response.data.internships)
+                setIsPending(false);
+            } catch (err) {
+                console.log(err);
+                setIsPending(false);
+            }
         }
         getInternships()
     }, [])

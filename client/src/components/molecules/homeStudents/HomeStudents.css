@@ -83,13 +83,15 @@
     }
 }
 
-.home-no-students-container {
+.home-no-students-container,
+.student-loading-container {
     height: 90%;
     display: flex;
     justify-content: center;
     color: var(--secondary-text);
 }
-.home-no-students {
+.home-no-students,
+.student-loading-container .loading {
     align-self: center;
     text-align: center;
 }

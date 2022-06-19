@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 const StudentJournalCreate = (props) => {
 
-    const student = props.user
+    const student = props.user;
     const navigate = useNavigate();
 
     // SIDEBAR

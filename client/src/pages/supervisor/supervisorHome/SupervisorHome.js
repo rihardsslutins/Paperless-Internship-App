@@ -28,34 +28,45 @@ const SupervisorHome = (props) => {
     const supervisor = props.user
 
     // Journal invites
-    const [invites, setInvites] = useState([])
+    const [invites, setInvites] = useState([]);
+    const [isPendingInvites, setIsPendingInvites] = useState(false);
     useEffect(() => {
-        try {
-            const getInvites = async () => {
+        const getInvites = async () => {
+            setIsPendingInvites(true);
+            try {
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/invites`, {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 })
-                setInvites(response.data.invites)
+                setInvites(response.data.invites);
+                setIsPendingInvites(false);
+            } catch (err) {
+                console.log(err);
+                setIsPendingInvites(false);
             }
-            getInvites()
-        } catch (err) {
-            console.log(err)
         }
+        getInvites();
     }, [])
 
     // Get intern list
-    const [internList, setInternList] = useState([])
+    const [internList, setInternList] = useState([]);
+    const [isPendingStudents, setIsPendingStudents] = useState(false);
     useEffect(() => {
         const getInternList = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('auth')}`
-                }
-            })
-            console.log(response)
-            setInternList(response.data.users)
+            setIsPendingStudents(true);
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`
+                    }
+                })
+                setInternList(response.data.users);
+                setIsPendingStudents(false);
+            } catch (err) {
+                console.log(err);
+                setIsPendingStudents(false);
+            }
         }
         getInternList()
     }, [])
@@ -67,8 +78,8 @@ const SupervisorHome = (props) => {
                 <div className="supervisor-home">
                     <HomeInfoProfile user={supervisor} role='supervisor' />
                     <div className="supervisor-home-grid">
-                        <HomeInvites invites={invites} role="supervisor" />
-                        <HomeStudents studentList={internList} role="supervisor" />
+                        <HomeInvites invites={invites} role="supervisor" isPending={isPendingInvites} />
+                        <HomeStudents studentList={internList} role="supervisor" isPending={isPendingStudents} />
                     </div>
                     <ThemeToggleRound />
                 </div>

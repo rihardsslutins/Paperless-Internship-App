@@ -65,13 +65,15 @@
     white-space: nowrap;
     user-select: none;
 }
-.home-no-invites-container {
+.home-no-invites-container,
+.invite-loading-container {
     height: 90%;
     display: flex;
     justify-content: center;
     color: var(--secondary-text);
 }
-.home-no-invites {
+.home-no-invites,
+.invite-loading-container .loading {
     align-self: center;
     text-align: center;
 }

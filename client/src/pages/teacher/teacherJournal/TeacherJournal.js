@@ -25,8 +25,10 @@ const TeacherJournal = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const changeSearchQuery = (e) => setSearchQuery(e.target.value);
 
-    const [studentList, setStudentList] = useState([])
+    const [studentList, setStudentList] = useState([]);
+    const [studentSearchList, setStudentSearchList] = useState([]);
 
+    // Gets all students
     useEffect(() => {
         const getStudentList = async () => {
             setIsPending(true);
@@ -36,17 +38,7 @@ const TeacherJournal = () => {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 })
-                let data = [];
-                response.data.users.map((student) => {
-                    if (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        student.surname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        student.phone.toString().includes(searchQuery) ||
-                        student.email.toLowerCase().includes(searchQuery.toLowerCase())
-                    ) {
-                        data.push(student);
-                    }
-                })
-                setStudentList(data);
+                setStudentList(response.data.users);
                 setIsPending(false); 
             } catch (err) {
                 console.log(err);
@@ -54,7 +46,22 @@ const TeacherJournal = () => {
             }
         }
         getStudentList()
-    }, [searchQuery])
+    }, [])
+
+    // Gets students based on search query
+    useEffect(() => {
+        let searchList = [];
+        studentList.map((student) => {
+            if (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                student.surname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                student.phone.toString().includes(searchQuery) ||
+                student.email.toLowerCase().includes(searchQuery.toLowerCase())
+            ) {
+                searchList.push(student);
+            }
+        })
+        setStudentSearchList(searchList);
+    }, [searchQuery, studentList])
 
     // Table
     const headerCells = ['Vārds', 'Uzvārds', 'Tālrunis', 'E-pasts'];
@@ -70,7 +77,7 @@ const TeacherJournal = () => {
                     </div>
                     <StudentsTable 
                         headerCells={headerCells} 
-                        data={studentList} 
+                        data={searchQuery ? studentSearchList : studentList} 
                         link="../teacher-student-journals/"
                         isPending={isPending}
                     />
