@@ -94,7 +94,7 @@ const StudentProfileEdit = (props) => {
         setAlertType('');
         setAlert('');
         try {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/change-me`,
+            await axios.put(`${process.env.REACT_APP_SERVER_URL}/users`,
                 {   
                     id: student._id,
                     role: student.role, 

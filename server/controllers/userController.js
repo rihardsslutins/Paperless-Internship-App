@@ -7,9 +7,9 @@ import { handleErrors, createToken } from './user.services.js';
 const maxAge = 3 * 24 * 60 * 60; // the amount of time is measured in seconds
 
 // @desc handle user registration
-// @route POST /user
+// @route POST /users
 // @access Public
-const user_create = async (req, res) => {
+const post_users = async (req, res) => {
   // grabs the role with which the user is registering with from the role request header
   const role = req.headers.role;
 
@@ -67,9 +67,9 @@ const user_create = async (req, res) => {
 };
 
 // @desc handle user login
-// @route POST /login
+// @route POST /users/login
 // @access Public
-const user_login = async (req, res) => {
+const post_users_login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.login(email, password);
@@ -91,17 +91,17 @@ const user_login = async (req, res) => {
 };
 
 // @desc handle user logout
-// @route POST /logout
+// @route POST /users/logout
 // @access Public
-const user_logout = async (req, res) => {
+const post_users_logout = async (req, res) => {
   return res.status(200).cookie('auth', '', { maxAge: 1 }).send()
 }
 
 
 // @desc Get user data
-// @route GET /me
+// @route GET /users
 // @access Private
-const user_get_me = async (req, res) => {
+const get_users = async (req, res) => {
   try {
     const { id, name, surname, gender, phone, school, field, company, internships, teachers, students, interns, email, password, role } =
     await User.findById(req.user.id);
@@ -114,60 +114,12 @@ const user_get_me = async (req, res) => {
 };
 
 // @desc Update user basic data
-// @route POST /tbd
-// @access Public
-const change_me = async (req, res) => {
+// @route PUT /users
+// @access Private
+const put_users = async (req, res) => {
   const { id, role, name, surname, school, phone, field, company } = req.body
   console.log(role)
   try {
-  //   switch (role) {
-  //     case 'student':
-  //       let student = await User.findOne({ _id: id });
-  //       console.log(student)
-  //       student.name = name
-  //       student.surname = surname
-  //       student.school = school
-  //       student.phone = phone
-        
-  //       student.save()
-  //       res.status(200).json({ student })
-  //       break;
-  //     case 'teacher':
-  //       let teacher = await User.findOne({ _id: id });
-  //       console.log(teacher)
-  //       teacher.name = name
-  //       teacher.surname = surname
-  //       teacher.school = school
-  //       teacher.phone = phone
-        
-  //       teacher.save()
-  //       res.status(200).json({ teacher })
-  //       break;
-  //     case 'supervisor':
-  //       let supervisor = await User.findOne({ _id: id });
-  //       supervisor.name = name
-  //       supervisor.surname = surname
-  //       supervisor.field = field
-  //       supervisor.company = company
-  //       supervisor.phone = phone
-
-  //       supervisor.save()
-  //       res.status(200).json({ supervisor })
-  //       break;
-  //     default:
-  //       break;
-  //   }
-
-    // let user;
-    // if (role === 'student') {
-    //     let student = await User.findOne({ _id: id });
-    //     console.log(student)
-    //     student.name = name
-    //     student.surname = surname
-    //     student.school = school
-    //     student.phone = phone
-    // }
-
     const user = await User.findOne({ _id: id })
 
     console.log(user)
@@ -199,9 +151,9 @@ const change_me = async (req, res) => {
 }
 
 // @desc handle user password reset
-// @route POST /tbd
+// @route PUT /users/password
 // @access Private
-const reset_password = async (req, res) => {
+const put_users_password = async (req, res) => {
   const { id, oldPassword, newPassword } = req.body
   console.log(id)
   try {
@@ -251,4 +203,4 @@ const get_user_list = async (req, res) => {
 
 
 
-export { user_create, user_login, user_logout, user_get_me, change_me, reset_password, get_user_list };
+export { post_users, post_users_login, post_users_logout, get_users, put_users, put_users_password, get_user_list };

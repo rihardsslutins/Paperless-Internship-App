@@ -96,7 +96,7 @@ const SupervisorProfileEdit = (props) => {
         setAlertType('');
         setAlert('');
         try {
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/change-me`,
+            await axios.put(`${process.env.REACT_APP_SERVER_URL}/users`,
                 {   
                     id: supervisor._id,
                     role: supervisor.role, 
@@ -130,7 +130,7 @@ const SupervisorProfileEdit = (props) => {
                 setAlert('Jaunās paroles apstiprināšana nesakrīt');
                 return;
             }
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
+            await axios.put(`${process.env.REACT_APP_SERVER_URL}/users/password`,
             {   
                 id: supervisor._id,
                 oldPassword,

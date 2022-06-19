@@ -50,26 +50,30 @@ const TeacherHome = (props) => {
     }, [])
 
     // Get student list
-    const [studentList, setStudentList] = useState([]);
+    const [internships, setInternships] = useState([]);
     const [isPendingStudents, setIsPendingStudents] = useState(false);
     useEffect(() => {
-        const getStudentList = async () => {
+        const getInternships = async () => {
             setIsPendingStudents(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/user`, {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships`,
+                {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
-                })
-                setStudentList(response.data.users);
+                }
+                )
+                setInternships(response.data.internships);
                 setIsPendingStudents(false);
             } catch (err) {
                 console.log(err);
                 setIsPendingStudents(false);
             }
         }
-        getStudentList()
+        getInternships()
     }, [])
+
+    console.log(internships)
 
     return (
         <div>
@@ -79,7 +83,7 @@ const TeacherHome = (props) => {
                     <HomeInfoProfile user={teacher} role='teacher' />
                     <div className="teacher-home-grid">
                         <HomeInvites invites={invites} role="teacher" isPending={isPendingInvites} />
-                        <HomeStudents studentList={studentList} role="teacher" isPending={isPendingStudents} />
+                        <HomeStudents internships={internships} role="teacher" isPending={isPendingStudents} />
                     </div>
                     <ThemeToggleRound />
                 </div>

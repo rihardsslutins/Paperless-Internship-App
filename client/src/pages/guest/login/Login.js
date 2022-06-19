@@ -54,7 +54,7 @@ const Login = (props) => {
             try {
                 await axios
                     .post(
-                        `${process.env.REACT_APP_SERVER_URL}/login`,
+                        `${process.env.REACT_APP_SERVER_URL}/users/login`,
                         { email, password },
                         { withCredentials: true }
                     )
