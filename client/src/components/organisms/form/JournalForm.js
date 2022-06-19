@@ -28,6 +28,7 @@ const JournalForm = ({
                     options={options}
                     setChosen={setChosen}
                     defaultFormOption={defaultFormOption}
+                    key={[i]}
                 />
             )
         :

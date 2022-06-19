@@ -2,7 +2,7 @@
 import "./Inputs.css";
 // hooks
 import useTheme from "../../../hooks/useTheme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SelectInput = ({
     options,
@@ -10,8 +10,10 @@ const SelectInput = ({
     defaultFormOption
 }) => {
     const theme = useTheme();
-    const [selected, setSelected] = useState(defaultFormOption)
-    setChosen(selected);
+    const [selected, setSelected] = useState(defaultFormOption);
+    useEffect(() => {
+        setChosen(selected);
+    })
 
     return (
         <select className={`select-input ${theme}`} value={selected} onChange={e => setSelected(e.target.value)}>

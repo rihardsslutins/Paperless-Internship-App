@@ -27,6 +27,7 @@ const StudentHome = (props) => {
     const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
 
     const navigate = useNavigate();
+    const [isPending, setIsPending] = useState(false);
     
     // Logged in users info
     const student = props.user
@@ -35,15 +36,23 @@ const StudentHome = (props) => {
     const [internship, setInternship] = useState([])
     useEffect(() => {
         const getInternship = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/student`,
-            {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('auth')}`
+            setIsPending(true);
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/internships/student`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`
+                    }
                 }
+                )
+                if (response.data.internship) {
+                    setInternship([response.data.internship])
+                }
+                setIsPending(false);
+            } catch (err) {
+                console.log(err);
+                setIsPending(false);
             }
-            )
-            setInternship([response.data.internship])
-
         }
         getInternship()
     }, [])
@@ -57,13 +66,19 @@ const StudentHome = (props) => {
                     <div className="home-student-journal-container">
                         <div className="home-student-journal">
                             <h2>Dienasgrāmata:</h2>
-                            {!internship.length ?
-                                <div className="student-home-no-journal">
-                                    <h3>Nav aktīvas dienasgrāmatas</h3>
-                                    <PageButton2 text='Izveidot dienasgrāmatu' active={''} onClick={() => navigate("../student-journal-create")} />
-                                </div>
-                            : 
-                                <JournalCard journalCard={internship[0]} role="student"/>}
+                            {isPending && <div className="loading"></div>}
+                            {!isPending &&
+                                <>
+                                    {!internship.length ?
+                                        <div className="student-home-no-journal">
+                                            <h3>Nav aktīvas dienasgrāmatas</h3>
+                                            <PageButton2 text='Izveidot dienasgrāmatu' active={''} onClick={() => navigate("../student-journal-create")} />
+                                        </div>
+                                    :
+                                        <JournalCard journalCard={internship[0]} role="student"/>
+                                    }
+                                </>
+                            }
                         </div>
                     </div>
                     <ThemeToggleRound />

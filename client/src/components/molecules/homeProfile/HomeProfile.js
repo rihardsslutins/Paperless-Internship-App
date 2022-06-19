@@ -31,8 +31,6 @@ const HomeProfile = ({
     }
     }, [])
 
-    console.log(profileLink);
-
     return (
         <div className={`home-profile ${theme}`} onClick={() => navigate(`../${profileLink}-settings`)}>
             <img className="home-profile-image" src={user.gender === "male" ? male : female} alt="profile" />

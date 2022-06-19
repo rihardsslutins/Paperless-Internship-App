@@ -17,49 +17,41 @@ const SupervisorInvites = () => {
     const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
     const link = ['supervisor-home', 'supervisor-journal', 'supervisor-mail', 'supervisor-invites', 'supervisor-settings', 'help'];
 
-    const [invites, setInvites] = useState([])
-
-    // Invite
-    // const invites = [
-    //     {
-    //         id: "uibcdefgjmnrtv7986yhkx",
-    //         title: "Prakses dienasgrāmata",
-    //         from: "Jānis Ozols",
-    //         school: "Saldus tehnikums",
-    //         companyName: "Accenture"
-    //     },
-    //     {
-    //         id: "rgt56e4fvbhijklmnouy78",
-    //         title: "Prakses dienasgrāmata",
-    //         from: "Kārlis Krūmiņš",
-    //         school: "Ventspils tehnikums",
-    //         companyName: "Accenture"
-    //     }
-    // ]
+    const [invites, setInvites] = useState([]);
+    const [isPending, setIsPending] = useState(false);
+    const [refreshTable, setRefreshTable] = useState(true);
 
     useEffect(() => {
         const getInvites = async () => {
+            setIsPending(true);
             try {
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/invites`, {
                     headers: {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 })
-                setInvites(response.data.invites)
+                setInvites(response.data.invites);
+                setIsPending(false);
             } catch (err) {
-                console.log(err)
+                console.log(err);
+                setIsPending(false);
             }
         }
         getInvites()
-    })
+    }, [refreshTable])
 
     return (
         <>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="teacher-invites" />
             <div className="dashboard-container supervisor-invites">
                 <h1>Uzaicinājumi</h1>
-                <Invite invites={invites} />
-                {!invites.length && <h2 className="supervisor-invites-0">Nav neviena uzaicinājuma</h2> }
+                {isPending && <div className="loading"></div>}
+                {!isPending &&
+                    <>
+                        <Invite invites={invites} setRefreshTable={setRefreshTable} />
+                        {!invites.length && <h2 className="supervisor-invites-0">Nav neviena uzaicinājuma</h2> }
+                    </>
+                }
             </div>
         </>
     );
