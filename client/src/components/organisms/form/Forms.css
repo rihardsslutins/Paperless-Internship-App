@@ -21,6 +21,9 @@
     .registration-form-grid {
         grid-template-columns: 1fr;
     }
+    .registration-form-grid.supervisor div:nth-child(7) {
+        grid-column: 1 / 2;
+    }
 }
 
 /* Create Journal Form */
@@ -35,11 +38,15 @@
 }
 
 /* Journal Record Form */
-.journal-record-form {
+.journal-record-form form {
     display: grid;
     grid-template-columns: 2fr 10fr;
     grid-column-gap: 30px;
     margin-top: 20px;
+}
+.journal-record-form h2 {
+    margin-top: 20px;
+    text-align: center;
 }
 .journal-record-form .input-group:first-child input {
     max-height: 39px;
@@ -55,11 +62,11 @@
     resize: none;
     height: 82%;
 }
-.journal-record-form button {
+.journal-record-form .journal-record-from-flex {
     grid-column: 1 / span 2;
-    max-width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
 }
 @media only screen and (max-width: 800px) {
     .journal-record-form {

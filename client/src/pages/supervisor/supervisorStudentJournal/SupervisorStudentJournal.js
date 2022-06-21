@@ -13,14 +13,16 @@ import JournalTable from "../../../components/organisms/table/JournalTable";
 // react & react router dom
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
 // packages
 import axios from 'axios';
 import Cookies from "js-cookie";
 
-const SupervisorStudentJournal = () => {
+const SupervisorStudentJournal = (props) => {
 
     const navigate = useNavigate();
     const { id } = useParams();
+    const role = props.user.role;
 
     const [internship, setInternship] = useState([]);
     const [refreshTable, setRefreshTable] = useState(true);
@@ -36,7 +38,7 @@ const SupervisorStudentJournal = () => {
     const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
 
     // Add grade
-    const [editRecord, setEditRecord] = useState();
+    const [editRecord, setEditGrade] = useState();
     const [grade, setGrade] = useState('');
 
     // Alert
@@ -102,7 +104,7 @@ const SupervisorStudentJournal = () => {
             setAlert('Atzīme tika ielikta ' + editRecord[1] + ' ierakstam!');
             setRefreshTable(false);
             setRefreshTable(true);
-            setEditRecord();
+            setEditGrade();
             setGrade('');
         } catch (err) {
             const errors = err.response.data.errors;
@@ -111,7 +113,7 @@ const SupervisorStudentJournal = () => {
         }
     }
     const handleReset = () => {
-        setEditRecord();
+        setEditGrade();
         setGrade('');
         handleAlertClose();
     }
@@ -134,7 +136,13 @@ const SupervisorStudentJournal = () => {
                                         <p>Praktikants: {internship.studentFullName}</p>
                                     </div>
                                 </div>
-                                <JournalTable headerCells={headerCells} data={internship.journal} setEditRecord={setEditRecord} setAlert={setAlert} />
+                                <JournalTable 
+                                    headerCells={headerCells} 
+                                    data={internship.journal} 
+                                    setEditGrade={setEditGrade} 
+                                    setAlert={setAlert}
+                                    role={role}
+                                />
                                 {alert && <Alert text={alert} type={alertType} handleAlertClose={handleAlertClose} />}
                                 {editRecord && 
                                     <div className="supervisor-journal-form">
@@ -167,4 +175,8 @@ const SupervisorStudentJournal = () => {
     );
 }
 
-export default SupervisorStudentJournal;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(SupervisorStudentJournal);

@@ -43,43 +43,48 @@ function App(props) {
     const [userIsReady, setUserIsReady] = useState(false);
     useEffect(() => {
         const getUser = async () => {
-            if (!props.user._id) {
-                await axios
-                    .get(`${process.env.REACT_APP_SERVER_URL}/users`, {
-                        headers: {
-                            Authorization: `Bearer ${Cookies.get('auth')}`,
-                        },
-                    })
-                    .then((res) => res.data)
-                    .then((res) => {
-                        dispatch(
-                            setUser({
-                                _id: res.id,
-                                name: res.name,
-                                surname: res.surname,
-                                school: res.school,
-                                gender: res.gender,
-                                field: res.field,
-                                company: res.company,
-                                phone: res.phone,
-                                email: res.email,
-                                password: res.password,
-                                internships: res.internships,
-                                teachers: res.teachers,
-                                students: res.students,
-                                interns: res.interns,
-                                role: res.role,
-                            })
-                        )
-                    }
-                    )         
-                    .then(() => setUserIsReady(true))
-                    .catch(() => setUserIsReady(true))
+            try {
+                if (!props.user._id) {
+                    await axios
+                        .get(`${process.env.REACT_APP_SERVER_URL}/users`, {
+                            headers: {
+                                Authorization: `Bearer ${Cookies.get('auth')}`,
+                            },
+                        })
+                        .then((res) => res.data)
+                        .then((res) => {
+                            dispatch(
+                                setUser({
+                                    _id: res.id,
+                                    name: res.name,
+                                    surname: res.surname,
+                                    school: res.school,
+                                    gender: res.gender,
+                                    field: res.field,
+                                    company: res.company,
+                                    phone: res.phone,
+                                    email: res.email,
+                                    password: res.password,
+                                    internships: res.internships,
+                                    teachers: res.teachers,
+                                    students: res.students,
+                                    interns: res.interns,
+                                    role: res.role,
+                                })
+                            )
+                        console.log(res)
+                        }
+                        )         
+                        .then(() => setUserIsReady(true))
+                        .catch(() => setUserIsReady(true))
+                }
+                setUserIsReady(true);
+            } catch (err) {
+                console.log(err);
             }
-            setUserIsReady(true);
         };
         getUser();
-    });
+    }, []);
     return (
         <div className={`App ${theme}`}>
             {userIsReady && (

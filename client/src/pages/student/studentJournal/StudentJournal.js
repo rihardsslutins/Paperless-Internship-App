@@ -3,6 +3,7 @@ import './StudentJournal.css';
 // atoms
 import PageButton2 from '../../../components/atoms/button/PageButton2';
 import DangerButton from '../../../components/atoms/button/DangerButton';
+import Alert from '../../../components/atoms/alerts/Alert';
 // organisms
 import Sidebar from '../../../components/organisms/navbar/Sidebar';
 import JournalRecordForm from '../../../components/organisms/form/JournalRecordForm';
@@ -14,11 +15,12 @@ import Cookies from 'js-cookie';
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Alert from '../../../components/atoms/alerts/Alert';
+import { connect } from 'react-redux';
 
-const StudentJournal = () => {
+const StudentJournal = (props) => {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const role = props.user.role;
     
     const { id: _id } = useParams();
     const [internship, setInternship] = useState('');
@@ -50,6 +52,27 @@ const StudentJournal = () => {
     const formTypes = ['date', 'text', 'number'];
     const formValues = [date, taskDescription, hoursSpent];
 
+    // Journal record edit form
+    const [editRecord, setEditRecord] = useState('');
+    const [editId, setEditId] = useState('');
+    const [editDate, setEditDate] = useState('');
+    const [editTaskDescription, setEditTaskDescription] = useState('');
+    const [editHoursSpent, setEditHoursSpent] = useState('');
+    
+    // Get record info when editRecord changes
+    useEffect(() => {
+        setEditId(editRecord ? editRecord._id : '');
+        setEditDate(editRecord ? editRecord.date  : '');
+        setEditTaskDescription(editRecord ? editRecord.taskDescription : '');
+        setEditHoursSpent(editRecord ? editRecord.hoursSpent : '');
+    }, [editRecord])
+
+    const changeEditDate = (e) => setEditDate(e.target.value);
+    const changeEditTaskDescription = (e) => setEditTaskDescription(e.target.value);
+    const changeEditHoursSpent = (e) => setEditHoursSpent(e.target.value);
+    const onChangeEditArray = [changeEditDate, changeEditTaskDescription, changeEditHoursSpent];
+    const formEditValues = [editDate, editTaskDescription, editHoursSpent];
+
     // Alert
     const [alert, setAlert] = useState('');
     const [alertType, setAlertType] = useState('');
@@ -78,7 +101,7 @@ const StudentJournal = () => {
             }
         }
         getInternship()
-    }, [refreshTable])
+    }, [refreshTable, _id]);
 
     // Error handling
     const handleErrors = (errors, propertyOrder) => {
@@ -126,6 +149,18 @@ const StudentJournal = () => {
         }
     };
 
+    // Updating existing record
+    const handleUpdateJournalRecord = (e) => {
+        e.preventDefault();
+        console.log("Update record: " + editId + " with values: " + editDate, editHoursSpent, editTaskDescription);
+    }
+
+    // Cancel journal update
+    const handleResetEdit = (e) => {
+        e.preventDefault();
+        setEditRecord('');
+    }
+
     // Journal modal
     const [displayModal, setDisplayModal] = useState(false);
     const handleClose = () => setDisplayModal(false);
@@ -164,7 +199,14 @@ const StudentJournal = () => {
                                         <p>Praktikants: {internship.studentFullName}</p>
                                     </div>
                                 </div>
-                                <JournalTable headerCells={headerCells} data={journal} />
+                                <JournalTable 
+                                    headerCells={headerCells} 
+                                    data={journal}
+                                    role={role}
+                                    setEditRecord={setEditRecord}
+                                    setAlert={setAlert}
+                                    setAlertType={setAlertType}
+                                />
                                 {alert &&
                                     <Alert
                                         type={alertType}
@@ -172,8 +214,10 @@ const StudentJournal = () => {
                                         handleAlertClose={handleAlertClose}
                                     />
                                 }
-                                {internship.isActive && (
+                                {/* Add record form */}
+                                {internship.isActive && !editRecord && (
                                     <JournalRecordForm
+                                        formTitle='Ieraksta pievienošana'
                                         id={formNames}
                                         name={formNames}
                                         label={formLabels}
@@ -182,6 +226,22 @@ const StudentJournal = () => {
                                         onClick={handleAddJournalRecord}
                                         onChange={onChangeArray}
                                         buttonText="Pievienot"
+                                    />
+                                )}
+                                {/* Update record form */}
+                                {internship.isActive && editRecord && (
+                                    <JournalRecordForm
+                                        formTitle='Ieraksta rediģēšana'
+                                        id={formNames}
+                                        name={formNames}
+                                        label={formLabels}
+                                        type={formTypes}
+                                        value={formEditValues}
+                                        onClick={handleUpdateJournalRecord}
+                                        onChange={onChangeEditArray}
+                                        buttonText="Saglabāt izmaiņas"
+                                        cancelButtonText="Atcelt"
+                                        cancelButton={handleResetEdit}
                                     />
                                 )}
                                 {internship.isActive && (
@@ -200,4 +260,8 @@ const StudentJournal = () => {
     );
 };
 
-export default StudentJournal;
+const mapStateToProps = (state) => ({
+    user: state.user,
+});
+
+export default connect(mapStateToProps)(StudentJournal);
