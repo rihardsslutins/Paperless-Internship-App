@@ -15,15 +15,15 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 
 const Register = (props) => {
+
     const [searchParams] = useSearchParams();
     const [alert, setAlert] = useState('');
+    const navigate = useNavigate();
     
     // forces a refresh in order to redirect
     const refreshPage = () => {
         window.location.reload();
     }
-
-    const navigate = useNavigate()
 
     useEffect(() => {
         if (props.user.role) {
@@ -87,8 +87,7 @@ const Register = (props) => {
     const changeStudentEmail = (e) => setStudentEmail(e.target.value);
     const changeStudentPhone = (e) => setStudentPhone(e.target.value);
     const changeStudentPassword = (e) => setStudentPassword(e.target.value);
-    const changeStudentConfirmPassword = (e) =>
-        setStudentConfirmPassword(e.target.value);
+    const changeStudentConfirmPassword = (e) => setStudentConfirmPassword(e.target.value);
 
     const onChangeStudentArray = [
         changeStudentName,
@@ -169,6 +168,7 @@ const Register = (props) => {
             handleErrors(errors, propertyOrder);
         }
     };
+
 
     // TEACHER REGISTRATION
     const [teacherName, setTeacherName] = useState('');
@@ -269,6 +269,7 @@ const Register = (props) => {
         }
     };
 
+    
     // SUPERVISOR REGISTRATION
     const [supervisorName, setSupervisorName] = useState('');
     const [supervisorSurname, setSupervisorSurname] = useState('');

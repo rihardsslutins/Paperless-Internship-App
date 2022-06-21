@@ -1,14 +1,33 @@
 //style
 import "./Table.css";
 // hooks
-import { useLocation } from "react-router-dom";
 const JournalTable = ({
     headerCells,
     data,
+    setEditGrade,
     setEditRecord,
-    setAlert
+    setAlert,
+    setAlertType,
+    role
 }) => {
-    const location = useLocation();
+
+    const handleEditGrade = (record) => {
+        setEditGrade([record._id, record.date, record.grade])
+        setAlert('');
+    }
+
+    const handleEditRecord = (record) => {
+        if (record.grade) {
+            setAlertType('warning');
+            setAlert('Nevar labot ierakstus kuriem jau ir ielikta atzīme!');
+            setEditRecord('');
+        } else {
+            setAlertType('');
+            setAlert('');
+            setEditRecord({ _id: record._id, date: record.date, hoursSpent: record.hoursSpent, taskDescription: record.taskDescription});
+        }
+    }
+
     return (
         <div className="table-container">
             <table>
@@ -21,15 +40,10 @@ const JournalTable = ({
                 </thead>
                 <tbody>
                     {data.map(record => (
-                        <tr key={record._id} onClick={(
-                            location.pathname.split("/")[1] === 'supervisor-student-journal' ?
-                                () => {
-                                    setEditRecord([record._id, record.date, record.grade])
-                                    setAlert('');
-                                }
-                            :
-                                undefined
-                            )}>
+                        <tr key={record._id} onClick={() => {
+                            if (role === "supervisor") {handleEditGrade(record)}
+                            if (role === "student") {handleEditRecord(record)}
+                        }}>
                             <td className="date">{record.date}</td>
                             <td className="task-description">{record.taskDescription}</td>
                             <td>{record.hoursSpent}</td>

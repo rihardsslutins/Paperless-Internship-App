@@ -17,6 +17,9 @@
 .student-journal-info {
     text-align: center;
 }
+.student-journal table tbody tr td {
+    cursor: pointer;
+}
 @media only screen and (max-width: 800px) {
     .student-journal-header {
         grid-template-columns: 1fr 1fr;
