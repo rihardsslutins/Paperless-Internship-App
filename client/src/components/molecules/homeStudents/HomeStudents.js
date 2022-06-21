@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import useTheme from "../../../hooks/useTheme";
 
 const HomeStudents = ({
-    studentList,
+    internships,
     role,
     isPending
 }) => {
@@ -37,20 +37,20 @@ const HomeStudents = ({
                 }
                 {!isPending &&
                     <>
-                        {studentList.length ?
+                        {internships.length ?
                             <table>
                                 <tbody>
-                                    {studentList.map((student) => (
-                                        <tr key={student._id} className="home-student" 
+                                    {internships.map((internship) => (
+                                        <tr key={internship._id} className="home-student" 
                                             onClick={() => role === 'supervisor' ? 
-                                                    navigate("../supervisor-student-journal/" + student._id)
+                                                    navigate("../supervisor-student-journal/" + internship._id)
                                                 :
-                                                    navigate("../teacher-student-journals/" + student._id)
+                                                    navigate("../teacher-student-journals/" + internship._id)
                                             }
                                         >
-                                            <td>{student.name + ' ' + student.surname}</td>
-                                            <td>{student.phone}</td>
-                                            <td>{student.email}</td>
+                                            <td>{internship.studentFullName}</td>
+                                            <td>{internship.studentPhone}</td>
+                                            <td>{internship.student}</td>
                                         </tr>
                                     ))}
                                 </tbody>

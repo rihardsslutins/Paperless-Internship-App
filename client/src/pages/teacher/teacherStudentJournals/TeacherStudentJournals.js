@@ -32,6 +32,7 @@ const TeacherStudentJournals = () => {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 })
+                console.log(response.data.internship)
                 setInternships(response.data.internships)
                 setIsPending(false);
             } catch (err) {

@@ -1,7 +1,7 @@
 import express from 'express';
 
 // controllers
-import { user_create, user_login, user_logout, user_get_me, change_me, reset_password, get_user_list } from '../controllers/userController.js';
+import { post_users, post_users_login, get_users, put_users, put_users_password } from '../controllers/userController.js';
 
 // // middleware
 import { protect } from '../middleware/authMiddleware.js';
@@ -9,24 +9,24 @@ import { protect } from '../middleware/authMiddleware.js';
 const userRouter = express.Router();
 
 // register route
-userRouter.post('/user', user_create);
+userRouter.post('/users', post_users);
 
-// get users
-userRouter.get('/user', protect, get_user_list)
+// // get users
+// userRouter.get('/user', protect, get_users_list)
 
 // login route
-userRouter.post('/login', user_login);
+userRouter.post('/users/login', post_users_login);
 
-// logout route
-userRouter.get('/logout', user_logout)
+// // logout route
+// userRouter.get('/', post_users_logout)
 
 // get the logged in user's data
-userRouter.get('/me', protect, user_get_me);
+userRouter.get('/users', protect, get_users);
 
 // update logged in user's info
-userRouter.post('/change-me', protect, change_me)
+userRouter.put('/users', protect, put_users)
 
 // reset logged in user's password
-userRouter.post('/reset', protect, reset_password)
+userRouter.put('/users/password', protect, put_users_password)
 
 export default userRouter;
