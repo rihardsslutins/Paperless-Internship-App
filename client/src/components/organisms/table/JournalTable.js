@@ -9,11 +9,30 @@ import 'moment/locale/lv';
 const JournalTable = ({
     headerCells,
     data,
+    setEditGrade,
     setEditRecord,
-    setAlert
+    setAlert,
+    setAlertType,
+    role
 }) => {
-    const location = useLocation();
-    // console.log(record.date)
+
+    const handleEditGrade = (record) => {
+        setEditGrade([record._id, record.date, record.grade])
+        setAlert('');
+    }
+
+    const handleEditRecord = (record) => {
+        if (record.grade) {
+            setAlertType('warning');
+            setAlert('Nevar labot ierakstus kuriem jau ir ielikta atzīme!');
+            setEditRecord('');
+        } else {
+            setAlertType('');
+            setAlert('');
+            setEditRecord({ _id: record._id, date: record.date, hoursSpent: record.hoursSpent, taskDescription: record.taskDescription});
+        }
+    }
+    
     return (
         <div className="table-container">
             <table>
@@ -25,24 +44,17 @@ const JournalTable = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map(record => {
-                        return (
+                    {data.map(record => (
                         <tr key={record._id} onClick={(
-                            location.pathname.split("/")[1] === 'supervisor-student-journal' ?
-                                () => {
-                                    setEditRecord([record._id, record.date, record.grade])
-                                    setAlert('');
-                                }
-                            :
-                                undefined
+                            if (role === "supervisor") {handleEditGrade(record)}
+                            if (role === "student") {handleEditRecord(record)}
                             )}>
                             <td className="date">{moment(record.date).locale('lv').format('LL')}</td>
                             <td className="task-description">{record.taskDescription}</td>
                             <td>{record.hoursSpent}</td>
                             <td>{record.grade}</td>
                         </tr>
-                    )
-                    })}
+                      })}
                     {!data.length &&
                         <tr>
                             <td colSpan={4} className="no-record"> Nav neviena ieraksta </td>

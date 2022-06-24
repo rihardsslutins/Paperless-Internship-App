@@ -5,8 +5,10 @@ import PageButton from "../../atoms/button/PageButton";
 // molecules
 import TextareaGroup from "../../molecules/labeledInput/TextareaGroup";
 import InputGroupValue from "../../molecules/labeledInput/InputGroupValue";
+import DangerButton from "../../atoms/button/DangerButton2";
 
 const JournalRecordForm = ({
+    formTitle,
     id,
     name,
     label,
@@ -14,7 +16,9 @@ const JournalRecordForm = ({
     value,
     onClick,
     onChange,
-    buttonText
+    buttonText,
+    cancelButtonText,
+    cancelButton
 }) => {
     let inputArray = [];
     for (let i = 0; i < name.length; i++) {
@@ -45,10 +49,16 @@ const JournalRecordForm = ({
         }
     }
     return (
-        <form className="journal-record-form">
-            {inputArray.map((element) => element)}
-            <PageButton onClick={onClick} text={buttonText} />
-        </form>
+        <div className="journal-record-form">
+            <h2>{formTitle}</h2>
+            <form>
+                {inputArray.map((element) => element)}
+                <div className="journal-record-from-flex">
+                    {cancelButton && <DangerButton text={cancelButtonText} onClick={cancelButton} />}
+                    <PageButton onClick={onClick} text={buttonText} />
+                </div>
+            </form>
+        </div>
     );
 }
  
