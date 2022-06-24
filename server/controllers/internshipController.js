@@ -79,7 +79,7 @@ const get_internships = async (req, res) => {
         if (role === 'student') {
             internships = await Internship.find({ student: email })
         } else if (role === 'teacher') {
-            internships = await Internship.find({ teacher: email })
+            internships = await Internship.find({ teacher: email, isActive: true })
         } else if (role === 'supervisor') {
             internships = await Internship.find({ supervisor: email, isActive: true, isPending: false })
         }
@@ -120,10 +120,22 @@ const get_single_internships = async (req, res) => {
             const { email, role } = await User.findById(req.user.id)
             let internship
             if (role === 'student') {
-                internship = await Internship.findOne({ _id: req.params.id, student: email })
+                // internship = await Internship.find({ _id: req.params.id }).sort({ 'journal.date': -1 })
+                internship = await Internship.find({ _id: req.params.id})
+                const sortedJournal = await Internship.aggregate([
+                    { $match: { _id: mongoose.Types.ObjectId(req.params.id) }},
+                    { $unwind: '$journal' },
+                    { $sort: { 'journal.date': 1 }},
+                    { $group: { _id: '$_id', journal: { $push: '$journal'}}}])
+                if (sortedJournal[0]) {
+                    internship[0].journal = sortedJournal[0].journal
+                } 
+                // internship = await Internship.findOne({ _id: req.params.id, student: email }).sort("-journal.date")
             } else if (role === 'teacher') {
-                let checkInternship = await Internship.findById(req.params.id)
-                const user = await User.findOne({ email: checkInternship.student })
+                let checkInternship = await Internship.find({ _id: req.params.id })
+                console.log(checkInternship)
+                const user = await User.findOne({ email: checkInternship[0].student, role: 'student' })
+                console.log(user)
                 const isFound = user.teachers.some(teacher => {
                     if (teacher.email === email) {
                       return true;
@@ -134,11 +146,28 @@ const get_single_internships = async (req, res) => {
                     throw Error('Dienasgrāmata neeksistē')
                 }
                 internship = checkInternship
-            } else if (role === 'supervisor') {
-                internship = await Internship.findOne({ _id: req.params.id, supervisor: email })
-            }
+                const sortedJournal = await Internship.aggregate([
+                    { $match: { _id: mongoose.Types.ObjectId(req.params.id) }},
+                    { $unwind: '$journal' },
+                    { $sort: { 'journal.date': 1 }},
+                    { $group: { _id: '$_id', journal: { $push: '$journal'}}}])
+                    if (sortedJournal[0]) {
+                        internship[0].journal = sortedJournal[0].journal
+                    } 
 
-            return res.status(200).json({ internship });
+            } else if (role === 'supervisor') {
+                internship = await Internship.find({ _id: req.params.id, isActive: true, isPending: false})
+                console.log(internship)
+                const sortedJournal = await Internship.aggregate([
+                    { $match: { _id: mongoose.Types.ObjectId(req.params.id) }},
+                    { $unwind: '$journal' },
+                    { $sort: { 'journal.date': 1 }},
+                    { $group: { _id: '$_id', journal: { $push: '$journal'}}}])
+                if (sortedJournal[0]) {
+                    internship[0].journal = sortedJournal[0].journal
+                } 
+            }
+            return res.status(200).json({ internship: internship[0] });
         } else {
             throw Error("ID parameter doesn't exist")
         }

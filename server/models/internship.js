@@ -21,7 +21,7 @@ const teacherExists = async (value) => {
 
 const journalSchema = new Schema({
     date: {
-        type: String,
+        type: Date,
         required: [true, 'Lūdzu ievadi datumu'],
     },
     taskDescription: {

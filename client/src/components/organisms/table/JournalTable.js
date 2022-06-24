@@ -2,6 +2,10 @@
 import "./Table.css";
 // hooks
 import { useLocation } from "react-router-dom";
+// packages
+import moment from 'moment'
+import 'moment/locale/lv';
+
 const JournalTable = ({
     headerCells,
     data,
@@ -9,6 +13,7 @@ const JournalTable = ({
     setAlert
 }) => {
     const location = useLocation();
+    // console.log(record.date)
     return (
         <div className="table-container">
             <table>
@@ -20,7 +25,8 @@ const JournalTable = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map(record => (
+                    {data.map(record => {
+                        return (
                         <tr key={record._id} onClick={(
                             location.pathname.split("/")[1] === 'supervisor-student-journal' ?
                                 () => {
@@ -30,12 +36,13 @@ const JournalTable = ({
                             :
                                 undefined
                             )}>
-                            <td className="date">{record.date}</td>
+                            <td className="date">{moment(record.date).locale('lv').format('LL')}</td>
                             <td className="task-description">{record.taskDescription}</td>
                             <td>{record.hoursSpent}</td>
                             <td>{record.grade}</td>
                         </tr>
-                    ))}
+                    )
+                    })}
                     {!data.length &&
                         <tr>
                             <td colSpan={4} className="no-record"> Nav neviena ieraksta </td>

@@ -1,3 +1,5 @@
+// mongoose
+import mongoose from "mongoose";
 // models
 import { Invite } from "../models/invite.js";
 import { Internship } from "../models/internship.js";
@@ -43,17 +45,19 @@ const reject_invite = async (req, res) => {
         
         // const invite = await Invite.findByIdAndDelete(_id);
         const invite = await Invite.findOne({ _id })
+        const Sender = await User.findOne({ email: invite.sender })
         const Receiver = await User.findOne({ email: invite.receiver })
-        // if () {
 
-        // }
         switch (Receiver.role) {
             case 'teacher':
                 await invite.remove()
                 break;
             case 'supervisor':
                 // finds whatever internship the supervisor was invited in
-                const internship = await Internship.findOne({ student: invite.sender, supervisor: invite.receiver })
+                const internship = await Internship.findOne({ student: invite.sender, supervisor: invite.receiver, isActive: true, isPending: true })
+                // removes rejectedInternship from student internships array
+                Sender.internships.filter(Internship => new mongoose.Types.ObjectId(Internship) === internship._id)
+                await Sender.save()
                 // deletes the rejected internship
                 await internship.remove()
                 // deletes the rejected invite
@@ -101,7 +105,7 @@ const accept_invite = async (req, res) => {
 
             case 'supervisor':
                 // looks for the internship the supervisor has been invited to and hasn't accepted yet
-                const internship = await Internship.findOne({ student: sender, supervisor: receiver })
+                const internship = await Internship.findOne({ student: sender, supervisor: receiver, isActive: true, isPending: true })
                 
                 // changes the internships isPending property to indicate that the invited supervisor has accepted the invite
                 internship.isPending = false;
