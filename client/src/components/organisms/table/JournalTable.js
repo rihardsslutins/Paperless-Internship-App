@@ -1,6 +1,11 @@
 //style
 import "./Table.css";
 // hooks
+import { useLocation } from "react-router-dom";
+// packages
+import moment from 'moment'
+import 'moment/locale/lv';
+
 const JournalTable = ({
     headerCells,
     data,
@@ -27,7 +32,7 @@ const JournalTable = ({
             setEditRecord({ _id: record._id, date: record.date, hoursSpent: record.hoursSpent, taskDescription: record.taskDescription});
         }
     }
-
+    
     return (
         <div className="table-container">
             <table>
@@ -40,16 +45,16 @@ const JournalTable = ({
                 </thead>
                 <tbody>
                     {data.map(record => (
-                        <tr key={record._id} onClick={() => {
+                        <tr key={record._id} onClick={(
                             if (role === "supervisor") {handleEditGrade(record)}
                             if (role === "student") {handleEditRecord(record)}
-                        }}>
-                            <td className="date">{record.date}</td>
+                            )}>
+                            <td className="date">{moment(record.date).locale('lv').format('LL')}</td>
                             <td className="task-description">{record.taskDescription}</td>
                             <td>{record.hoursSpent}</td>
                             <td>{record.grade}</td>
                         </tr>
-                    ))}
+                      })}
                     {!data.length &&
                         <tr>
                             <td colSpan={4} className="no-record"> Nav neviena ieraksta </td>

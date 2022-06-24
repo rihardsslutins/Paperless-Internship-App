@@ -92,6 +92,7 @@ const StudentJournal = (props) => {
                     }
                 }
                 );
+                console.log(response.data)
                 setInternship(response.data.internship)
                 setJournal(response.data.internship.journal)
                 setIsPending(false);
