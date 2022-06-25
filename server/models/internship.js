@@ -89,8 +89,11 @@ const internshipSchema = new Schema({
         required: [true, 'Studenta tālrunis nav pievienots']
     },
     startingDate: {
-        type: String,
+        type: Date,
         required: [true, 'Lūdzu ievadi datumu kurā sākās prakse']
+    },
+    endingDate: {
+        type: Date
     },
     journal: {
         type: [journalSchema],

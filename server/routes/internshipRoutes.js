@@ -1,7 +1,7 @@
 import express from 'express';
 
 // controllers
-import { post_internships, get_internships, get_internships_teacher, get_single_internships, post_journal, put_journal } from '../controllers/internshipController.js';
+import { post_internships, get_internships, get_internships_teacher, get_single_internships, put_internships, post_journal, put_journal } from '../controllers/internshipController.js';
 
 // // middleware
 import { protect } from '../middleware/authMiddleware.js';
@@ -19,6 +19,9 @@ internshipRouter.get('/internships/teacher/:id', protect, get_internships_teache
 
 // get a single internship
 internshipRouter.get('/internships/:id', protect, get_single_internships)
+
+// completes an internship
+internshipRouter.put('/internships/:id', protect, put_internships)
 
 // create a journal record
 internshipRouter.post('/journals', protect, post_journal)

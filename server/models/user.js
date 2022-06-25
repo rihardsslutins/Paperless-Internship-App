@@ -20,6 +20,8 @@ const userSchema = new Schema(
     phone: {
       type: Number,
       required: [true, 'Lūdzu ievadi telefona numuru'],
+      minLength: [8, 'Parole nevar būt īsāka par 8 rakstzīmēm'],
+      maxLength: [8, 'Parole nevar būt garāka par 8 rakstzīmēm']
     },
     gender: {
       type: String,

@@ -11,8 +11,13 @@ import LabeledInput from "../../molecules/labeledInput/InputGroup";
 // hooks
 import { useState } from "react";
 import useTheme from "../../../hooks/useTheme";
+// packages
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const JournalModal = ({
+    email,
+    id,
     display,
     handleClose
 }) => {
@@ -46,19 +51,30 @@ const JournalModal = ({
         setAlert('');
     }
     const [passwordCheck, setPasswordCheck] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [endingDate, setEndingDate] = useState('');
 
-    const handleEndJournal = () => {
-        console.log('hit');
-        console.log(endDate);
-        setAlert('');
-        if (!endDate) {
-            setAlert('Ievadiet prakses beigu datumu');
-        } else if (student.password !== passwordCheck) {
-            setAlert('Parole nav pareiza!');
-        } else {
-            console.log('Change active to false');
-            handleModel();
+    const handleEndJournal = async (e) => {
+        e.preventDefault()
+        try {
+            console.log('hit');
+            console.log(endingDate);
+            setAlert('');
+                const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/internships/${id}`,
+                {
+                    email,
+                    password: passwordCheck,
+                    endingDate
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('auth')}`
+                    }
+                }
+                )
+                console.log(response)
+                handleModel();
+        } catch (err) {
+            console.log(err.response)
         }
     }
 
@@ -77,7 +93,7 @@ const JournalModal = ({
                             <img src={closeBlack} alt="close modal" onClick={handleModel} />
                         </div>
                         <div className="modal-body">
-                            <h3>Ja noslēgsiet dienasgrāmatu, tad šajā dienasgrāmatā vairs nēbūs iespējams pievienot jaunus ierakstus, kā arī prakses vadītājs nevarēs Jums ielikt atzīmes!</h3>
+                            <h3>Ja noslēgsiet dienasgrāmatu, tad šajā dienasgrāmatā vairs nebūs iespējams pievienot jaunus ierakstus, kā arī prakses vadītājs nevarēs Jums ielikt atzīmes!</h3>
                             {alert && <Alert type="warning" text={alert} handleAlertClose={handleAlertClose} />}
                             <div className="journal-modal-inputs">
                                 <LabeledInput
@@ -85,7 +101,7 @@ const JournalModal = ({
                                     name='endDate'
                                     label='Prakses beigu datums:'
                                     type='date'
-                                    onChange={e => setEndDate(e.target.value)}
+                                    onChange={e => setEndingDate(e.target.value)}
                                 />
                                 <LabeledInput
                                     id='companyName'
