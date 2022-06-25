@@ -29,7 +29,7 @@ const JournalTable = ({
         } else {
             setAlertType('');
             setAlert('');
-            setEditRecord({ _id: record._id, date: record.date, hoursSpent: record.hoursSpent, taskDescription: record.taskDescription});
+            setEditRecord({ _id: record._id, date: record.date.split('T')[0], hoursSpent: record.hoursSpent, taskDescription: record.taskDescription});
         }
     }
     

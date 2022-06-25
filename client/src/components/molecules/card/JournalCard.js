@@ -6,6 +6,8 @@ import PageButton from "../../atoms/button/PageButton";
 import { Link } from "react-router-dom";
 // hooks
 import useTheme from "../../../hooks/useTheme";
+// packages
+import moment from "moment";
 
 const JournalCard = ({ 
     journalCard, 
@@ -23,7 +25,7 @@ const JournalCard = ({
                 </div>
                 <div className="journal-card-date">
                     <p>Datums:</p>
-                    <p>{journalCard.startingDate}</p>
+                    <p>{moment(journalCard.startingDate).locale('lv').format('LL')}</p>
                 </div>
                 {!journalCard.isPending &&
                     <>
