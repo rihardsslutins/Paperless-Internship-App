@@ -33,6 +33,7 @@ const TeacherStudentJournal = () => {
                 }
             }
             )
+            console.log(response.data)
             setInternship(response.data.internship)
         }
         getInternship()
