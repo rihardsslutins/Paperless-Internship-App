@@ -74,25 +74,33 @@ const get_internships = async (req, res) => {
         const { email, role } = await User.findById(req.user.id)
 
         let internships = [];
-
         // assigns a value to the internships variable based on what role user has sent the get request
         if (role === 'student') {
             internships = await Internship.find({ student: email })
+            return res.status(200).json({ internships })
         } else if (role === 'teacher') {
             // internships = await Internship.find({ teacher: email })
-            console.log('I hit')
             const thingy = await Internship.distinct('student')
             for (let i = 0; i < thingy.length; i++) {
-                const doc = await Internship.findOne({ student: thingy[i], teacher: email })
-                internships.push(doc)
+                const student = await User.findOne({ email: thingy[i] })
+                let auth = []
+                student.teachers.map(teacher => {
+                    if (teacher.email === email) {
+                        auth.push(teacher)
+                    }
+                })
+                if (auth.length) {
+                    const doc = await Internship.findOne({ student: thingy[i] })
+                    console.log(`THIS IS THE INTERNSHIP ${doc}`)
+                    internships.push(doc)
+                }
             }
             console.log(thingy)
-            console.log(internships)
+            return res.status(200).json({ internships })
         } else if (role === 'supervisor') {
             internships = await Internship.find({ supervisor: email, isActive: true, isPending: false })
+            return res.status(200).json({ internships })
         }
-
-        return res.status(200).json({ internships })
     } catch (err) {
         return res.status(400).json({ message: err.message })
     }

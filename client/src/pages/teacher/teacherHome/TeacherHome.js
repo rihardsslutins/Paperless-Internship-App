@@ -63,6 +63,7 @@ const TeacherHome = (props) => {
                     }
                 }
                 )
+                console.log(response)
                 setInternships(response.data.internships);
                 setIsPendingStudents(false);
             } catch (err) {
