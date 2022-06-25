@@ -139,7 +139,7 @@ const TeacherProfileEdit = (props) => {
                 setAlert('Jaunās paroles apstiprināšana nesakrīt');
                 return;
             }
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
+            await axios.put(`${process.env.REACT_APP_SERVER_URL}/users/password`,
             {   
                 id: teacher._id,
                 oldPassword,

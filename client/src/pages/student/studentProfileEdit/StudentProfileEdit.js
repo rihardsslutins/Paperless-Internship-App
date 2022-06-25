@@ -127,7 +127,7 @@ const StudentProfileEdit = (props) => {
                 setAlert('Jaunās paroles apstiprināšana nesakrīt');
                 return;
             }
-            await axios.post(`${process.env.REACT_APP_SERVER_URL}/reset`,
+            await axios.put(`${process.env.REACT_APP_SERVER_URL}/users/password`,
                 {   
                     id: student._id,
                     oldPassword,

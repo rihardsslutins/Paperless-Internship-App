@@ -44,17 +44,17 @@ const JournalTable = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map(record => (
-                        <tr key={record._id} onClick={(
+                {data.map(record => (
+                        <tr key={record._id} onClick={() => {
                             if (role === "supervisor") {handleEditGrade(record)}
                             if (role === "student") {handleEditRecord(record)}
-                            )}>
+                        }}>
                             <td className="date">{moment(record.date).locale('lv').format('LL')}</td>
                             <td className="task-description">{record.taskDescription}</td>
                             <td>{record.hoursSpent}</td>
                             <td>{record.grade}</td>
                         </tr>
-                      })}
+                    ))}
                     {!data.length &&
                         <tr>
                             <td colSpan={4} className="no-record"> Nav neviena ieraksta </td>

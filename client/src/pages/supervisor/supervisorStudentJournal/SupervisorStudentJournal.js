@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 // packages
 import axios from 'axios';
 import Cookies from "js-cookie";
+import moment from "moment";
 
 const SupervisorStudentJournal = (props) => {
 
@@ -93,7 +94,8 @@ const SupervisorStudentJournal = (props) => {
             await axios.put(`${process.env.REACT_APP_SERVER_URL}/journals/${editRecord[0]}`,
             { 
                 id,
-                grade 
+                grade,
+                role
             }, 
             {
                 headers: {
@@ -101,7 +103,7 @@ const SupervisorStudentJournal = (props) => {
                 }
             })
             setAlertType('success');
-            setAlert('Atzīme tika ielikta ' + editRecord[1] + ' ierakstam!');
+            setAlert('Atzīme tika ielikta ' + moment(editRecord[1]).locale('lv').format('LL') + ' ierakstam!');
             setRefreshTable(false);
             setRefreshTable(true);
             setEditGrade();
@@ -150,7 +152,7 @@ const SupervisorStudentJournal = (props) => {
                                             onChange={e => setGrade(e.target.value)}
                                             type='number'
                                             name='grade'
-                                            label={`Atzīme ${editRecord[1]} ierakstam:`}
+                                            label={`Atzīme ${moment(editRecord[1]).locale('lv').format('LL')} ierakstam:`}
                                             placeholder={editRecord[2] ? `Pašreizējā atzīme ${editRecord[2]}` : ''}
                                         />
                                         <div className="supervisor-journal-form-buttons">

@@ -129,7 +129,8 @@ const StudentJournal = (props) => {
                 _id, 
                 date, 
                 taskDescription, 
-                hoursSpent 
+                hoursSpent,
+                role
             },
             {
                 headers: {
@@ -151,9 +152,37 @@ const StudentJournal = (props) => {
     };
 
     // Updating existing record
-    const handleUpdateJournalRecord = (e) => {
+    const handleUpdateJournalRecord = async (e) => {
         e.preventDefault();
-        console.log("Update record: " + editId + " with values: " + editDate, editHoursSpent, editTaskDescription);
+        try {
+            await axios.put(`${process.env.REACT_APP_SERVER_URL}/journals/${editId}`,
+            {
+                role,
+                id: _id,
+                date: editDate,
+                hoursSpent: editHoursSpent,
+                taskDescription: editTaskDescription
+            }, 
+            {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('auth')}`
+                }
+            }
+            )
+            setAlertType('success');
+            setAlert('Ieraksts tika pārveidots!');
+            setDate('');
+            setRefreshTable(false);
+            setRefreshTable(true);
+            setTaskDescription('');
+            setHoursSpent('');
+            // console.log(response)
+            // console.log("Update record: " + editId + " with values: " + editDate, editHoursSpent, editTaskDescription);
+        } catch (err) {
+            const errors = err.response.data.errors;
+            const propertyOrder = ['date', 'taskDescription', 'hoursSpent'];
+            handleErrors(errors, propertyOrder);
+        }
     }
 
     // Cancel journal update
@@ -247,6 +276,8 @@ const StudentJournal = (props) => {
                                 )}
                                 {internship.isActive && (
                                     <JournalModal
+                                        email={props.user.email}
+                                        id={_id}
                                         display={displayModal}
                                         handleClose={handleClose}
                                     />

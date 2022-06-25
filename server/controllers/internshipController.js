@@ -51,7 +51,7 @@ const post_internships = async (req, res) => {
                 receiverFullName: `${Supervisor.name + ' ' + Supervisor.surname}`,
                 receiverRole: Supervisor.role,
                 subject: 'Prakses dienasgrāmata',
-                body: `${Student.name + ' ' + Student.surname} no ${Student.school} uzaicināja Jūs pievienoties savai Dienasgrāmatai, uzņēmumā ${company}.`
+                body: `${Student.name + ' ' + Student.surname} no ${Student.school} uzaicināja Jūs pievienoties savai Dienasgrāmatai.`
             })
 
             return res.status(201).json({ internship })
@@ -73,13 +73,21 @@ const get_internships = async (req, res) => {
         // grabs the email and role property values from the user object returned from the authorization middleware
         const { email, role } = await User.findById(req.user.id)
 
-        let internships;
+        let internships = [];
 
         // assigns a value to the internships variable based on what role user has sent the get request
         if (role === 'student') {
             internships = await Internship.find({ student: email })
         } else if (role === 'teacher') {
-            internships = await Internship.find({ teacher: email, isActive: true })
+            // internships = await Internship.find({ teacher: email })
+            console.log('I hit')
+            const thingy = await Internship.distinct('student')
+            for (let i = 0; i < thingy.length; i++) {
+                const doc = await Internship.findOne({ student: thingy[i], teacher: email })
+                internships.push(doc)
+            }
+            console.log(thingy)
+            console.log(internships)
         } else if (role === 'supervisor') {
             internships = await Internship.find({ supervisor: email, isActive: true, isPending: false })
         }
@@ -177,6 +185,36 @@ const get_single_internships = async (req, res) => {
     }
 }
 
+// @desc handles the completion of an internship
+// @route PUT /internships
+// @access Private
+const put_internships = async (req, res) => {
+    const { email, password, endingDate } = req.body
+    const _id = req.params.id
+    try {
+        console.log(email, password, endingDate)
+        if (!endingDate) {
+            throw Error("Lūdzu ievadi prakses noslēguma datumu")
+        }
+        if (!password) {
+            throw Error("Lūdzu ievadi savu paroli")
+        }
+        const internship = await Internship.findById(_id)
+        const auth = await User.login(email, password)
+        if (auth) {
+            internship.endingDate = endingDate
+            internship.isActive = false
+            await internship.save()
+            return res.status(200).json({ internship })
+        } else {
+            throw Error('Something went wrong!')
+        }
+    } catch (err) {
+        const errors = handleErrors(err)
+        return res.status(400).json({ errors })
+    }
+}
+
 // @desc handles creation of a journal record
 // @route POST /journals
 // @access Private
@@ -203,21 +241,39 @@ const post_journal = async (req, res) => {
 // @route PUT /journals/:id
 // @access Private
 const put_journal = async (req, res) => {
-    const { id, grade } = req.body
+    const { id, role, date, hoursSpent, grade, taskDescription } = req.body
     try {
+        console.log(id, role, date, hoursSpent, grade, taskDescription)
         const internship = await Internship.findById(id)
         const _id = req.params.id
-        internship.journal.map((record) => {
-            if (record._id.toString() === _id) {
-            record.grade = grade
-            }
-        })
-        await internship.save()
-        
-        return res.status(200).json({ internship })
+        if (role === 'student') {
+            internship.journal.map(record => {
+                console.log(record._id.toString() === _id)
+                if (record._id.toString() === _id) {
+                    console.log("I hit")
+                    record.date = date
+                    record.hoursSpent = hoursSpent
+                    record.taskDescription = taskDescription
+                }
+            })
+            await internship.save()
+            return res.status(200).json({ internship })
+        } else if (role === 'supervisor') {
+            console.log("I hit")
+            internship.journal.map((record) => {
+                if (record._id.toString() === _id) {
+                    record.grade = grade
+                }
+            })
+            await internship.save()
+            return res.status(200).json({ internship })
+        }
+        // const internship = await Internship.findById(id)
+        // const _id = req.params.id
     } catch (err) {
         console.log(err)
         const errors = handleErrors(err)
+        console.log(errors)
         return res.status(400).json({ errors })
     }
 
@@ -225,4 +281,4 @@ const put_journal = async (req, res) => {
 
 
 
-export { post_internships, get_internships, get_internships_teacher, get_single_internships, post_journal, put_journal }
+export { post_internships, get_internships, get_internships_teacher, get_single_internships, put_internships, post_journal, put_journal }

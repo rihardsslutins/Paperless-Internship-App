@@ -32,7 +32,6 @@ const TeacherStudentJournals = () => {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 })
-                console.log(response.data.internship)
                 setInternships(response.data.internships)
                 setIsPending(false);
             } catch (err) {
@@ -48,7 +47,7 @@ const TeacherStudentJournals = () => {
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="teacher-journal" />
             <div className="dashboard-container">
                 <div className="teacher-students-journal">
-                    <h1>Dienasgrāmata - {id}</h1>
+                    <h1>Dienasgrāmatas - {internships[0].studentFullName}</h1>
                     {isPending && <div className="loading"></div>}
                     {!isPending && internships && <CardGrid internships={internships} role="teacher" />}
                 </div>
