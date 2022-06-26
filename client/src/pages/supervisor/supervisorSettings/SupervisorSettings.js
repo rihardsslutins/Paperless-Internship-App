@@ -4,15 +4,14 @@ import "./SupervisorSettings.css";
 import male from "../../../assets/male.svg";
 import female from "../../../assets/female.svg";
 // atoms
-import DangerButton from "../../../components/atoms/button/DangerButton";
+// import DangerButton from "../../../components/atoms/button/DangerButton";
 import PageButton from "../../../components/atoms/button/PageButton";
 // components
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
-import DeleteProfileModal from "../../../components/organisms/modal/DeleteProfileModal";
+// import DeleteProfileModal from "../../../components/organisms/modal/DeleteProfileModal";
 import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
 // hooks
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 // redux
 import { connect } from "react-redux";
 
@@ -20,18 +19,18 @@ const SupervisorSettings = (props) => {
 
     const navigate = useNavigate();
 
-    // Sidebar properties
-    const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
-    const link = ['supervisor-home', 'supervisor-journal', 'supervisor-mail', 'supervisor-invites', 'supervisor-settings', 'help'];
+    /// Sidebar
+    const icon = ['home', 'journal', 'invite', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'invite page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Uzaicinājumi', 'Iestatījumi'];
+    const link = ['supervisor-home', 'supervisor-journal', 'supervisor-invites', 'supervisor-settings'];
 
     // Logged in users info
     const supervisor = props.user
 
     // Delete profile modal
-    const [displayModal, setDisplayModal] = useState(false);
-    const handleCloseModal = () => setDisplayModal(false);
+    // const [displayModal, setDisplayModal] = useState(false);
+    // const handleCloseModal = () => setDisplayModal(false);
 
     return (
         <>
@@ -52,8 +51,8 @@ const SupervisorSettings = (props) => {
                             Mājaslapas motīvs: <ThemeToggle />
                         </div>
                     </div>
-                    <DangerButton text='Dzēst profilu' onClick={() => setDisplayModal(true)} />
-                    <DeleteProfileModal role='supervisor' display={displayModal} handleClose={handleCloseModal} />
+                    {/* <DangerButton text='Dzēst profilu' onClick={() => setDisplayModal(true)} /> */}
+                    {/* <DeleteProfileModal role='supervisor' display={displayModal} handleClose={handleCloseModal} /> */}
                 </div>
             </div>
         </>

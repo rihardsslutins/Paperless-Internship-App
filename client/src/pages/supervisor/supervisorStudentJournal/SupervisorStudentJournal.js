@@ -29,11 +29,11 @@ const SupervisorStudentJournal = (props) => {
     const [refreshTable, setRefreshTable] = useState(true);
     const [isPending, setIsPending] = useState(false);
 
-    // Sidebar properties
-    const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
-    const link = ['supervisor-home', 'supervisor-journal', 'supervisor-mail', 'supervisor-invites', 'supervisor-settings', 'help'];
+    // Sidebar
+    const icon = ['home', 'journal', 'invite', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'invite page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Uzaicinājumi', 'Iestatījumi'];
+    const link = ['supervisor-home', 'supervisor-journal', 'supervisor-invites', 'supervisor-settings'];
 
     // Table
     const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];

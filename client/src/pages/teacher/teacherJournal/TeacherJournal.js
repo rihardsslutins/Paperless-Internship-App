@@ -15,11 +15,11 @@ const TeacherJournal = () => {
 
     const [isPending, setIsPending] = useState(false);
 
-    // Sidebar properties
-    const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
-    const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
+    // Sidebar
+    const icon = ['home', 'journal', 'invite', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'invite page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Uzaicinājumi', 'Iestatījumi'];
+    const link = ['teacher-home', 'teacher-journal', 'teacher-invites', 'teacher-settings'];
 
     // Search input
     const [searchQuery, setSearchQuery] = useState('');

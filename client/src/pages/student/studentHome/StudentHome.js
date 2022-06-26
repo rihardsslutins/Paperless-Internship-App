@@ -21,10 +21,10 @@ import Cookies from "js-cookie";
 const StudentHome = (props) => {
 
     // Sidebar
-    const icon = ['home', 'journal', 'mail', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
-    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
+    const icon = ['home', 'journal', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Iestatījumi'];
+    const link = ['student-home', 'student-journals', 'student-settings'];
 
     const navigate = useNavigate();
     const [isPending, setIsPending] = useState(false);
@@ -60,7 +60,6 @@ const StudentHome = (props) => {
         }
         getInternship()
     }, [])
-    console.log(internship)
 
     return (
         <>

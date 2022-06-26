@@ -25,7 +25,7 @@ const JournalCard = ({
                 </div>
                 <div className="journal-card-date">
                     <p>Datums:</p>
-                    <p>{moment(journalCard.startingDate).locale('lv').format('LL')}</p>
+                    <p>{moment(journalCard.startingDate).locale('lv').format('LL')}{journalCard.endingDate && " - " + moment(journalCard.endingDate).locale('lv').format('LL')}</p>
                 </div>
                 {!journalCard.isPending &&
                     <>
@@ -36,7 +36,7 @@ const JournalCard = ({
                         }
                     </>
                 }
-                {journalCard.isPending && <div className="journal-pending">Gaiada prakses vadītāja apstiprinājumu</div>}
+                {journalCard.isPending && <div className="journal-pending">Gaida prakses vadītāja apstiprinājumu</div>}
         </div>
     );
 }

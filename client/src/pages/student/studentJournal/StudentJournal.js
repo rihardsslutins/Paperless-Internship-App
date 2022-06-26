@@ -29,10 +29,10 @@ const StudentJournal = (props) => {
     const [refreshTable, setRefreshTable] = useState(true);
 
     // Sidebar
-    const icon = ['home', 'journal', 'mail', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
-    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
+    const icon = ['home', 'journal', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Iestatījumi'];
+    const link = ['student-home', 'student-journals', 'student-settings'];
 
     // Table
     const headerCells = ['Datums', 'Izpildītā darba īss raksturojums', 'Izpildes laiks', 'Vērtējums'];
@@ -92,7 +92,6 @@ const StudentJournal = (props) => {
                     }
                 }
                 );
-                console.log(response.data)
                 setInternship(response.data.internship)
                 setJournal(response.data.internship.journal)
                 setIsPending(false);
@@ -127,10 +126,9 @@ const StudentJournal = (props) => {
             await axios.post(`${process.env.REACT_APP_SERVER_URL}/journals`,
             { 
                 _id, 
-                date, 
+                date,
                 taskDescription, 
-                hoursSpent,
-                role
+                hoursSpent
             },
             {
                 headers: {
@@ -176,8 +174,6 @@ const StudentJournal = (props) => {
             setRefreshTable(true);
             setTaskDescription('');
             setHoursSpent('');
-            // console.log(response)
-            // console.log("Update record: " + editId + " with values: " + editDate, editHoursSpent, editTaskDescription);
         } catch (err) {
             const errors = err.response.data.errors;
             const propertyOrder = ['date', 'taskDescription', 'hoursSpent'];
@@ -280,6 +276,7 @@ const StudentJournal = (props) => {
                                         id={_id}
                                         display={displayModal}
                                         handleClose={handleClose}
+                                        setRefreshTable={setRefreshTable}
                                     />
                                 )}
                             </div>

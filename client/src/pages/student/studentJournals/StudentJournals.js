@@ -15,10 +15,10 @@ import { Link } from 'react-router-dom';
 const StudentJournals = () => {
 
     // Sidebar
-    const icon = ['home', 'journal', 'mail', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
-    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
+    const icon = ['home', 'journal', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Iestatījumi'];
+    const link = ['student-home', 'student-journals', 'student-settings'];
 
     const [internships, setInternships] = useState('')
     const [isPending, setIsPending] = useState(false);
@@ -32,7 +32,7 @@ const StudentJournals = () => {
                         Authorization: `Bearer ${Cookies.get('auth')}`,
                     },
                 });
-                setInternships(response.data.internships)
+                setInternships(response.data.internships);
                 setIsPending(false);
             } catch (err) {
                 console.log(err);

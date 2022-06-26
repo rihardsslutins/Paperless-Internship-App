@@ -40,7 +40,7 @@ const handleErrors = (err) => {
 
     // checks whether or not the user has entered the password
     if (err.message === 'Lūdzu ievadi savu paroli') {
-      errors.student = 'Lūdzu ievadi savu paroli';
+      errors.password = 'Lūdzu ievadi savu paroli';
     }
 
     // checks whether or not the entered email exists in the database

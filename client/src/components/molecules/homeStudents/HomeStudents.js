@@ -21,13 +21,17 @@ const HomeStudents = ({
         <div className="home-students">
             <div className={`home-student-title ${theme}`}>
                 <span></span>
-                <h2>Praktikanti</h2>
-                <PageButton2 text='Visi praktikanti' active='' onClick={() => 
-                    role === 'supervisor' ?
-                        navigate("../supervisor-journal") 
-                    : 
-                        navigate("../teacher-journal")} 
-                />
+                {role === 'supervisor' ?
+                    <>
+                        <h2>Praktikanti</h2>
+                        <PageButton2 text='Visi praktikanti' active='' onClick={() => navigate("../supervisor-journal")} />
+                    </>
+                :
+                    <>
+                        <h2>Studenti</h2>
+                        <PageButton2 text='Visi studenti' active='' onClick={() => navigate("../teacher-journal")}/>
+                    </>
+                }
             </div>
             <div className={`home-students-list ${theme}`}>
                 {isPending && 
@@ -59,7 +63,11 @@ const HomeStudents = ({
                             <div className="home-no-students-container">
                                 <div className="home-no-students">
                                     <img src={noStudent} alt="no students" />
-                                    <p>Nav praktikantu</p>
+                                    {role === 'supervisor' ?
+                                        <p>Nav praktikantu</p>
+                                    :
+                                        <p>Nav studentu</p>
+                                    }
                                 </div>
                             </div>
                         }

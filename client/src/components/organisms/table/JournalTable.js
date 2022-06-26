@@ -1,7 +1,5 @@
 //style
 import "./Table.css";
-// hooks
-import { useLocation } from "react-router-dom";
 // packages
 import moment from 'moment'
 import 'moment/locale/lv';
