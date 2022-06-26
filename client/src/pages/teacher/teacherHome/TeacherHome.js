@@ -18,11 +18,11 @@ import Cookies from "js-cookie";
 
 const TeacherHome = (props) => {
 
-    // Sidebar properties
-    const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
-    const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
+    // Sidebar
+    const icon = ['home', 'journal', 'invite', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'invite page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Uzaicinājumi', 'Iestatījumi'];
+    const link = ['teacher-home', 'teacher-journal', 'teacher-invites', 'teacher-settings'];
 
     // Logged in users info
     const teacher = props.user;
@@ -63,7 +63,6 @@ const TeacherHome = (props) => {
                     }
                 }
                 )
-                console.log(response)
                 setInternships(response.data.internships);
                 setIsPendingStudents(false);
             } catch (err) {
@@ -73,8 +72,6 @@ const TeacherHome = (props) => {
         }
         getInternships()
     }, [])
-
-    console.log(internships)
 
     return (
         <div>

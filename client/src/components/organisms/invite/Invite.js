@@ -25,12 +25,11 @@ const Invite = ({
                         <PageButton text="Apstiprināt" onClick={async (e) => {
                             e.preventDefault()
                             try {
-                                const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/invites/${invite._id}`, {}, {
+                                await axios.put(`${process.env.REACT_APP_SERVER_URL}/invites/${invite._id}`, {}, {
                                     headers: {
                                         Authorization: `Bearer ${Cookies.get('auth')}`
                                     }
                                 })
-                                console.log(response);
                                 setRefreshTable(false);
                                 setRefreshTable(true);
                             } catch (err) {
@@ -40,12 +39,11 @@ const Invite = ({
                         <DangerButton2 text="Noraidīt" onClick={async (e) => {
                             e.preventDefault()
                             try {
-                                const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/invites/${invite._id}`, {
+                                await axios.delete(`${process.env.REACT_APP_SERVER_URL}/invites/${invite._id}`, {
                                     headers: {
                                         Authorization: `Bearer ${Cookies.get('auth')}`
                                     }
                                 })
-                                console.log(response);
                                 setRefreshTable(false);
                                 setRefreshTable(true);
                             } catch (err) {

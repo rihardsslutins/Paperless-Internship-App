@@ -63,13 +63,8 @@ const Home = (props) => {
                         />
                     </div>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur.
+                        Atvieglojiet saziņu prakses laikā starp studentiem, skolotājiem un prakses vadītājiem.
+                        Izvēlies savu lomu un reģistrējies mājaslapai, lai fiziskās prakses dienasgrāmatas aizstātu ar digitālām.
                     </p>
                 </div>
                 <img
@@ -79,7 +74,7 @@ const Home = (props) => {
                 />
                 <RegisterModal
                     title="Students"
-                    body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    body="Reģistrējies mājaslapai kā students, lai aizstātu savu fizisko prakses dienasgrāmatu ar digitālu un vieglāk veiktu ierakstus dienasgrāmatā."
                     display={displayStudent}
                     handleClose={handleClose}
                     buttonText="Reģistrēties kā students"
@@ -87,7 +82,7 @@ const Home = (props) => {
                 />
                 <RegisterModal
                     title="Skolotājs"
-                    body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    body="Reģistrējies mājaslapai, lai vieglāk apskatītu ko studenti dara un kā tiem klājas prakses laikā, kā arī varēsiet jebkurā laikā redzēt, kā viņus novērtē prakses vadītājs."
                     display={displayTeacher}
                     handleClose={handleClose}
                     buttonText="Reģistrēties kā skolotājs"
@@ -95,7 +90,7 @@ const Home = (props) => {
                 />
                 <RegisterModal
                     title="Prakses vadītājs"
-                    body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    body="Reģistrējies mājaslapai, lai jebkurā brīdī varētu apskatīt praktikantu ierakstus dienasgrāmatā, kā arī vigli un ātri ielikt vērtējumus."
                     display={displayMentor}
                     handleClose={handleClose}
                     buttonText="Reģistrēties kā prakses vadītājs"

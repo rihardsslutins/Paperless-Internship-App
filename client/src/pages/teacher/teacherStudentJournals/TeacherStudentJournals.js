@@ -14,11 +14,11 @@ const TeacherStudentJournals = () => {
 
     const { id } = useParams();
 
-    // Sidebar properties
-    const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
-    const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
+    // Sidebar
+    const icon = ['home', 'journal', 'invite', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'invite page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Uzaicinājumi', 'Iestatījumi'];
+    const link = ['teacher-home', 'teacher-journal', 'teacher-invites', 'teacher-settings'];
 
     const [internships, setInternships] = useState([]);
     const [isPending, setIsPending] = useState(false);
@@ -32,7 +32,6 @@ const TeacherStudentJournals = () => {
                         Authorization: `Bearer ${Cookies.get('auth')}`
                     }
                 })
-                console.log(response.data)
                 setInternships(response.data.internships)
                 setIsPending(false);
             } catch (err) {
@@ -43,14 +42,12 @@ const TeacherStudentJournals = () => {
         getStudentInternships()
     }, [id])
 
-    // console.log(`THIS IS IT ${internships[0].studentFullName}`)
-
     return (
         <div>
             <Sidebar icon={icon} imgAlt={imgAlt} title={title} link={link} page="teacher-journal" />
             <div className="dashboard-container">
                 <div className="teacher-students-journal">
-                    {internships.length && <h1>Dienasgrāmatas - {internships[0].studentFullName}</h1>}
+                    {internships.length ? <h1>Dienasgrāmatas - {internships[0].studentFullName}</h1> : null}
                     {isPending && <div className="loading"></div>}
                     {!isPending && internships && <CardGrid internships={internships} role="teacher" />}
                 </div>

@@ -4,14 +4,14 @@ import "./StudentSettings.css";
 import male from "../../../assets/male.svg";
 import female from "../../../assets/female.svg";
 // atoms
-import DangerButton from "../../../components/atoms/button/DangerButton";
+// import DangerButton from "../../../components/atoms/button/DangerButton";
 import PageButton from "../../../components/atoms/button/PageButton";
 import Alert from "../../../components/atoms/alerts/Alert";
 // molecules
 import InputButtonGroup from "../../../components/molecules/labeledInput/InputButtonGroup";
 // components
 import Sidebar from "../../../components/organisms/navbar/Sidebar";
-import DeleteProfileModal from "../../../components/organisms/modal/DeleteProfileModal";
+// import DeleteProfileModal from "../../../components/organisms/modal/DeleteProfileModal";
 import ThemeToggle from "../../../components/ThemeToggle/ThemeToggle";
 // redux
 import { connect } from "react-redux";
@@ -25,14 +25,13 @@ import Cookies from "js-cookie";
 const StudentSettings = (props) => {
     
     const student = props.user
-
     const navigate = useNavigate();
 
     // Sidebar
-    const icon = ['home', 'journal', 'mail', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Iestatījumi', 'Palīdzība'];
-    const link = ['student-home', 'student-journals', 'student-mail', 'student-settings', 'help'];
+    const icon = ['home', 'journal', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Iestatījumi'];
+    const link = ['student-home', 'student-journals', 'student-settings'];
 
     // Error handling
     const handleErrors = (errors, propertyOrder) => {
@@ -101,8 +100,8 @@ const StudentSettings = (props) => {
     };
 
     // Delete profile modal
-    const [displayModal, setDisplayModal] = useState(false);
-    const handleCloseModal = () => setDisplayModal(false);
+    // const [displayModal, setDisplayModal] = useState(false);
+    // const handleCloseModal = () => setDisplayModal(false);
 
     return (
         <>
@@ -124,12 +123,13 @@ const StudentSettings = (props) => {
                         <div className="student-teachers">
                             <h3>Skolotāji</h3>
                             <div className="student-teachers-grid">
-                                {student.teachers ?
+                                {!student.teachers.length && !pendingTeachers.length &&
+                                    <p>Nav pievienots neviens skolotājs</p>
+                                }
+                                {student.teachers &&
                                         student.teachers.map((teacher) => (
                                             <p key={teacher._id}>{teacher.fullName}</p>
                                         ))
-                                    :
-                                        <p>Nav pievienots neviens skolotājs</p>
                                 }
                                 {pendingTeachers.length ?
                                         pendingTeachers.map((teacher) => (
@@ -159,8 +159,8 @@ const StudentSettings = (props) => {
                             </div>
                         </div>
                     </div>
-                    <DangerButton text='Dzēst profilu' onClick={() => setDisplayModal(true)} />
-                    <DeleteProfileModal role='student' display={displayModal} handleClose={handleCloseModal} />
+                    {/* <DangerButton text='Dzēst profilu' onClick={() => setDisplayModal(true)} />
+                    <DeleteProfileModal role='student' display={displayModal} handleClose={handleCloseModal} /> */}
                 </div>
             </div>
         </>

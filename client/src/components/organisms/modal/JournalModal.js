@@ -19,29 +19,9 @@ const JournalModal = ({
     email,
     id,
     display,
-    handleClose
+    handleClose,
+    setRefreshTable
 }) => {
-
-    const student = { 
-        id: '6283abad20a71c3f8b4a2e07',
-        name: "Ulvis",
-        surname: "Čakstiņš",
-        school: "Saldus thenikums",
-        phone: 25412514,
-        gender: "male",
-        email: "ulvisc3@gmail.com",
-        password: "password",
-        teachers: [
-            {
-                fullName: "Elīna Dēvita",
-                email: "elinadevita@gmail.com"
-            },
-            {
-                fullName: "Mārtiņs Zīlīte",
-                email: "martins@gmail.com"
-            }
-        ]
-    }
 
     const theme = useTheme();
 
@@ -56,27 +36,40 @@ const JournalModal = ({
     const handleEndJournal = async (e) => {
         e.preventDefault()
         try {
-            console.log('hit');
-            console.log(endingDate);
             setAlert('');
-                const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/internships/${id}`,
-                {
-                    email,
-                    password: passwordCheck,
-                    endingDate
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get('auth')}`
+                await axios.put(`${process.env.REACT_APP_SERVER_URL}/internships/${id}`,
+                    {
+                        email,
+                        password: passwordCheck,
+                        endingDate
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${Cookies.get('auth')}`
+                        }
                     }
-                }
                 )
-                console.log(response)
                 handleModel();
+                setRefreshTable(false);
+                setRefreshTable(true);
         } catch (err) {
-            console.log(err.response)
+            const errors = err.response.data.errors;
+            const propertyOrder = ['password', 'endingDate'];
+            handleErrors(errors, propertyOrder);
         }
     }
+
+    // Error handling
+    const handleErrors = (errors, propertyOrder) => {
+        for (let i = 0; i < propertyOrder.length; i++) {
+            if (errors[propertyOrder[i]]) {
+                setAlert(errors[propertyOrder[i]]);
+                return;
+            } else {
+                setAlert('');
+            }
+        }
+    };
 
     const handleModel = () => {
         handleClose();

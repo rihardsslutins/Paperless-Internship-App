@@ -5,19 +5,17 @@ import Sidebar from "../../../components/organisms/navbar/Sidebar";
 import Invite from "../../../components/organisms/invite/Invite";
 // react
 import { useState, useEffect } from "react";
-// redux
-import { connect } from "react-redux";
 // packages
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const TeacherInvites = (props) => {
+const TeacherInvites = () => {
 
-    // Sidebar properties
-    const icon = ['home', 'journal', 'mail', 'invite', 'settings', 'help'];
-    const imgAlt = ['home page', 'journal page', 'mail page', 'invite page', 'settings page', 'help page'];
-    const title = ['Sākums', 'Dienasgrāmata', 'Vēstules', 'Uzaicinājumi', 'Iestatījumi', 'Palīdzība'];
-    const link = ['teacher-home', 'teacher-journal', 'teacher-mail', 'teacher-invites', 'teacher-settings', 'help'];
+    // Sidebar
+    const icon = ['home', 'journal', 'invite', 'settings'];
+    const imgAlt = ['home page', 'journal page', 'invite page', 'settings page'];
+    const title = ['Sākums', 'Dienasgrāmata', 'Uzaicinājumi', 'Iestatījumi'];
+    const link = ['teacher-home', 'teacher-journal', 'teacher-invites', 'teacher-settings'];
 
     const [invites, setInvites] = useState([]);
     const [isPending, setIsPending] = useState(false);
@@ -59,8 +57,4 @@ const TeacherInvites = (props) => {
     );
 }
 
-const mapStateToProps = (state) => ({
-    user: state.user,
-});
-
-export default connect(mapStateToProps)(TeacherInvites);
+export default TeacherInvites;
